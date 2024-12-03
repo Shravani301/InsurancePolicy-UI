@@ -1,0 +1,17 @@
+<div class="features-section container">
+    <h2 class="features-title text-center">Benefits of eInsurance Portal</h2>
+    <p class="features-subtitle text-center">
+      Discover how eInsurance Portal simplifies your insurance journey.
+    </p>
+  
+    <div class="row features-container">
+      <div class="col-md-4 feature-item" *ngFor="let feature of features">
+        <div class="feature-card">
+          <img [src]="feature.icon" alt="Feature Icon" class="feature-icon" />
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

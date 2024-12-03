@@ -1,0 +1,82 @@
+/* Footer Section Styling */
+.footer-section {
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1CB5E0, #000046);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1CB5E0, #000046); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #ffffff; /* White text for contrast */
+    padding: 20px 0; /* Compact height */
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+  }
+  
+  /* Footer Row */
+  .footer-row {
+    display: flex;
+    justify-content: space-between; /* Space out columns */
+    align-items: center; /* Align items vertically */
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    gap: 20px; /* Add spacing between columns */
+  }
+  
+  /* Footer Column Styling */
+  .footer-column {
+    flex: 1; /* Each column takes equal space */
+    min-width: 200px; /* Ensure minimum width */
+    text-align: center; /* Center-align content */
+  }
+  
+  /* Heading Styling */
+  h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ffffff; /* White color for headings */
+  }
+  
+  /* List Styling */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  ul li {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+  
+  ul li i {
+    margin-right: 10px;
+    color: #ffdd57; /* Highlight icon color */
+  }
+  
+  /* Links Styling */
+  ul li a {
+    text-decoration: none;
+    color: #dfefff;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+  }
+  
+  ul li a:hover {
+    color: #ffdd57; /* Hover effect for links */
+  }
+  
+  /* Social Media Icons */
+  .social-media .icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Space between icons */
+  }
+  
+  .social-media .icons a {
+    font-size: 1.5rem;
+    color: #ffffff;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .social-media .icons a:hover {
+    color: #ffdd57;
+    transform: scale(1.2); /* Slight scaling on hover */
+  }
+  

@@ -1,0 +1,156 @@
+ .login-box{
+    height: 85vh;
+  }
+  /* General body styling */
+body {
+    background-color: #edf6fc;
+    font-family: "Roboto", sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Login container styles */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* Login card styling */
+  .login-card {
+    background-color: #ffffff;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 430px;
+  }
+  
+  /* Logo styling */
+  .logo-container {
+    margin-bottom: 1rem;
+  }
+  
+  .logo {
+    max-width: 80px;
+  }
+  
+  /* Login title and subtitle */
+  .login-title {
+    color: #333333;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .subtitle {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Form group styling */
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  /* Input field styling */
+  input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  input:focus {
+    border-color: #4a90e2;
+    background-color: #f7fbff;
+  }
+  
+  /* Error message styling */
+  .error {
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    text-align: left;
+  }
+  
+  /* Password group with toggle icon */
+  .password-group {
+    position: relative;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    cursor: pointer;
+  }
+  
+  .toggle-password:hover {
+    color: #4a90e2;
+  }
+  
+  /* Forgot password link */
+  .forgot-password {
+    display: block;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #4a90e2;
+    text-decoration: none;
+    margin-bottom: 1rem;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  /* Login button */
+  .btn-login {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #4a90e2;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-login:disabled {
+    background-color: #a6c9f3;
+    cursor: not-allowed;
+  }
+  
+  .btn-login:hover:not(:disabled) {
+    background-color: #357abd;
+  }
+  
+  /* Signup prompt */
+  .signup-prompt {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  
+  .signup-prompt a {
+    color: #4a90e2;
+    text-decoration: none;
+  }
+  
+  .signup-prompt a:hover {
+    text-decoration: underline;
+  }
+  

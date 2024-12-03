@@ -1,0 +1,66 @@
+<div class="login-box">
+    <app-header></app-header>
+    <div class="login-container">
+      <div class="login-card">
+        <h2 class="login-title">Login</h2>
+        <p class="subtitle">to the secure future.</p>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmitData()">
+          <!-- Username Field -->
+          <div class="form-group">
+            <input
+              id="userName"
+              class="form-control glossy-input"
+              formControlName="userName"
+              type="text"
+              placeholder="Enter your username"
+            />
+            <div
+              *ngIf="
+                loginForm.controls['userName'].touched &&
+                loginForm.controls['userName'].invalid
+              "
+              class="error"
+            >
+              Username is required.
+            </div>
+          </div>
+          <!-- Password Field -->
+          <div class="form-group password-group">
+            <input
+              id="password"
+              class="form-control glossy-input"
+              formControlName="password"
+              [type]="hidePassword ? 'password' : 'text'"
+              placeholder="Enter your password"
+            />
+            <i
+              class="toggle-password"
+              [ngClass]="hidePassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
+              (click)="togglePasswordVisibility()"
+            ></i>
+            <div
+              *ngIf="
+                loginForm.controls['password'].touched &&
+                loginForm.controls['password'].invalid
+              "
+              class="error"
+            >
+              Password must be at least 8 characters.
+            </div>
+          </div>
+          <!-- Forgot Password Link -->
+          <a routerLink="/forgot-password" class="forgot-password">Forgot password?</a>
+          <!-- Submit Button -->
+          <button type="submit" class="btn-login" [disabled]="loginForm.invalid">
+            Login
+          </button>
+          <!-- Sign Up Link -->
+          <p class="signup-prompt">
+            Don’t have an account? <a routerLink="/signup">Sign up</a>
+          </p>
+        </form>
+      </div>
+    </div>
+    <app-footer-end></app-footer-end>
+  </div>
+  

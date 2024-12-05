@@ -14,26 +14,10 @@ body{
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c3e4fc; /* Thumb color */
+  background: #485563; /* Thumb color */
   border-radius: 10px; /* Rounded edges for the thumb */
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #005bb5; /* Slightly darker shade on hover */
-}
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.success-snackbar {
-  background-color: #4caf50; /* Success color */
-  color: #ffffff;
-  text-align: center;
-  font-size: 1rem;
-}
-
-.error-snackbar {
-  background-color: #f44336; /* Error color */
-  color: #ffffff;
-  text-align: center;
-  font-size: 1rem;
 }

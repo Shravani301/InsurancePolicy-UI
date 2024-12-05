@@ -6,8 +6,10 @@
     color: rgba(255, 255, 255, 0.6); /* Slightly transparent white for elegant look */
     font-family: 'Roboto', sans-serif; /* Modern font */
     font-size: 0.9rem; /* Small and professional text size */
-    padding: 3px 0; /* Compact height */
+    padding: 6px 0; /* Compact height */
     text-align: center; /* Center-align the text */
     border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator line */
   }
-  
+  .footer-end p{
+    margin-top: 2px;
+  }

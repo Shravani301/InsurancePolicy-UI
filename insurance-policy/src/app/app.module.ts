@@ -12,7 +12,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { FooterEndComponent } from './footer-end/footer-end.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './registration/registration.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +24,14 @@ import { RecaptchaModule, RecaptchaV3Module } from 'ng-recaptcha';
 import { EmployeeDashboardComponent } from './employee/employee-dashboard/employee-dashboard.component';
 import { AgentDashboardComponent } from './agent/agent-dashboard/agent-dashboard.component';
 import { CustomerDashboardComponent } from './customer/customer-dashboard/customer-dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
+import { JwtInterceptor } from './jwt.interceptor';
+import { ToastComponent } from './toast/toast.component';
+import { ViewCustomersComponent } from './customer/view-customers/view-customers.component';
+import { FormsModule } from '@angular/forms';
+import { ViewClaimsComponent } from './employee/view-claims/view-claims.component';
+import { PaymentComponent } from './payment/payment.component';
+
 
 @NgModule({
   declarations: [
@@ -42,6 +50,10 @@ import { CustomerDashboardComponent } from './customer/customer-dashboard/custom
     EmployeeDashboardComponent,
     AgentDashboardComponent,
     CustomerDashboardComponent,
+    ToastComponent,
+    ViewCustomersComponent,
+    ViewClaimsComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,14 +65,21 @@ import { CustomerDashboardComponent } from './customer/customer-dashboard/custom
     BrowserAnimationsModule, // Required for animations
     RecaptchaModule,
     RecaptchaV3Module,
+    FormsModule,
   ],
-  providers: [MessageService,{
+  providers: [MessageService,
+    {
+      provide:HTTP_INTERCEPTORS, useClass:JwtInterceptor,
+      multi: true
+    },
+    {
     provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
     useValue: {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
     },
+    
 },], // Provide MessageService for PrimeNG Toast
   bootstrap: [AppComponent],
 })

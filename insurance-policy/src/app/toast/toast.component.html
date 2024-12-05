@@ -1,0 +1,18 @@
+<div class="toast-container">
+    <div
+      *ngFor="let toast of toastService.toasts"
+      class="toast-message {{ toast.type }}"
+    >
+      <span class="toast-icon">
+        <ng-container [ngSwitch]="toast.type">
+          <i *ngSwitchCase="'success'" class="material-icons">check_circle</i>
+          <i *ngSwitchCase="'error'" class="material-icons">error</i>
+          <i *ngSwitchCase="'info'" class="material-icons">info</i>
+          <i *ngSwitchCase="'warn'" class="material-icons">warning</i>
+        </ng-container>
+      </span>
+      <span>{{ toast.message }}</span>
+      <button class="toast-close" (click)="toastService.clearToasts()">&times;</button>
+    </div>
+  </div>
+  

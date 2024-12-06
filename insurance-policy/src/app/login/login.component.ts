@@ -69,6 +69,7 @@ export class LoginComponent {
           localStorage.setItem('token', this.myToken);
           this.role = response.body;
           localStorage.setItem('role', this.role.roleName);
+        
  
           // Redirect based on roleName
           switch (this.role.roleName) {

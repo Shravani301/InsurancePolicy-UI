@@ -1,0 +1,83 @@
+.wrapper {
+    background-color: #f3faf4; /* Page background */
+    min-height: 100vh; /* Ensures the wrapper covers the full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes footer to the bottom */
+}
+
+.container {
+    background-color: rgba(252, 252, 252, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; /* Ensures the container grows to fill available space */
+    margin-bottom: 20px; /* Adds space between the container and footer */
+}
+
+.heading {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers all form elements */
+}
+
+.form-control {
+    width: 400px; /* Input width */
+    border: 2px solid #00d1b2;
+    border-radius: 6px;
+    padding: 10px; /* Added padding for better appearance */
+    text-align: center; /* Centers placeholder and input text */
+}
+
+.form-control:focus {
+    outline: 2px solid #00d1b2;
+}
+
+.error-div small {
+    font-size: 12px;
+    margin-top: 5px;
+    color: #dc3545;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center; /* Centers buttons */
+    gap: 10px; /* Reduces the space between buttons */
+}
+
+.btn-primary {
+    background-color: #00d1b2;
+    border-color: #00d1b2;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #03d6b7;
+    border-color: #03d6b7;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+app-footer-end {
+    background-color: #f8f9fa;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+    margin-top: auto; /* Ensures the footer stays at the bottom */
+}

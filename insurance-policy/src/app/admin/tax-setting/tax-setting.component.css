@@ -1,0 +1,47 @@
+/* Wrapper styles */
+.tax-setting-wrapper {
+    background-color: #f3faf4; /* Specific background for this page */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Back button styles */
+ 
+  /* Form input */
+  input.form-control {
+    width: 400px; /* Decreased input width */
+  outline: none;
+  border-color: #00d1b2;
+  border-width: 2px; /* Added outline color */
+  outline: 2px solid #00d1b2; /* Highlight color for input focus */
+
+  }
+  
+  button.submit {
+    border-radius: 6px; /* Rounded corners */
+    border: 2px solid #00d1b2; /* Specify the border with the primary color */
+    background-color: #00d1b2; /* Primary button color */
+    padding: 6px 18px; /* Padding inside the button */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  button.submit:hover {
+    background-color: #009e8e; /* Darker shade for hover effect */
+    color: #ffffff; /* Keep text white */
+    border-color: #009e8e; /* Match border with the hover background color */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for hover effect */
+  }
+  
+  /* Footer styles */
+  app-footer-end {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    margin-top: auto;
+  }
+  

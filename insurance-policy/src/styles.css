@@ -3,6 +3,10 @@ body{
     margin: 0px;
     background-color: #edf6fc;
 }
+.wrapper
+{
+  background-color: #f3faf4;
+}
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px; /* Thin scrollbar width */
@@ -20,4 +24,27 @@ body{
 
 ::-webkit-scrollbar-thumb:hover {
   background: #005bb5; /* Slightly darker shade on hover */
+}
+ /* Footer styles */
+ app-footer-end {
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 0 0;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  margin-top: auto;
+}
+.btn-back
+{
+  border-radius: 4px;
+  margin-top: 2%;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  border-color: #00d1b2;
+
+}
+.btn-back:hover
+{
+  background-color: #00d1b2;
 }

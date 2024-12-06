@@ -11,7 +11,20 @@ import { AdminHeaderComponent } from './admin/admin-header/admin-header.componen
 import { AdminLandingComponent } from './admin/admin-landing/admin-landing.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ViewCustomersComponent } from './customer/view-customers/view-customers.component';
-import { ViewClaimsComponent } from './employee/view-claims/view-claims.component';
+import { CustomerHeaderComponent } from './customer/customer-header/customer-header.component';
+import { CustomerLandingComponent } from './customer/customer-landing/customer-landing.component';
+import { TaxSettingComponent } from './admin/tax-setting/tax-setting.component';
+import { ViewPlanComponent } from './plan/view-plan/view-plan.component';
+import { AddPlanComponent } from './plan/add-plan/add-plan.component';
+import { ViewSchemeComponent } from './plan/view-scheme/view-scheme.component';
+import { ViewClaimComponent } from './admin/view-claim/view-claim.component';
+import { CommissionWithdrawComponent } from './commission-withdraw/commission-withdraw.component';
+import { ViewComplaintsComponent } from './employee/view-complaints/view-complaints.component';
+import { ViewEmployeeComponent } from './employee/view-employee/view-employee.component';
+import { ViewEmployeesComponent } from './admin/view-employees/view-employees.component';
+import { DocumentsComponent } from './customer/documents/documents.component';
+import { ViewPoliciesComponent } from './customer/view-policies/view-policies.component';
+import { AgentComponent } from './customer/agent/agent.component';
 
 
 const routes: Routes = [
@@ -38,7 +51,7 @@ const routes: Routes = [
       {
         path:'',  
         component: AdminLandingComponent
-      },
+      }, 
      
     ],
     canActivate: [AuthGuard],
@@ -47,19 +60,77 @@ const routes: Routes = [
     },
   },
   {
+    path: 'admin/viewScheme/:id',
+    component: ViewSchemeComponent,
+  },   
+  {
+    path:'admin/settings/tax',
+    component: TaxSettingComponent
+  },
+  {
     path:'admin/customers',
     component: ViewCustomersComponent
   },
   {
-    path:'admin/claims',
-    component: ViewClaimsComponent
+    path: 'admin/viewPlan',
+    component: ViewPlanComponent,
   },
+  {
+    path: 'admin/addPlan',
+    component: AddPlanComponent,
+  },
+  {
+    path: 'admin/viewClaim',
+    component: ViewClaimComponent,
+  },
+  {
+    path:'admin/commissions/withdraw',
+    component:CommissionWithdrawComponent
+  },
+  {
+    path: 'admin/complaints', 
+    component: ViewComplaintsComponent
+  },
+  
   {
     path: 'customer-dashboard',
     component: CustomerDashboardComponent,
     canActivate: [AuthGuard],
-    data: { role: ['Customer'] }
+    data: { role: ['Customer'] },
+    children:
+    [
+      {
+        path: 'customer-header',
+        component: CustomerHeaderComponent,
+      },
+    
+      {
+        path: '',
+        component: CustomerLandingComponent,
+      },
+            
+    ]
+  },  {
+    path: 'customer/viewPlan',
+    component: ViewPlanComponent,
   },
+  {
+    path: 'customer/policies',
+    component: ViewPoliciesComponent,
+  },
+  {
+    path: 'customer/agent',
+    component: AgentComponent,
+  },
+  {
+    path: 'customer/viewScheme/:id',
+    component: ViewSchemeComponent,
+  },
+  {
+    path: 'customer/documents',
+    component: DocumentsComponent
+  },
+
   {
     path: 'agent-dashboard',
     component: AgentDashboardComponent,
@@ -67,6 +138,14 @@ const routes: Routes = [
   {
     path: 'employee-dashboard',
     component: EmployeeDashboardComponent,
+  },
+  {
+    path: 'view-plan',
+    component: ViewPlanComponent,
+  },
+  {
+    path: 'admin/viewEmployee',
+    component: ViewEmployeesComponent
   },
   {
     path: '**',

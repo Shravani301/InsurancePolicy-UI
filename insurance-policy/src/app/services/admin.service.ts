@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AdminService {
-  // Base API URL
   private baseUrl = 'https://localhost:7052/api';
 
   constructor(private http: HttpClient) {}
@@ -34,7 +33,6 @@ export class AdminService {
       observe: 'response',
     });
   }
-  
 
   /**
    * Approve a claim by its ID.
@@ -44,17 +42,196 @@ export class AdminService {
   approveClaim(claimId: string): Observable<any> {
     return this.http.put(`${this.baseUrl}/Claim/${claimId}/approve`, {}, { observe: 'response' });
   }
-  
 
   /**
    * Reject a claim by its ID with a reason.
    * @param claimId The ID of the claim to reject
-   * @param reason The reason for rejection
+   * @param rejectionReason The reason for rejection
    * @returns Observable with the response
    */
-  rejectClaim(claimId: string, reason: string): Observable<any> {
-    const payload = { reason };
-    return this.http.put(`${this.baseUrl}/Claim/${claimId}/reject`, payload, { observe: 'response' });
+  rejectClaim(claimId: string, rejectionReason: string): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}/Claim/${claimId}/reject?rejectionReason=${encodeURIComponent(rejectionReason)}`,
+      {},
+      { observe: 'response' }
+    );
   }
-  
+
+  /**
+   * Fetch policy details by policy ID.
+   * @param policyId The policy ID
+   * @returns Observable with the policy details
+   */
+  getPolicy(policyId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/Policy/${policyId}`, { observe: 'response' });
+  }
+
+  /**
+   * Update tax percentage by tax ID.
+   * @param taxId Tax ID
+   * @param taxPercentage New tax percentage
+   * @returns Observable with the response
+   */
+  updateTax(taxId: string, taxPercentage: number): Observable<any> {
+    const url = `${this.baseUrl}/TaxSettings`;
+    const body = {
+      taxId: taxId,
+      taxPercentage: taxPercentage,
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.put(url, body, { headers });
+  }
+
+  /**
+   * Fetch insurance plans with pagination.
+   * @param pageNumber Current page number
+   * @param pageSize Number of items per page
+   * @returns Observable with the insurance plan data
+   */
+  getPlans(pageNumber: number, pageSize: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/InsurancePlan?PageNumber=${pageNumber}&PageSize=${pageSize}`, {
+      observe: 'response',
+    });
+  }
+
+  /**
+   * Add a new insurance plan.
+   * @param planData The data for the new plan
+   * @returns Observable with the response
+   */
+  addPlan(planData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/InsurancePlan`, planData);
+  }
+
+  /**
+   * Delete an insurance plan by its ID.
+   * @param planId The ID of the plan to delete
+   * @returns Observable with the response
+   */
+  deletePlan(planId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/InsurancePlan/${planId}`, { observe: 'response' });
+  }
+  activatePlan(planId: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/InsurancePlan/activate?id=${planId}`, { observe: 'response' });
+  }
+
+  /**
+   * Fetch schemes by plan ID with pagination.
+   * @param planId The plan ID
+   * @param page Current page number
+   * @param size Number of items per page
+   * @returns Observable with the scheme data
+   */
+  getSchemeByPlanID(planId: string, page: number, size: number): Observable<any> {
+    const url = `${this.baseUrl}/InsuranceScheme/Plan/${planId}?pageNumber=${page}&pageSize=${size}`;
+    return this.http.get<any>(url, { observe: 'response' });
+  }
+
+  /**
+   * Delete an insurance scheme by its ID.
+   * @param schemeId The ID of the scheme to delete
+   * @returns Observable with the response
+   */
+  deleteScheme(schemeId: number): Observable<any> {
+    const url = `${this.baseUrl}/InsuranceScheme/${schemeId}`;
+    return this.http.delete(url);
+  }
+
+  /**
+   * Fetch withdrawal requests with pagination.
+   * @param pageNumber Current page number
+   * @param pageSize Number of items per page
+   * @returns Observable with withdrawal data
+   */
+  getWithdrawalRequests(pageNumber: number, pageSize: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/WithdrawalRequest?PageNumber=${pageNumber}&PageSize=${pageSize}`, {
+      observe: 'response',
+    });
+  }
+
+  /**
+   * Approve a withdrawal request by its ID.
+   * @param requestId The ID of the withdrawal request to approve
+   * @returns Observable with the response
+   */
+  approveWithdrawalRequest(requestId: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/WithdrawalRequest/${requestId}/approve`, {}, { observe: 'response' });
+  }
+
+  /**
+   * Reject a withdrawal request by its ID with a reason.
+   * @param requestId The ID of the withdrawal request to reject
+   * @param rejectionReason The reason for rejection
+   * @returns Observable with the response
+   */
+  rejectWithdrawalRequest(requestId: string, rejectionReason: string): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}/WithdrawalRequest/${requestId}/reject?rejectionReason=${encodeURIComponent(rejectionReason)}`,
+      {},
+      { observe: 'response' }
+    );
+  }
+
+  /**
+   * Get total commission by agent ID.
+   * @param agentId Agent ID to fetch total commission
+   * @returns Observable with total commission data
+   */
+  getTotalCommissionByAgent(agentId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/WithdrawalRequest/agent/${agentId}/total-commission`, {
+      observe: 'response',
+    });
+  }
+
+  /**
+   * Fetch customer details by customer ID.
+   * @param customerId The customer ID
+   * @returns Observable with customer details
+   */
+  getCustomerById(customerId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/Customer/${customerId}`, { observe: 'response' });
+  }
+  getEmployees(page: number, size: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/Employee?PageNumber=${page}&PageSize=${size}`, {
+      observe: 'response',
+    });
+  }
+
+  /**
+   * Add a new employee.
+   * @param employeeData The employee data to be added
+   * @returns Observable with the response
+   */
+  addEmployee(employeeData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/Employee`, employeeData, {
+      observe: 'response',
+    });
+  }
+
+  /**
+   * Update an existing employee's details.
+   * @param employeeData The employee data to be updated
+   * @returns Observable with the response
+   */
+  updateEmployee(employeeData: any): Observable<any> {
+    const url = `${this.baseUrl}/Employee/${employeeData.employeeId}`;
+    return this.http.put(url, employeeData, {
+      observe: 'response',
+    });
+  }
+
+  /**
+   * Delete an employee by ID.
+   * @param employeeId The ID of the employee to delete
+   * @returns Observable with the response
+   */
+  deleteEmployee(employeeId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/Employee/${employeeId}`, {
+      observe: 'response',
+    });
+  }
 }

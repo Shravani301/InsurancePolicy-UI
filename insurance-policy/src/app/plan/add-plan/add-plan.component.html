@@ -1,0 +1,57 @@
+<div class="wrapper">
+    <app-admin-header></app-admin-header>
+    <div class="top_link">
+        <button (click)="goBack()" class="btn-back ms-3 mt-2">
+            <img
+                src="https://drive.google.com/u/0/uc?id=16U__U5dJdaTfNGobB_OpwAJ73vM50rPV&export=download"
+                alt=""
+            />
+            Back
+        </button>
+    </div>
+
+    <div class="container">
+        <h2 class="heading">Register Insurance Plan</h2>
+        <form [formGroup]="addPlanForm" class="form-container">
+            <div class="form-group">
+                <label for="PlanName" class="form-label">Plan Name</label>
+                <input
+                    type="text"
+                    formControlName="planName"
+                    placeholder="Enter Plan Name"
+                    class="form-control mx-auto"
+                    aria-label="Plan name"
+                />
+                <div class="error-div mt-2">
+                    <small
+                        *ngIf="
+                            addPlanForm.get('planName')?.dirty &&
+                            addPlanForm.get('planName')?.hasError('required')
+                        "
+                        class="text-danger"
+                    >
+                        *Plan Name is required.
+                    </small>
+                    <small
+                        *ngIf="
+                            addPlanForm.get('planName')?.dirty &&
+                            addPlanForm.get('planName')?.hasError('onlyCharacters')
+                        "
+                        class="text-danger"
+                    >
+                        {{
+                            addPlanForm.get('planName')?.getError('onlyCharacters')
+                                .message
+                        }}
+                    </small>
+                </div>
+            </div>
+            <div class="button-group mt-3">
+                <button type="button" class="btn btn-secondary me-2" (click)="OnCancel()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="addPlan()">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <app-footer-end></app-footer-end>
+</div>

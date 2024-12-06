@@ -28,18 +28,6 @@ h2 {
   text-align: center; /* Center align Customers text */
 }
 
-.top_link .back-button {
-  background-color: #007bff;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 15px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
 .btn-back
 {
   border-radius: 4px;

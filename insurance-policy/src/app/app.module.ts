@@ -29,8 +29,26 @@ import { JwtInterceptor } from './jwt.interceptor';
 import { ToastComponent } from './toast/toast.component';
 import { ViewCustomersComponent } from './customer/view-customers/view-customers.component';
 import { FormsModule } from '@angular/forms';
-import { ViewClaimsComponent } from './employee/view-claims/view-claims.component';
 import { PaymentComponent } from './payment/payment.component';
+import { SuccessComponent } from './success/success.component';
+import { CustomerHeaderComponent } from './customer/customer-header/customer-header.component';
+import { CustomerLandingComponent } from './customer/customer-landing/customer-landing.component';
+import { TaxSettingComponent } from './admin/tax-setting/tax-setting.component';
+import { AddPlanComponent } from './plan/add-plan/add-plan.component';
+import { ViewPlanComponent } from './plan/view-plan/view-plan.component';
+import { AddEmployeeComponent } from './employee/add-employee/add-employee.component';
+import { ViewEmployeeComponent } from './employee/view-employee/view-employee.component';
+import { ViewSchemeComponent } from './plan/view-scheme/view-scheme.component';
+import { ViewClaimComponent } from './admin/view-claim/view-claim.component';
+import { CommissionWithdrawComponent } from './commission-withdraw/commission-withdraw.component';
+import { ViewComplaintsComponent } from './employee/view-complaints/view-complaints.component';
+import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
+import { AddAgentComponent } from './admin/add-agent/add-agent.component';
+import { ViewEmployeesComponent } from './admin/view-employees/view-employees.component';
+import { DocumentsComponent } from './customer/documents/documents.component';
+import { BuyPolicyComponent } from './customer/buy-policy/buy-policy.component';
+import { ViewPoliciesComponent } from './customer/view-policies/view-policies.component';
+import { AgentComponent } from './customer/agent/agent.component';
 
 
 @NgModule({
@@ -52,8 +70,26 @@ import { PaymentComponent } from './payment/payment.component';
     CustomerDashboardComponent,
     ToastComponent,
     ViewCustomersComponent,
-    ViewClaimsComponent,
     PaymentComponent,
+    SuccessComponent,
+    CustomerHeaderComponent,
+    CustomerLandingComponent,
+    TaxSettingComponent,
+    AddPlanComponent,
+    ViewPlanComponent,
+    AddEmployeeComponent,
+    ViewEmployeeComponent,
+    ViewSchemeComponent,
+    ViewClaimComponent,
+    CommissionWithdrawComponent,
+    ViewComplaintsComponent,
+    ViewAgentComponent,
+    AddAgentComponent,
+    ViewEmployeesComponent,
+    DocumentsComponent,
+    BuyPolicyComponent,
+    ViewPoliciesComponent,
+    AgentComponent,
   ],
   imports: [
     BrowserModule,

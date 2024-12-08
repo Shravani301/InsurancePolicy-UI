@@ -16,6 +16,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('id');
     this.router.navigate(['/login']);
   }
 
@@ -27,4 +28,26 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
+  logOut() {
+    // Clear any authentication tokens or session data
+    // For example, clear a JWT token from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('password');
+    window.location.href = '/'
+
+
+
+  }
+  agentLogOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('password');
+    localStorage.removeItem('agentId');
+    window.location.href = '/'
+  }
+  changePassword(data: any) {
+    return this.http.post("https://localhost:7052/api/Login/ChangePassword/", data);
+  }
+
 }

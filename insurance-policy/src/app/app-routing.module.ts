@@ -22,9 +22,21 @@ import { CommissionWithdrawComponent } from './commission-withdraw/commission-wi
 import { ViewComplaintsComponent } from './employee/view-complaints/view-complaints.component';
 import { ViewEmployeeComponent } from './employee/view-employee/view-employee.component';
 import { ViewEmployeesComponent } from './admin/view-employees/view-employees.component';
-import { DocumentsComponent } from './customer/documents/documents.component';
 import { ViewPoliciesComponent } from './customer/view-policies/view-policies.component';
-import { AgentComponent } from './customer/agent/agent.component';
+import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
+import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { AddAgentComponent } from './admin/add-agent/add-agent.component';
+import { AddEmployeeComponent } from './admin/add-employee/add-employee.component';
+import { CustomerProfileComponent } from './customer/customer-profile/customer-profile.component';
+import { ShowPlansComponent } from './customer/show-plans/show-plans.component';
+import { ShowSchemesComponent } from './customer/show-schemes/show-schemes.component';
+import { ShowAgentsComponent } from './customer/show-agents/show-agents.component';
+import { ComplaintComponent } from './customer/complaint/complaint.component';
+import { ShowComplaintsComponent } from './customer/show-complaints/show-complaints.component';
+import { ViewPolicyComponent } from './customer/view-policy/view-policy.component';
+import { DocumentComponent } from './customer/document/document.component';
+import { PaymentComponent } from './payment/payment.component';
 
 
 const routes: Routes = [
@@ -91,6 +103,29 @@ const routes: Routes = [
     path: 'admin/complaints', 
     component: ViewComplaintsComponent
   },
+  {
+    path: 'admin/viewAgent',
+    component: ViewAgentComponent
+  },
+  {
+    path: 'admin/profile',
+    component: AdminProfileComponent
+  },
+  {
+    path: 'admin/agent',
+    component: AddAgentComponent
+  },
+  {
+    path:'admin/addEmployee',
+    component: AddEmployeeComponent
+  },
+  {
+    path: 'dashboard/changePassword',
+    component: ChangePasswordComponent
+  },{
+    path: 'admin/viewEmployees',
+    component: ViewEmployeesComponent
+  },
   
   {
     path: 'customer-dashboard',
@@ -110,27 +145,47 @@ const routes: Routes = [
       },
             
     ]
-  },  {
+  }, 
+  {
+    path: 'customer/profile',
+    component: CustomerProfileComponent
+  },  
+  {
     path: 'customer/viewPlan',
-    component: ViewPlanComponent,
+    component: ShowPlansComponent
+  },
+  {
+    path: 'customer/document',
+    component: DocumentComponent
   },
   {
     path: 'customer/policies',
     component: ViewPoliciesComponent,
   },
   {
-    path: 'customer/agent',
-    component: AgentComponent,
-  },
-  {
     path: 'customer/viewScheme/:id',
-    component: ViewSchemeComponent,
+    component: ShowSchemesComponent
   },
   {
-    path: 'customer/documents',
-    component: DocumentsComponent
+    path: 'customer/document',
+    component: DocumentComponent
   },
-
+  {
+    path: 'customer/showAgents',
+    component: ShowAgentsComponent
+  },
+  {
+    path: 'customer/add-complaint',
+    component: ComplaintComponent
+  },
+  {
+    path: 'customer/showComplaints',
+    component: ShowComplaintsComponent
+  },
+  {
+    path: 'customer/Policy/:id',
+    component: ViewPolicyComponent
+  },
   {
     path: 'agent-dashboard',
     component: AgentDashboardComponent,
@@ -144,9 +199,14 @@ const routes: Routes = [
     component: ViewPlanComponent,
   },
   {
+    path: 'payment',
+    component: PaymentComponent
+  },
+  {
     path: 'admin/viewEmployee',
     component: ViewEmployeesComponent
   },
+  
   {
     path: '**',
     redirectTo: '',

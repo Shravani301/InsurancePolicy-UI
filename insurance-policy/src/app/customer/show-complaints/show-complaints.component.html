@@ -1,0 +1,91 @@
+<div class="wrapper">
+    <div class="top_link">
+      <button (click)="goBack()" class="btn-back ms-3 mt-2">Back</button>      
+    </div>
+    <div>
+        <button  (click)="fileComplaint()" button id="button" class="btn btn-secondary m-4">File Complaint</button>
+    </div>
+    <div class="container">
+      <h2>Complaints</h2>
+      <div class="row mb-3">
+        <div class="row mb-3 align-items-center">
+          <!-- Page Size and Filter -->
+          <div class="col-md-6 d-flex">
+            <div class="me-3 d-flex align-items-center">
+              <label for="pageSizeSelect" class="form-label me-2">Page Size:</label>
+              <select
+                id="pageSizeSelect"
+                class="form-select"
+                (change)="onPageSizeChange($event)"
+                style="width: auto;"
+              >
+                <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+              </select>
+            </div>
+          </div>
+  
+          <!-- Search -->
+          <div class="col-md-6 text-end">
+            <div class="search-container d-flex justify-content-end">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="searchQuery"
+                placeholder="Search by Title..."
+                style="max-width: 300px;"
+              />
+              <button class="btn-search ms-2" (click)="onSearch()">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-light table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Sr.</th>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Response</th>
+            <th>Status</th>
+            <th>Resolved By</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let complaint of filteredComplaints; let i = index">
+            <td>{{ calculateSRNumber(i) }}</td>
+            <td>{{ truncateText(complaint.title, 50) }}</td>
+            <td>{{ truncateText(complaint.message, 30) }}</td>
+            <td>{{ truncateText(complaint.response || 'No Response', 50) }}</td>
+            <td>{{ complaint.isResolved ? 'Resolved' : 'Pending' }}</td>
+            <td>{{ complaint.resolvedBy || 'N/A' }}</td>
+            <td>{{ complaint.createdAt | date: 'dd-MM-yyyy' }}</td>
+          </tr>
+          <tr *ngIf="filteredComplaints.length === 0">
+            <td colspan="7" class="text-center">No Complaints Found</td>
+          </tr>
+        </tbody>
+      </table>
+      <nav *ngIf="pageCount > 1" class="pagination-container">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+          </li>
+          <li *ngFor="let page of [].constructor(pageCount); let i = index" class="page-item">
+            <a
+              class="page-link"
+              [class.active]="currentPage === i + 1"
+              (click)="changePage(i + 1)"
+            >
+              {{ i + 1 }}
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === pageCount">
+            <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <app-footer-end></app-footer-end>
+  

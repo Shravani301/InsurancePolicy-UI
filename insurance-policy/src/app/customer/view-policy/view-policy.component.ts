@@ -1,0 +1,209 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { ValidateForm } from 'src/app/helper/validateForm';
+import { CustomerService } from 'src/app/services/customer.service';
+
+@Component({
+  selector: 'app-view-policy',
+  templateUrl: './view-policy.component.html',
+  styleUrls: ['./view-policy.component.css']
+})
+export class ViewPolicyComponent implements OnInit {
+  policyNo!: number;
+  policy: any;
+  Tax: any = {};
+  customerData: any = [];
+  schemeData: any;
+  installment: { number: number, isPaid: boolean }[] = [{ number: 1, isPaid: true }];
+  schemeDeatil: any = {};
+  PaymentForm!: FormGroup;
+  ClaimForm!: FormGroup;
+  installmentNo!: number;
+  minDate: string;
+  isClaimFormVisible: boolean = false; // Toggle visibility for claim form
+
+  constructor(
+    private activatedroute: ActivatedRoute,
+    private location: Location,
+    private customer: CustomerService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
+  }
+
+  ngOnInit(): void {
+    const policyParam = this.activatedroute.snapshot.paramMap.get('id');
+    this.policyNo = policyParam ? Number(policyParam) : 0;
+
+    if (!this.policyNo) {
+      console.error('Invalid policy number');
+      return;
+    }
+
+    this.getPolicyData();
+    this.getTax();
+    this.initializeForms();
+  }
+
+  initializeForms(): void {
+    this.PaymentForm = this.fb.group({
+      payType: ['', [Validators.required]],
+      cHolderName: ['', [Validators.required, ValidateForm.onlyCharactersValidator]],
+      cNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
+      cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
+      DateOfExpiry: ['', [Validators.required]]
+    });
+
+    this.ClaimForm = this.fb.group({
+      accNo: ['', [Validators.required, Validators.pattern(/^\d{12}$/)]],
+      ifsc: ['', [Validators.required, Validators.pattern(/^[A-Za-z]{4}[0][0-9]{6}$/)]]
+    });
+  }
+
+  resetPaymentForm(): void {
+    this.PaymentForm.reset();
+  }
+
+  resetClaimForm(): void {
+    this.ClaimForm.reset();
+    this.isClaimFormVisible = false; // Hide the form
+  }
+
+  getPolicyData(): void {
+    console.log('Fetching policy data for policy number:', this.policyNo);
+    this.customer.getPolicyDetail(this.policyNo).subscribe({
+      next: (res: any) => {
+        console.log('Policy data fetched:', res);
+        this.policy = res;
+        this.installment = Array.from(
+          { length: this.policy.totalPremiumNo },
+          (_, i) => ({ number: i + 1, isPaid: false })
+        );
+        this.getCustomerDetail();
+        if (this.policy.insuranceSchemeId) {
+          this.getSchemeData();
+        } else {
+          console.error('Insurance scheme ID missing in policy data.');
+        }
+      },
+      error: (err: HttpErrorResponse) => console.error('Error fetching policy data:', err)
+    });
+  }
+
+  getCustomerDetail(): void {
+    const customerId = localStorage.getItem('id'); // Capture the customer ID from local storage
+    if (customerId) {
+      console.log('Fetching customer profile for ID:', customerId);
+      this.customer.getCustomerProfile(customerId).subscribe({
+        next: (res) => {
+          console.log('Customer profile fetched:', res);
+          this.customerData = res;
+        },
+        error: (err: HttpErrorResponse) => console.error('Error fetching customer profile:', err)
+      });
+    } else {
+      console.log('Customer ID is missing in local storage.');
+    }
+  }
+
+  getSchemeData(): void {
+    console.log('Fetching scheme data for scheme ID:', this.policy.insuranceSchemeId);
+    this.customer.getSchemeById(this.policy.insuranceSchemeId).subscribe({
+      next: (res) => {
+        console.log('Scheme data fetched:', res);
+        this.schemeData = res;
+        this.getSchemeDetail();
+      },
+      error: (err: HttpErrorResponse) => console.error('Error fetching scheme data:', err)
+    });
+  }
+
+  getSchemeDetail(): void {
+    console.log('Fetching scheme details for ID:', this.schemeData.schemeId);
+    this.customer.getDetail(this.schemeData.schemeId).subscribe({
+      next: (res) => {
+        console.log('Scheme details fetched:', res);
+        this.schemeDeatil = res;
+      },
+      error: (err) => console.error('Error fetching scheme details:', err)
+    });
+  }
+
+  getTax(): void {
+    console.log('Fetching tax percentage');
+    this.customer.getTaxPercent().subscribe({
+      next: (res) => {
+        console.log('Tax percentage fetched:', res);
+        this.Tax = res;
+      },
+      error: (err: HttpErrorResponse) => console.error('Error fetching tax percentage:', err.message)
+    });
+  }
+
+  calculateTotalAmoutToPay(): number {
+    return ((this.policy.premium * this.Tax.taxPercent) / 100) + this.policy.premium;
+  }
+
+  calculateDueDate(emi: number): Date {
+    const parsedIssueDate = new Date(this.policy.issueDate);
+    const dueDate = new Date(parsedIssueDate);
+
+    const emiMode = this.policy.premiumMode;
+    if (emiMode === 3) {
+      dueDate.setMonth(dueDate.getMonth() + (1 * emi));
+    } else if (emiMode === 2) {
+      dueDate.setMonth(dueDate.getMonth() + (3 * emi));
+    } else if (emiMode === 1) {
+      dueDate.setMonth(dueDate.getMonth() + (6 * emi));
+    } else {
+      dueDate.setMonth(dueDate.getMonth() + (12 * emi));
+    }
+
+    return dueDate;
+  }
+
+  showPaymentModal(index: number): void {
+    this.router.navigateByUrl('customer/policy/pay/' + this.policyNo);
+  }
+
+  downloadReceipt(index: number): void {
+    this.router.navigateByUrl('/payment/receipt/' + this.policy.payments[index].paymentId);
+  }
+
+  showClaimForm(): void {
+    this.isClaimFormVisible = true; // Show the claim form
+  }
+
+  claimPolicy(): void {
+    if (this.ClaimForm.valid) {
+      const claim = {
+        bankAccountNo: this.ClaimForm.get('accNo')?.value,
+        bankIFSCCode: this.ClaimForm.get('ifsc')?.value,
+        claimAmount: this.policy.sumAssured,
+        policyNumber: this.policy.policyNo
+      };
+
+      console.log('Submitting claim:', claim);
+      this.customer.registerCliam(claim).subscribe({
+        next: () => {
+          alert('Claim added successfully');
+          this.resetClaimForm();
+          location.reload();
+        },
+        error: (err: HttpErrorResponse) => alert('Something went wrong')
+      });
+    } else {
+      alert('One or more fields are required.');
+      ValidateForm.validateAllFormFileds(this.ClaimForm);
+    }
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+}

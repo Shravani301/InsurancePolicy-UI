@@ -1,0 +1,85 @@
+.details-section {
+    padding: 20px;
+    background-color: rgba(0, 209, 178, 0.1); /* Subtle background with opacity */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    margin: 20px auto;
+    width: 90%;
+    max-width: 210mm; /* Match A4 dimensions */
+    border: 1px solid rgba(0, 209, 178, 0.3); /* Light border with opacity */
+}
+
+.section {
+    padding: 15px 10px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 209, 178, 0.5); /* Border with semi-opacity */
+    border-radius: 8px;
+    background-color: white; /* Ensure high contrast */
+}
+
+h2 {
+    font-size: 20px;
+    color: rgba(0, 209, 178, 1); /* Fully opaque heading color */
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px; /* Standard font size for readability */
+}
+
+.table th {
+    padding: 12px;
+    text-align: center;
+    background-color: rgba(0, 209, 178, 0.8); /* Semi-opaque header background */
+    color: white; /* High contrast text color */
+    font-weight: 600;
+    border: 1px solid rgba(0, 209, 178, 0.5); /* Light border */
+}
+
+.table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid rgba(0, 209, 178, 0.3); /* Subtle border */
+    background-color: rgba(0, 209, 178, 0.1); /* Very light background */
+    color: #333; /* Neutral text color for readability */
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: rgba(0, 209, 178, 0.15); /* Alternate row color */
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 209, 178, 0.3); /* Highlight row on hover */
+}
+
+.button-primary {
+    background-color: rgba(0, 209, 178, 1); /* Fully opaque primary button */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-primary:hover {
+    background-color: rgba(0, 209, 178, 0.8); /* Slightly lighter hover effect */
+}
+
+.button-secondary {
+    background-color: rgba(0, 209, 178, 0.5); /* Semi-opaque secondary button */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-secondary:hover {
+    background-color: rgba(0, 209, 178, 0.3); /* Lighter hover effect */
+}

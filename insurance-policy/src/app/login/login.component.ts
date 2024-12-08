@@ -47,64 +47,70 @@ export class LoginComponent {
   }
  
   // Handle form submission
-  onSubmitData(): void {
-    const userCaptchaInput = this.loginForm.get('captchaInput')?.value;
- 
-    // Validate CAPTCHA
-    if (userCaptchaInput !== this.captchaText) {
-      this.snackBar.open('Invalid CAPTCHA. Please try again.', 'Close', {
-        duration: 3000,
-        panelClass: ['error-snackbar'],
-      });
-      this.generateCaptcha(); // Regenerate CAPTCHA on failure
-      return;
-    }
- 
-    if (this.loginForm.valid) {
-      const credentials = this.loginForm.value;
- 
-      this.loginService.login(credentials).subscribe(
-        (response: any) => {
-          this.myToken = response.headers.get('Jwt');
-          localStorage.setItem('token', this.myToken);
-          this.role = response.body;
-          localStorage.setItem('role', this.role.roleName);
-        
- 
-          // Redirect based on roleName
-          switch (this.role.roleName) {
-            case 'Admin':
-              this.router.navigateByUrl('admin-dashboard');
-              break;
-            case 'Customer':
-              this.router.navigate(['/customer-dashboard']);
-              break;
-            case 'Agent':
-              this.router.navigate(['/agent-dashboard']);
-              break;
-            case 'Employee':
-              this.router.navigate(['/employee-dashboard']);
-              break;
-            default:
-              this.snackBar.open(
-                'Unknown role. Please contact support.',
-                'Close',
-                { duration: 3000, panelClass: ['error-snackbar'] }
-              );
-          }
- 
-          this.toastService.showToast('success', 'Login successful!');
-        },
-        (error) => {
-          console.error('Login error:', error);
-          this.toastService.showToast('error', 'Invalid username or password.');
-        }
-      );
-    } else {
-      this.snackBar.open('Please fill out the form correctly.', 'Close', {
-        duration: 3000,
-        panelClass: ['error-snackbar'],
-      });
-    }
+  // Handle form submission
+onSubmitData(): void {
+  const userCaptchaInput = this.loginForm.get('captchaInput')?.value;
+
+  // Validate CAPTCHA
+  if (userCaptchaInput !== this.captchaText) {
+    this.snackBar.open('Invalid CAPTCHA. Please try again.', 'Close', {
+      duration: 3000,
+      panelClass: ['error-snackbar'],
+    });
+    this.generateCaptcha(); // Regenerate CAPTCHA on failure
+    return;
   }
+
+  if (this.loginForm.valid) {
+    const credentials = this.loginForm.value;
+
+    this.loginService.login(credentials).subscribe(
+      (response: any) => {
+        this.myToken = response.headers.get('Jwt');
+        localStorage.setItem('token', this.myToken);          
+        localStorage.setItem("userName", this.loginForm.get('userName')?.value!);
+        this.role = response.body;
+        localStorage.setItem('role', this.role.roleName);
+
+        // If role is Customer, store ID as well
+        if (this.role.roleName === 'Customer') {
+          localStorage.setItem('id', this.role.customerId); // Assuming `id` is the property for the user ID
+        }
+
+        // Redirect based on roleName
+        switch (this.role.roleName) {
+          case 'Admin':
+            this.router.navigateByUrl('admin-dashboard');
+            break;
+          case 'Customer':
+            this.router.navigate(['/customer-dashboard']);
+            break;
+          case 'Agent':
+            this.router.navigate(['/agent-dashboard']);
+            break;
+          case 'Employee':
+            this.router.navigate(['/employee-dashboard']);
+            break;
+          default:
+            this.snackBar.open(
+              'Unknown role. Please contact support.',
+              'Close',
+              { duration: 3000, panelClass: ['error-snackbar'] }
+            );
+        }
+
+        this.toastService.showToast('success', 'Login successful!');
+      },
+      (error) => {
+        console.error('Login error:', error);
+        this.toastService.showToast('error', 'Invalid username or password.');
+      }
+    );
+  } else {
+    this.snackBar.open('Please fill out the form correctly.', 'Close', {
+      duration: 3000,
+      panelClass: ['error-snackbar'],
+    });
+  }
+}
 }

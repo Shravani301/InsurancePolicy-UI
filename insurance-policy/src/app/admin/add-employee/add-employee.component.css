@@ -1,0 +1,156 @@
+.wrapper {
+    background-color: #f3faf4;
+    min-height: 93vh;
+  }
+  
+  .container {
+    background-color: rgba(252, 252, 252, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  #pageSizeSelect {
+    border-color: #00d1b2;
+    border-width: 2px;
+    outline: none;
+  }
+  
+  #pageSizeSelect:focus {
+    outline: 2px solid #00d1b2; /* Highlight color for input focus */
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center; /* Center align Customers text */
+  }
+  
+  .top_link .back-button {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .btn-back
+  {
+    border-radius: 4px;
+    border-color: #00d1b2;
+    width: 50px;
+  
+  }
+  .btn-back:hover
+  {
+    background-color: #00d1b2;
+  }
+  
+  
+  .btn-search {
+    border-radius: 6px; /* Rounded corners */
+    border: 2px solid azure; /* Specify the border with a solid line */
+    background-color: #00d1b2; /* Primary button color */
+    padding: 6px 18px; /* Padding inside the button */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .btn-search:hover {
+    background-color: #03d6b7; /* Lighter color on hover */
+    color: white; /* Ensure the text remains white */
+    border-color: #03d6b7; /* Change the border color to match the hover background */
+  }
+  
+  .btn-reset {
+    border-radius: 4px; /* Rounded corners */
+    border: 2px solid #ff6767; /* Specify the border with a solid line */
+    background-color: #ff6767; /* Primary button color */
+    padding: 4px 12px; /* Padding inside the button */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .btn-reset:hover {
+    background-color: #ff4c4c; /* Slightly darker color on hover */
+    color: white; /* Ensure the text remains white */
+    border-color: #ff4c4c; /* Match border color with hover background */
+  }
+  .container {
+      background-color: rgba(252, 252, 252, 0.4);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 600px;
+      margin: auto; /* Horizontally center the container */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center content inside */
+      justify-content: center; /* Center content vertically */
+      min-height: 70vh; /* Adjust height for centering */
+    }
+    
+    form {
+      width: 100%;
+    }
+    
+    form .mb-3 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%; /* Ensure consistent field alignment */
+    }
+    
+    form input {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #00d1b2;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+    
+    form input:focus {
+      border-color: #00d1b2;
+      box-shadow: 0 0 5px rgba(0, 209, 178, 0.5);
+    }
+    
+    form small.text-danger {
+      width: 90%;
+      text-align: left;
+      margin-top: -10px; /* Adjust spacing above */
+    }
+    
+    .row {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .row .col-md-2,
+    .row .col-md-3 {
+      margin: 0 5px;
+    }
+    
+    button {
+      width: 100%;
+    }
+    
+    
+  .btn-info {
+      background-color: #17a2b8;
+      border-color: #17a2b8;
+      color: white;
+    }
+    
+    .btn-info:hover {
+      background-color: #138496;
+      border-color: #138496;
+    }

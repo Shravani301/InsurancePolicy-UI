@@ -1,0 +1,22 @@
+.payment-container {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  .paypal-buttons-container {
+    margin-top: 20px;
+  }
+  
+  .error {
+    color: red;
+    margin-top:10px;
+}

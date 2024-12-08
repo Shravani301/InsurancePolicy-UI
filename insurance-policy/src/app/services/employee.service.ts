@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmployeeService {
-  private baseUrl = 'https://localhost:7052/api/CustomerQuery'; // Base URL for CustomerQuery API
+  private baseUrl = 'https://localhost:7052/api'; // Base URL for CustomerQuery API
 
   constructor(private http: HttpClient) {}
 

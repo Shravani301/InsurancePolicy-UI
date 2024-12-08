@@ -10,6 +10,13 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
+  getProfile(){
+    let name=localStorage.getItem('userName');
+    return this.http.get(this.baseUrl+"/Admin/ByName/"+name);
+
+  }
+  
+          
   /**
    * Fetch customers with pagination.
    * @param pageNumber Current page number
@@ -218,20 +225,55 @@ export class AdminService {
    * @returns Observable with the response
    */
   updateEmployee(employeeData: any): Observable<any> {
-    const url = `${this.baseUrl}/Employee/${employeeData.employeeId}`;
+    const url = `${this.baseUrl}/Employee`;
+    console.log(employeeData);
     return this.http.put(url, employeeData, {
       observe: 'response',
     });
   }
 
+  updateEmployeeSalary(id: string, salary: number): Observable<any> {
+    // Construct the API URL with query parameters
+    const url = `${this.baseUrl}/Employee/${id}?salary=${salary}`;
+  
+    console.log(`Request URL: ${url}`); // Debugging log for the constructed URL
+    return this.http.put(url, null, { // Pass `null` as the body since data is in query params
+      observe: 'response',
+    });
+  }
+  
   /**
    * Delete an employee by ID.
    * @param employeeId The ID of the employee to delete
    * @returns Observable with the response
    */
-  deleteEmployee(employeeId: string): Observable<any> {
+  inactivateEmployee(employeeId: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/Employee/${employeeId}`, {
       observe: 'response',
     });
   }
+
+  activateEmployee(employeeId: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/Employee/activate?id=${employeeId}`, {
+      observe: 'response',
+    });
+  }
+
+  addAgent(data: any) {
+    return this.http.post(this.baseUrl + "/Agent", data,{ observe: 'response' });
+  }
+  updateAgent(data: any) {
+    return this.http.put(this.baseUrl + "/Agent", data,{ observe: 'response' });
+  }
+  deleteAgent(id: any) {
+    return this.http.delete(this.baseUrl + "/Agent/" + id, { observe: 'response' });
+  }
+  getFilterAgents(pgNo: number = 1, pgSize: number = 5): Observable<any> {
+    const searchUrl = `${this.baseUrl}/Agent?PageNumber=${pgNo}&PageSize=${pgSize}`;
+    return this.http.get(searchUrl, { observe: 'response' });
+  }
+  activateAgent(agentId: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/Agent/activate?id=${agentId}`, { observe: 'response' });
+  }
+
 }

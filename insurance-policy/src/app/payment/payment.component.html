@@ -1,1 +1,12 @@
-<p>payment works!</p>
+<div class="payment-container">
+    <h2>Payment</h2>
+    <p>Total Amount: <strong>{{ amount | currency: 'USD' }}</strong></p>
+    
+    <!-- PayPal Button Container -->
+    <div #paymentRef class="paypal-buttons-container"></div>
+  
+    <!-- Optional Message -->
+    <p *ngIf="amount <= 0" class="error">
+      Invalid payment amount. Please try again.
+</p>
+</div>

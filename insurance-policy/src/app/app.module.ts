@@ -36,7 +36,6 @@ import { CustomerLandingComponent } from './customer/customer-landing/customer-l
 import { TaxSettingComponent } from './admin/tax-setting/tax-setting.component';
 import { AddPlanComponent } from './plan/add-plan/add-plan.component';
 import { ViewPlanComponent } from './plan/view-plan/view-plan.component';
-import { AddEmployeeComponent } from './employee/add-employee/add-employee.component';
 import { ViewEmployeeComponent } from './employee/view-employee/view-employee.component';
 import { ViewSchemeComponent } from './plan/view-scheme/view-scheme.component';
 import { ViewClaimComponent } from './admin/view-claim/view-claim.component';
@@ -45,11 +44,22 @@ import { ViewComplaintsComponent } from './employee/view-complaints/view-complai
 import { ViewAgentComponent } from './admin/view-agent/view-agent.component';
 import { AddAgentComponent } from './admin/add-agent/add-agent.component';
 import { ViewEmployeesComponent } from './admin/view-employees/view-employees.component';
-import { DocumentsComponent } from './customer/documents/documents.component';
 import { BuyPolicyComponent } from './customer/buy-policy/buy-policy.component';
 import { ViewPoliciesComponent } from './customer/view-policies/view-policies.component';
-import { AgentComponent } from './customer/agent/agent.component';
-
+import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ValidateForm } from './helper/validateForm';
+import { AddEmployeeComponent } from './admin/add-employee/add-employee.component';
+import { ViewPolicyComponent } from './customer/view-policy/view-policy.component';
+import { CustomerProfileComponent } from './customer/customer-profile/customer-profile.component';
+import { ShowPlansComponent } from './customer/show-plans/show-plans.component';
+import { ShowSchemesComponent } from './customer/show-schemes/show-schemes.component';
+import { ShowAgentsComponent } from './customer/show-agents/show-agents.component';
+import { ComplaintComponent } from './customer/complaint/complaint.component';
+import { ShowComplaintsComponent } from './customer/show-complaints/show-complaints.component';
+import { DocumentComponent } from './customer/document/document.component';
+import { AgentHeaderComponent } from './agent/agent-header/agent-header.component';
+import { UploadComponent } from './customer/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +87,6 @@ import { AgentComponent } from './customer/agent/agent.component';
     TaxSettingComponent,
     AddPlanComponent,
     ViewPlanComponent,
-    AddEmployeeComponent,
     ViewEmployeeComponent,
     ViewSchemeComponent,
     ViewClaimComponent,
@@ -86,10 +95,22 @@ import { AgentComponent } from './customer/agent/agent.component';
     ViewAgentComponent,
     AddAgentComponent,
     ViewEmployeesComponent,
-    DocumentsComponent,
     BuyPolicyComponent,
     ViewPoliciesComponent,
-    AgentComponent,
+    AdminProfileComponent,
+    ChangePasswordComponent,
+    AddEmployeeComponent,
+    ViewPolicyComponent,
+    CustomerProfileComponent,
+    ShowPlansComponent,
+    ShowSchemesComponent,
+    ShowAgentsComponent,
+    ComplaintComponent,
+    ShowComplaintsComponent,
+    DocumentComponent,
+    AgentHeaderComponent,
+    UploadComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -102,6 +123,7 @@ import { AgentComponent } from './customer/agent/agent.component';
     RecaptchaModule,
     RecaptchaV3Module,
     FormsModule,
+    
   ],
   providers: [MessageService,
     {

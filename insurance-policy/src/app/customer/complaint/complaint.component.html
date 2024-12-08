@@ -1,0 +1,51 @@
+<div class="wrapper">
+    <div class="top_link">
+      <button (click)="goBack()" class="btn-back ms-3 mt-2">
+        Back
+      </button>
+    </div>
+    <div class="container">
+      <form class="row g-2" [formGroup]="addComplaintForm">
+        <div class="heading">
+          <h2>Add Complaint</h2>
+        </div>
+        <div class="col-md-12">
+          <input
+            type="text"
+            formControlName="title"
+            placeholder="TITLE"
+          /><br />
+          <small
+            *ngIf="
+              addComplaintForm.get('complaintName')?.dirty &&
+              addComplaintForm.get('complaintName')?.hasError('required')
+            "
+            class="text-danger error"
+          >
+            *Field is required.<br />
+          </small>
+        </div>
+        <div class="col-md-12">
+          <textarea
+            type="text"
+            formControlName="message"
+            placeholder="DESCRIPTION"
+            cols="40"
+            rows="5"
+          ></textarea><br />
+          <small
+            *ngIf="
+              addComplaintForm.get('complaintMessage')?.dirty &&
+              addComplaintForm.get('complaintMessage')?.hasError('required')
+            "
+            class="text-danger error"
+          >
+            *Field is required.<br />
+          </small>
+        </div>
+        <div class="col-12">
+          <button type="button" class="btn-info" (click)="addComplaint()">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>

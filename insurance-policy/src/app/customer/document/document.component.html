@@ -1,0 +1,73 @@
+
+        <div class="wrapper">
+            <div *ngIf="isCustomer">
+              <app-customer-header></app-customer-header>
+            </div>
+            <div *ngIf="isAgent">
+              <app-agent-header></app-agent-header>
+            </div>
+            <div class="top_link">
+              <button (click)="goBack()" class="ms-3 mt-2">Back</button>
+            </div>
+          
+            <div class="container">
+              <div class="right">
+                <form [formGroup]="DocTypeForm" (ngSubmit)="onSubmit()" class="p-4 border rounded shadow-sm bg-light" style="max-width: 600px;">
+                  <!-- Document Type Dropdown -->
+                  <div class="mb-3">
+                    <label for="docType" class="form-label fw-bold">Document Type <span class="text-danger">*</span></label>
+                    <select formControlName="docType" id="docType" class="form-select">
+                      <option value="" disabled>Select a document type</option>
+                      <option *ngFor="let type of documentTypes" [value]="type.name" [id]="type.id">{{ type.name }}</option>
+                    </select>
+                    <div *ngIf="DocTypeForm.get('docType')?.invalid && DocTypeForm.get('docType')?.touched" class="text-danger mt-1 small">
+                      Document Type is required.
+                    </div>
+                  </div>
+          
+                  <!-- Document Name Dropdown -->
+                  <div class="mb-3">
+                    <label for="documentName" class="form-label fw-bold">Document Name <span class="text-danger">*</span></label>
+                    <select formControlName="documentName" id="documentName" class="form-select">
+                      <option value="" disabled>Select a document name</option>
+                      <option *ngFor="let type of documentTypes" [value]="type.name" [id]="type.id">{{ type.name }}</option>
+                    </select>
+                    <div *ngIf="DocTypeForm.get('documentName')?.invalid && DocTypeForm.get('documentName')?.touched" class="text-danger mt-1 small">
+                      Document Name is required.
+                    </div>
+                  </div>
+          
+                  <input type="file" (change)="onFileSelected($event)" class="form-control mb-3" />
+                  <button type="submit" class="btn btn-primary" [disabled]="DocTypeForm.invalid">Upload</button>
+                </form>
+              </div>
+          
+              <div class="container">
+                <table id="employeeTable" class="table table-light table-responsive-md table-hover Data-table">
+                  <thead>
+                    <tr class="text-center">
+                      <th scope="col">Sr.</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let doc of documents; let i = index" class="text-center">
+                      <td>{{ calculateSRNumber(i) }}</td>
+                      <td>{{ doc.docType }}</td>
+                      <td>
+                        <div *ngIf="doc.status">Approved</div>
+                        <div *ngIf="!doc.status">Pending</div>
+                      </td>
+                      <td>
+                        <button class="btn btn-primary" (click)="downloadDocument(doc)">Download</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          
+            <app-footer-end></app-footer-end>
+          </div>

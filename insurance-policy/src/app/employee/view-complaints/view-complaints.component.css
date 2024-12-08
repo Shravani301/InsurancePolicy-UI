@@ -100,3 +100,34 @@ h2 {
     margin-bottom: 20px;
     text-align: center;
 }
+.btn-search {
+    border-radius: 6px; /* Rounded corners */
+    border: 2px solid azure; /* Specify the border with a solid line */
+    background-color: #00d1b2; /* Primary button color */
+    padding: 6px 18px; /* Padding inside the button */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .btn-search:hover {
+    background-color: #03d6b7; /* Lighter color on hover */
+    color: white; /* Ensure the text remains white */
+    border-color: #03d6b7; /* Change the border color to match the hover background */
+  }
+  
+  .btn-reset {
+    border-radius: 4px; /* Rounded corners */
+    border: 2px solid #ff6767; /* Specify the border with a solid line */
+    background-color: #ff6767; /* Primary button color */
+    padding: 4px 12px; /* Padding inside the button */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .btn-reset:hover {
+    background-color: #ff4c4c; /* Slightly darker color on hover */
+    color: white; /* Ensure the text remains white */
+    border-color: #ff4c4c; /* Match border color with hover background */
+  }

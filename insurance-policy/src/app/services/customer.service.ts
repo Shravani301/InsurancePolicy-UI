@@ -101,42 +101,37 @@ export class CustomerService {
   makePayment(payment: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/payments`, payment);
   } 
-  
-  // Upload file to Cloudinary
+  getDocumentTypes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.backendUrl}/types`);
+  }
+
+  getDocuments(customerId: string, role: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this. backendUrl}/${customerId}/${role}`);
+  }
+
   uploadToCloudinary(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'customer_documents'); // Replace with your preset name
-  
-    return this.http.post(this.cloudinaryUrl, formData, {
-      headers: new HttpHeaders({}),
-    });
-  }
-  
-  
-  
+    formData.append('upload_preset', 'customer_documents');
 
-  // Save document metadata to backend
+    return this.http.post('https://api.cloudinary.com/v1_1/dad8bwxk8/auto/upload', formData);
+  }
+
   saveMetadataToBackend(metadata: any): Observable<any> {
-    return this.http.post(this.backendUrl, metadata);
+    return this.http.post(this. backendUrl, metadata);
+  }
+  updateDocument(updatedDocument: any): Observable<any> {
+    return this.http.put(`${this.backendUrl}`,updatedDocument);
+  } 
+  
+  uploadDocument(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file); // Ensure 'file' matches the backend's expected parameter
+
+    return this.http.post(`${this.backendUrl}/upload`, formData); // Correct endpoint
   }
 
-
-  // Upload document combining Cloudinary and backend logic
-  // uploadDocument(file: File, customerId: string, docType: string): Observable<any> {
-  //   return this.uploadToCloudinary(file).pipe(
-  //     switchMap((cloudinaryResponse: any) => {
-  //       const metadata = {
-  //         documentName: docType,
-  //         documentPath: cloudinaryResponse.secure_url,
-  //         customerId: customerId,
-  //       };
-  //       return this.saveMetadataToBackend(metadata);
-  //     })
-  //   );
-  // }
-   // Download document by document ID
-   downloadDocument(documentId: string): Observable<Blob> {
-    return this.http.get(`${this.backendUrl}/${documentId}`, { responseType: 'blob' });
+  downloadDocument(documentId: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${documentId}`, { responseType: 'blob' });
   }
 }

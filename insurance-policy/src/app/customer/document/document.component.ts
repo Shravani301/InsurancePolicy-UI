@@ -10,134 +10,214 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 export class DocumentComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
-  selectedFile: File | null = null;
   documents: any[] = [];
-  currentPage: number = 1;
-  pageSizes: number[] = [10, 20, 30];
-  totalDocumentCount = 0;
+  filteredDocuments: any[] = [];
+  documentTypes: any[] = []; // Document types
+  searchQuery: string = '';
+  isSearch: boolean = false;
+  pageSizes: number[] = [5, 10, 15];
   pageSize = this.pageSizes[0];
+  currentPage: number = 1;
+  totalPages: number = 0;
+  totalAgentCount = 0;
 
-  customerId: string = '';
-  role: string = '';
+
+  showAddDocumentForm: boolean = false; // Tracks form visibility
+  showModal: boolean = false; // Controls modal visibility
+  modalImageURL: string | null = null; // URL to display in the modal
+  selectedFile: File | null = null;
+  reuploadDocumentId: string | null = null; // Stores the document ID for reupload
+  reuploadDocumentName: string | null = null; // Tracks document name for reupload
+
   DocTypeForm!: FormGroup;
-  isAgent = false;
-  isCustomer = false;
-
-  documentTypes = [
-    { id: '0', name: 'AADHAAR_CARD' },
-    { id: '1', name: 'PAN_CARD' },
-    { id: '2', name: 'PASSPORT' },
-    { id: '3', name: 'DRIVING_LICENSE' },
-    { id: '4', name: 'VOTER_ID' },
-    { id: '5', name: 'BANK_STATEMENT' },
-    { id: '6', name: 'IdentityProof' },
-    { id: '7', name: 'AddressProof' },
-    { id: '8', name: 'IncomeProof' },
-    { id: '9', name: 'AgeProof' },
-    { id: '10', name: 'VEHICLE_REGISTRATION_LICENSE' },
-    { id: '11', name: 'POLUTION_UNDER_CONTROL_CERTIFICATE' },
-    { id: '12', name: 'Other' },
-  ];
 
   constructor(private customer: CustomerService, private location: Location) {}
 
   ngOnInit() {
-    this.customerId = localStorage.getItem('id') || '';
-    this.role = localStorage.getItem('role') || '';
-
-    if (!this.customerId || !this.role) {
-      alert('Customer ID or role is missing. Please log in again.');
-      return;
-    }
-
-    this.isCustomer = this.role === 'Customer';
-    this.isAgent = this.role === 'Agent';
-
     this.DocTypeForm = new FormGroup({
-      docType: new FormControl('', [Validators.required]),
       documentName: new FormControl('', [Validators.required]),
     });
 
+    // Load document types and documents on page load
+    this.getDocumentTypes();
+    this.getDocuments();
+  }
+  onPageSizeChange(event: Event): void {
+    this.pageSize = +(event.target as HTMLSelectElement).value;
     this.getDocuments();
   }
 
+  changePage(page: number): void {
+    if (page > 0 && page <= this.pageCount) {
+      this.currentPage = page;
+      this.getDocuments();
+    }
+  }
+
+  get pageCount(): number {
+    return Math.ceil(this.totalAgentCount / this.pageSize);
+  }
+
+  toggleAddDocumentForm() {
+    this.showAddDocumentForm = !this.showAddDocumentForm;
+
+    // Reset form and reupload state when toggling the form
+    if (this.showAddDocumentForm) {
+      this.DocTypeForm.reset();
+      this.reuploadDocumentId = null;
+      this.reuploadDocumentName = null;
+      this.selectedFile = null;
+    }
+  }
+
+  getDocumentTypes() {
+    this.customer.getDocumentTypes().subscribe(
+      (types) => {
+        this.documentTypes = types; // Store document types in the array
+      },
+      (error) => {
+        console.error('Error fetching document types:', error);
+      }
+    );
+  }
+
   getDocuments() {
-    console.log('Fetching documents from the backend...');
+    const customerId = localStorage.getItem('id') || '';
+    const role = localStorage.getItem('role') || 'Customer';
+
+    this.customer.getDocuments(customerId, role).subscribe(
+      (documents) => {
+        this.documents = documents;
+        this.updatePagination();
+      },
+      (error) => {
+        console.error('Error fetching documents:', error);
+      }
+    );
+  }
+
+  updatePagination() {
+    this.totalPages = Math.ceil(this.documents.length / this.pageSize);
+    this.filteredDocuments = this.documents.slice(
+      (this.currentPage - 1) * this.pageSize,
+      this.currentPage * this.pageSize
+    );
   }
 
   calculateSRNumber(index: number): number {
     return (this.currentPage - 1) * this.pageSize + index + 1;
   }
 
+  
+
   onFileSelected(event: any) {
     const inputFile = event.target.files[0];
     if (inputFile) {
       this.selectedFile = inputFile;
-      console.log('Selected file:', this.selectedFile);
-    } else {
-      alert('No file selected!');
     }
   }
 
   onSubmit() {
-    const docType = this.DocTypeForm.get('docType')?.value;
     const documentName = this.DocTypeForm.get('documentName')?.value;
 
     if (this.selectedFile && this.DocTypeForm.valid) {
-      console.log('Uploading to Cloudinary...');
-      this.customer.uploadToCloudinary(this.selectedFile).subscribe(
-        (cloudinaryResponse: any) => {
-          console.log('Cloudinary response:', cloudinaryResponse);
+      // If it's a reupload, call reuploadFile()
+      if (this.reuploadDocumentId) {
+        this.reuploadFile();
+      } else {
+        // Otherwise, upload a new document
+        this.customer.uploadDocument(this.selectedFile).subscribe(
+          (cloudinaryResponse: any) => {
+            const metadata = {
+              documentName: documentName,
+              documentPath: cloudinaryResponse.url,
+              customerId: localStorage.getItem('id') || '',
+              
+            };
+           
 
-          const metadata = {
-            documentName: documentName,
-            documentPath: cloudinaryResponse.secure_url,
-            customerId: this.customerId,
-          };
-
-          console.log('Saving metadata to backend...');
-          this.customer.saveMetadataToBackend(metadata).subscribe(
-            (response) => {
-              console.log('Metadata saved successfully:', response);
-              alert('Document uploaded and metadata saved successfully!');
-              this.DocTypeForm.reset();
-              this.fileInput.nativeElement.value = '';
-              this.getDocuments();
-            },
-            (error) => {
-              console.error('Error saving metadata to backend:', error);
-              alert('Failed to save metadata to backend.');
-            }
-          );
-        },
-        (cloudinaryError) => {
-          console.error('Error uploading to Cloudinary:', cloudinaryError);
-          alert('Failed to upload document to Cloudinary.');
-        }
-      );
-    } else {
-      if (!this.selectedFile) alert('No file selected');
-      else alert('Please select a document type and name.');
+            this.customer.saveMetadataToBackend(metadata).subscribe(
+              () => {
+                this.DocTypeForm.reset();
+                this.fileInput.nativeElement.value = '';
+                this.showAddDocumentForm = false;
+                this.getDocuments();
+              },
+              (error) => {
+                console.error('Error saving metadata to backend:', error);
+              }
+            );
+          },
+          (error) => {
+            console.error('Error uploading to Cloudinary:', error);
+          }
+        );
+      }
     }
   }
 
-  downloadDocument(doc: any) {
-    this.customer.downloadDocument(doc.documentId).subscribe(
-      (response: Blob) => {
-        const blob = new Blob([response], { type: response.type });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = doc.documentName || 'document';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      },
-      (error) => {
-        console.error('Error downloading document:', error);
-        alert('Failed to download document.');
-      }
-    );
+  reuploadDocument(doc: any) {
+    this.reuploadDocumentId = doc.id; // Store the document ID for reupload
+    this.reuploadDocumentName = doc.documentName; // Track the document name
+    this.showAddDocumentForm = true; // Open the add document form for reupload
+    this.DocTypeForm.patchValue({ documentName: doc.documentName }); // Pre-fill the document name
   }
+
+  reuploadFile() {
+    if (this.selectedFile && this.reuploadDocumentId) {
+      this.customer.uploadToCloudinary(this.selectedFile).subscribe(
+        (cloudinaryResponse: any) => {
+          const updatedDocument = {
+            documentName: this.reuploadDocumentName,
+            documentPath: cloudinaryResponse.secure_url,
+          };
+
+          this.customer.updateDocument(updatedDocument).subscribe(
+            () => {
+              this.selectedFile = null;
+              this.reuploadDocumentId = null;
+              this.reuploadDocumentName = null;
+              this.showAddDocumentForm = false;
+              this.getDocuments(); // Refresh the document list
+            },
+            (error) => {
+              console.error('Error updating document:', error);
+            }
+          );
+        },
+        (error) => {
+          console.error('Error uploading to Cloudinary:', error);
+        }
+      );
+    }
+  }
+
+  viewDocument(doc: any) {
+    this.modalImageURL = doc.documentPath; // Set the image URL
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.modalImageURL = null;
+  }
+
+  onSearch(): void {
+    const searchLower = this.searchQuery.trim().toLowerCase();
+  
+    if (searchLower) {
+      this.filteredDocuments = this.documents.filter((document) => {
+        // Check if the document name includes the search query (case-insensitive)
+        return document.documentName.toLowerCase().includes(searchLower);
+      });
+      this.isSearch = true;
+    } else {
+      // If the search query is empty, reset the filtered list to show all documents
+      this.filteredDocuments = [...this.documents];
+      this.isSearch = false;
+    }
+  }
+  
 
   goBack() {
     this.location.back();

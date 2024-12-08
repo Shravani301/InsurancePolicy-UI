@@ -1,73 +1,120 @@
+<div class="wrapper">
+  <div class="top_link">
+    <button (click)="goBack()" class="btn-back ms-3 mt-2">Back</button>
+  </div>
 
-        <div class="wrapper">
-            <div *ngIf="isCustomer">
-              <app-customer-header></app-customer-header>
+  <div class="container">
+    <h2>Documents</h2>
+    <div class="row mb-3">
+      <div class="row mb-3 align-items-center">
+          <!-- Page Size and Filter -->
+          <div class="col-md-6 d-flex">
+            <div class="me-3 d-flex align-items-center">
+              <label for="pageSizeSelect" class="form-label me-2">Page Size:</label>
+              <select
+                id="pageSizeSelect"
+                class="form-select"
+                (change)="onPageSizeChange($event)"
+                style="width: auto;"
+              >
+                <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+              </select>
             </div>
-            <div *ngIf="isAgent">
-              <app-agent-header></app-agent-header>
-            </div>
-            <div class="top_link">
-              <button (click)="goBack()" class="ms-3 mt-2">Back</button>
-            </div>
-          
-            <div class="container">
-              <div class="right">
-                <form [formGroup]="DocTypeForm" (ngSubmit)="onSubmit()" class="p-4 border rounded shadow-sm bg-light" style="max-width: 600px;">
-                  <!-- Document Type Dropdown -->
-                  <div class="mb-3">
-                    <label for="docType" class="form-label fw-bold">Document Type <span class="text-danger">*</span></label>
-                    <select formControlName="docType" id="docType" class="form-select">
-                      <option value="" disabled>Select a document type</option>
-                      <option *ngFor="let type of documentTypes" [value]="type.name" [id]="type.id">{{ type.name }}</option>
-                    </select>
-                    <div *ngIf="DocTypeForm.get('docType')?.invalid && DocTypeForm.get('docType')?.touched" class="text-danger mt-1 small">
-                      Document Type is required.
-                    </div>
-                  </div>
-          
-                  <!-- Document Name Dropdown -->
-                  <div class="mb-3">
-                    <label for="documentName" class="form-label fw-bold">Document Name <span class="text-danger">*</span></label>
-                    <select formControlName="documentName" id="documentName" class="form-select">
-                      <option value="" disabled>Select a document name</option>
-                      <option *ngFor="let type of documentTypes" [value]="type.name" [id]="type.id">{{ type.name }}</option>
-                    </select>
-                    <div *ngIf="DocTypeForm.get('documentName')?.invalid && DocTypeForm.get('documentName')?.touched" class="text-danger mt-1 small">
-                      Document Name is required.
-                    </div>
-                  </div>
-          
-                  <input type="file" (change)="onFileSelected($event)" class="form-control mb-3" />
-                  <button type="submit" class="btn btn-primary" [disabled]="DocTypeForm.invalid">Upload</button>
-                </form>
-              </div>
-          
-              <div class="container">
-                <table id="employeeTable" class="table table-light table-responsive-md table-hover Data-table">
-                  <thead>
-                    <tr class="text-center">
-                      <th scope="col">Sr.</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let doc of documents; let i = index" class="text-center">
-                      <td>{{ calculateSRNumber(i) }}</td>
-                      <td>{{ doc.docType }}</td>
-                      <td>
-                        <div *ngIf="doc.status">Approved</div>
-                        <div *ngIf="!doc.status">Pending</div>
-                      </td>
-                      <td>
-                        <button class="btn btn-primary" (click)="downloadDocument(doc)">Download</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          
-            <app-footer-end></app-footer-end>
           </div>
+    
+          <!-- Search -->
+          <div class="col-md-6 text-end">
+            <div class="search-container d-flex justify-content-end">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="searchQuery"
+                placeholder="Search by documentName..."
+                style="max-width: 300px;"
+              />
+              <button class="btn-search ms-2" (click)="onSearch()">Search</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- Add Document Button -->
+    <button
+      class="btn btn-primary mb-3"
+      (click)="showAddDocumentForm = !showAddDocumentForm"
+    >
+      {{ showAddDocumentForm ? 'Cancel' : 'Add Document' }}
+    </button>
+
+    <!-- Add Document Form -->
+    <div *ngIf="showAddDocumentForm" class="mb-4 p-3 border rounded bg-light">
+      <form [formGroup]="DocTypeForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="documentName" class="form-label">Document Name</label>
+          <select formControlName="documentName" id="documentName" class="form-select">
+            <option value="" disabled>Select a document name</option>
+            <option *ngFor="let type of documentTypes" [value]="type.name">
+              {{ type.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <input type="file" (change)="onFileSelected($event)" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-success">Upload</button>
+      </form>
+    </div>
+
+    <!-- Document Table -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Sr.</th>
+          <th>Document Name</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of filteredDocuments; let i = index">
+          <td>{{ calculateSRNumber(i) }}</td>
+          <td>{{ doc.documentName }}</td>
+          <td>{{ doc.status ? 'Approved' : 'Pending' }}</td>
+          <td>
+            <button class="btn btn-info btn-sm me-2" (click)="viewDocument(doc)">View</button>
+            <button class="btn btn-warning btn-sm" (click)="reuploadDocument(doc)">Reupload</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredDocuments.length === 0">
+          <td colspan="4" class="text-center">No Documents Found</td>
+        </tr>
+      </tbody>
+    </table>
+    <nav *ngIf="pageCount > 1" class="pagination-container">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of [].constructor(pageCount); let i = index" class="page-item">
+          <a
+            class="page-link"
+            [class.active]="currentPage === i + 1"
+            (click)="changePage(i + 1)"
+          >
+            {{ i + 1 }}
+          </a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === pageCount">
+          <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-content">
+      <img [src]="modalImageURL" alt="Document Preview" class="img-fluid" />
+      <button class="btn btn-secondary mt-3" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>

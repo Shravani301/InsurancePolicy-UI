@@ -12,9 +12,9 @@ import { CustomerService } from 'src/app/services/customer.service';
   styleUrls: ['./view-policy.component.css']
 })
 export class ViewPolicyComponent implements OnInit {
-  policyNo!: number;
+  policyId!: string; // Updated to string type
   policy: any;
-  Tax: any = {};
+  customerId!: string; // To store customer ID from local storage
   customerData: any = [];
   schemeData: any;
   installment: { number: number, isPaid: boolean }[] = [{ number: 1, isPaid: true }];
@@ -37,16 +37,26 @@ export class ViewPolicyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const policyParam = this.activatedroute.snapshot.paramMap.get('id');
-    this.policyNo = policyParam ? Number(policyParam) : 0;
+    // Extract policyId from URL
+    this.policyId = this.activatedroute.snapshot.paramMap.get('id') || '';
+    console.log('Extracted Policy ID:', this.policyId);
 
-    if (!this.policyNo) {
-      console.error('Invalid policy number');
+    // Check customer ID in local storage
+    this.customerId = localStorage.getItem('id') || '';
+    if (!this.customerId) {
+      console.error('Customer ID is missing in local storage.');
+      return;
+    }
+    console.log('Customer ID:', this.customerId);
+
+    if (!this.policyId) {
+      console.error('Invalid or missing Policy ID in URL.');
       return;
     }
 
+    // Fetch data
     this.getPolicyData();
-    this.getTax();
+    this.getCustomerDetail();
     this.initializeForms();
   }
 
@@ -65,6 +75,30 @@ export class ViewPolicyComponent implements OnInit {
     });
   }
 
+  // Fetch policy data using policyId
+  getPolicyData(): void {
+    console.log('Fetching policy data for Policy ID:', this.policyId);
+    this.customer.getPolicy(this.policyId).subscribe({
+      next: (res: any) => {
+        console.log('Policy data fetched:', res);
+        this.policy = res;
+      },
+      error: (err: HttpErrorResponse) => console.error('Error fetching policy data:', err)
+    });
+  }
+
+  // Fetch customer profile using customerId
+  getCustomerDetail(): void {
+    console.log('Fetching customer profile for Customer ID:', this.customerId);
+    this.customer.getCustomerProfile(this.customerId).subscribe({
+      next: (res) => {
+        console.log('Customer profile fetched:', res);
+        this.customerData = res.body;
+      },
+      error: (err: HttpErrorResponse) => console.error('Error fetching customer profile:', err)
+    });
+  }
+
   resetPaymentForm(): void {
     this.PaymentForm.reset();
   }
@@ -74,43 +108,7 @@ export class ViewPolicyComponent implements OnInit {
     this.isClaimFormVisible = false; // Hide the form
   }
 
-  getPolicyData(): void {
-    console.log('Fetching policy data for policy number:', this.policyNo);
-    this.customer.getPolicyDetail(this.policyNo).subscribe({
-      next: (res: any) => {
-        console.log('Policy data fetched:', res);
-        this.policy = res;
-        this.installment = Array.from(
-          { length: this.policy.totalPremiumNo },
-          (_, i) => ({ number: i + 1, isPaid: false })
-        );
-        this.getCustomerDetail();
-        if (this.policy.insuranceSchemeId) {
-          this.getSchemeData();
-        } else {
-          console.error('Insurance scheme ID missing in policy data.');
-        }
-      },
-      error: (err: HttpErrorResponse) => console.error('Error fetching policy data:', err)
-    });
-  }
-
-  getCustomerDetail(): void {
-    const customerId = localStorage.getItem('id'); // Capture the customer ID from local storage
-    if (customerId) {
-      console.log('Fetching customer profile for ID:', customerId);
-      this.customer.getCustomerProfile(customerId).subscribe({
-        next: (res) => {
-          console.log('Customer profile fetched:', res);
-          this.customerData = res;
-        },
-        error: (err: HttpErrorResponse) => console.error('Error fetching customer profile:', err)
-      });
-    } else {
-      console.log('Customer ID is missing in local storage.');
-    }
-  }
-
+  
   getSchemeData(): void {
     console.log('Fetching scheme data for scheme ID:', this.policy.insuranceSchemeId);
     this.customer.getSchemeById(this.policy.insuranceSchemeId).subscribe({
@@ -134,20 +132,20 @@ export class ViewPolicyComponent implements OnInit {
     });
   }
 
-  getTax(): void {
-    console.log('Fetching tax percentage');
-    this.customer.getTaxPercent().subscribe({
-      next: (res) => {
-        console.log('Tax percentage fetched:', res);
-        this.Tax = res;
-      },
-      error: (err: HttpErrorResponse) => console.error('Error fetching tax percentage:', err.message)
-    });
-  }
+  // getTax(): void {
+  //   console.log('Fetching tax percentage');
+  //   this.customer.getTaxPercent().subscribe({
+  //     next: (res) => {
+  //       console.log('Tax percentage fetched:', res);
+  //       this.Tax = res;
+  //     },
+  //     error: (err: HttpErrorResponse) => console.error('Error fetching tax percentage:', err.message)
+  //   });
+  // }
 
-  calculateTotalAmoutToPay(): number {
-    return ((this.policy.premium * this.Tax.taxPercent) / 100) + this.policy.premium;
-  }
+  // calculateTotalAmoutToPay(): number {
+  //   return ((this.policy.premium * this.Tax.taxPercent) / 100) + this.policy.premium;
+  // }
 
   calculateDueDate(emi: number): Date {
     const parsedIssueDate = new Date(this.policy.issueDate);
@@ -168,7 +166,7 @@ export class ViewPolicyComponent implements OnInit {
   }
 
   showPaymentModal(index: number): void {
-    this.router.navigateByUrl('customer/policy/pay/' + this.policyNo);
+    this.router.navigateByUrl('customer/policy/pay/' + this.policyId);
   }
 
   downloadReceipt(index: number): void {

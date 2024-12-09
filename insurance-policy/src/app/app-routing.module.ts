@@ -38,6 +38,8 @@ import { ViewPolicyComponent } from './customer/view-policy/view-policy.componen
 import { DocumentComponent } from './customer/document/document.component';
 import { PaymentComponent } from './payment/payment.component';
 import { BuyPolicyComponent } from './customer/buy-policy/buy-policy.component';
+import { ShowClaimsComponent } from './customer/show-claims/show-claims.component';
+import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payments.component';
 
 
 const routes: Routes = [
@@ -121,6 +123,10 @@ const routes: Routes = [
     component: AddEmployeeComponent
   },
   {
+    path:'customer/show-claims',
+    component:ShowClaimsComponent
+  },
+  {
     path: 'dashboard/changePassword',
     component: ChangePasswordComponent
   },{
@@ -190,6 +196,10 @@ const routes: Routes = [
   {
     path: 'customer/Policy/:id',
     component: ViewPolicyComponent
+  },
+  {
+    path: 'customer/Payments/:id',
+    component: PolicyPaymentsComponent
   },
   {
     path: 'agent-dashboard',

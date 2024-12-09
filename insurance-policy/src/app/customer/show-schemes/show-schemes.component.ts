@@ -5,6 +5,7 @@ import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
 import { CustomerService } from 'src/app/services/customer.service';
 import { forkJoin, map } from 'rxjs'; // Import forkJoin and map
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-show-schemes',
@@ -29,7 +30,8 @@ export class ShowSchemesComponent implements OnInit {
     private customerService: CustomerService,
     private location: Location,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -127,8 +129,26 @@ export class ShowSchemesComponent implements OnInit {
   }
 
   buyPolicy(scheme: any): void {
-    this.router.navigateByUrl(`/customer/buyPolicy/${scheme.schemeId}`);
+    this.customerService
+      .isCustomerAssociatedWithScheme(scheme.schemeId, this.customerId)
+      .subscribe({
+        next: (response) => {
+          if (response.IsAssociated) {
+            // Redirect only if the customer is associated with the scheme
+            this.router.navigateByUrl(`/customer/buyPolicy/${scheme.schemeId}`);
+          } else {
+            console.error('Customer is associated (purchased) with this scheme.');
+            // You can also show a toast or alert here
+            this.toastService.showToast("error",'You are associated with this scheme and cannot re-purchase this policy.');
+          }
+        },
+        error: (err) => {
+          console.error('Error checking scheme association:', err);
+          alert('Unable to verify association with the scheme. Please try again later.');
+        }
+      });
   }
+  
 
   viewPolicy(scheme: any): void {
     this.router.navigateByUrl(`/customer/viewPolicy/${scheme.schemeId}`);

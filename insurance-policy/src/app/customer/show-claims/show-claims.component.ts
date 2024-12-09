@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
-
+import { CustomerService } from 'src/app/services/customer.service';
+import { ToastService } from 'src/app/services/toast.service';
 @Component({
-  selector: 'app-claims',
-  templateUrl: './claims.component.html',
-  styleUrls: ['./claims.component.css']
+  selector: 'app-show-claims',
+  templateUrl: './show-claims.component.html',
+  styleUrls: ['./show-claims.component.css']
 })
-export class ClaimsComponent implements OnInit {
+export class ShowClaimsComponent implements OnInit {
   claimData: any[] = [];
   filteredClaimData: any[] = [];
   policyData: any = {};
+  customerId:any=localStorage.getItem('id');
 
   // Pagination
   totalClaimCount: number = 0;
   currentPage: number = 1;
-  pageSizes: number[] = [1, 2, 5, 10, 15, 20, 30, 40, 50];
+  pageSizes: number[] = [5, 10, 15, 20, 30, 40, 50];
   pageSize: number = this.pageSizes[0];
   totalPages: number = 1;
 
@@ -30,7 +32,9 @@ export class ClaimsComponent implements OnInit {
   selectedClaimId: string = '';
   rejectReason: string = '';
 
-  constructor(private adminService: AdminService, private location: Location) {}
+  constructor(private adminService: AdminService, private location: Location,private customerService:CustomerService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.getClaims();
@@ -41,7 +45,7 @@ export class ClaimsComponent implements OnInit {
   }
 
   getClaims(): void {
-    this.adminService.getClaims(this.currentPage, this.pageSize).subscribe({
+    this.customerService.getClaimsByCustomerId(this.customerId,this.currentPage, this.pageSize).subscribe({
       next: (response) => {
         const headers = response.headers;
         this.currentPage = parseInt(headers.get('X-Current-Page') || '1', 10);

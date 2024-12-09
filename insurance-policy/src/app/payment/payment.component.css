@@ -1,3 +1,10 @@
+.wrapper {
+  background-color: #f3faf4;
+  min-height: 93vh;
+  padding: auto;
+  padding-top: 5%;
+}
+
 .payment-container {
     max-width: 500px;
     margin: 0 auto;

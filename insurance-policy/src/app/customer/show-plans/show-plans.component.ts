@@ -38,7 +38,6 @@ export class ShowPlansComponent {
   goBack(): void {
     this.location.back();
   }
-
   getPlans(): void {
     this.admin.getPlans(this.currentPage, this.pageSize).subscribe({
       next: (response) => {
@@ -49,14 +48,16 @@ export class ShowPlansComponent {
           totalPages: parseInt(response.headers.get('X-Total-Pages') || '0', 10),
           totalCount: parseInt(response.headers.get('X-Total-Count') || '0', 10),
         };
-
+  
         this.currentPage = headers.currentPage;
         this.hasNext = headers.hasNext;
         this.hasPrevious = headers.hasPrevious;
         this.totalPages = headers.totalPages;
         this.totalPlanCount = headers.totalCount;
-
-        this.plans = response.body || [];
+  
+        // Filter plans to only include active ones
+        const allPlans = response.body || [];
+        this.plans = allPlans.filter((plan: any) => plan.status === true);
         this.filteredPlans = [...this.plans];
       },
       error: (err) => {
@@ -65,6 +66,7 @@ export class ShowPlansComponent {
       },
     });
   }
+  
 
   resetPagination(): void {
     this.plans = [];

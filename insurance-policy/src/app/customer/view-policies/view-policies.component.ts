@@ -37,15 +37,35 @@ export class ViewPoliciesComponent {
           const paginationData = JSON.parse(paginationHeader);
           this.totalPolicyCount = paginationData.TotalCount;
         }
-        this.policies = response.body || [];
+  
+        const allPolicies = response.body || [];
+        // Filter policies based on the isSwitchOn state
+        if (this.isSwitchOn) {
+          // Show purchased policies (ACTIVE, CLAIMED, DROPPED, INACTIVE)
+          this.policies = allPolicies.filter(
+            (policy:any) =>
+              policy.policyStatus === 'ACTIVE' ||
+              policy.policyStatus === 'CLAIMED' ||
+              policy.policyStatus === 'DROPPED' ||
+              policy.policyStatus === 'INACTIVE'
+          );
+        } else {
+          // Show applied policies (PENDING)
+          this.policies = allPolicies.filter((policy:any) => policy.policyStatus === 'PENDING');
+        }
       },
       error: (err: HttpErrorResponse) => {
         console.error(err);
         this.policies = [];
-      }
+      },
     });
   }
-
+  toggleSwitch(state: boolean) {
+    if (this.isSwitchOn === state) return; // Avoid redundant calls
+    this.isSwitchOn = state;
+    this.getPolicies(); // Refresh and filter policies based on the new state
+  }
+    
   onSearch(): void {
     if (this.searchQuery && this.searchQuery.toString().trim()) {
       const searchLower = this.searchQuery.toLowerCase();
@@ -80,20 +100,23 @@ export class ViewPoliciesComponent {
     this.getPolicies();
   }
 
-  toggleSwitch(state: boolean) {
-    if (this.isSwitchOn === state) return; // Avoid redundant calls
-    this.isSwitchOn = state;
-    this.getPolicies();
-  }
+  // toggleSwitch(state: boolean) {
+  //   if (this.isSwitchOn === state) return; // Avoid redundant calls
+  //   this.isSwitchOn = state;
+  //   this.getPolicies();
+  // }
 
   goBack() {
     this.location.back();
   }
 
   viewPolicy(policy: any) {
-    this.router.navigateByUrl(`customer/Policy/${policy.policyNo}`);
+    this.router.navigateByUrl(`customer/Policy/${policy.policyId}`);
   }
-
+Payments(policy:any)
+{ 
+  this.router.navigateByUrl(`customer/Payments/${policy.policyId}`);
+}
   calculateSRNumber(index: number): number {
     return (this.currentPage - 1) * this.pageSize + index + 1;
   }

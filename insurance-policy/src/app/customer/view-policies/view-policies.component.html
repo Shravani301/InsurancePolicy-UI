@@ -7,21 +7,22 @@
     <div class="btn-group mt-2" role="group" aria-label="Button switch">
       <button
         type="button"
-        class="btn-search"
-        [class.active]="isSwitchOn"
+        class="btn "
+        [class.active-switch]="isSwitchOn"
         (click)="toggleSwitch(true)"
       >
         Purchased
       </button>
       <button
         type="button"
-        class="btn-search"
-        [class.active]="!isSwitchOn"
+        class="btn"
+        [class.active-switch]="!isSwitchOn"
         (click)="toggleSwitch(false)"
       >
         Applied
       </button>
     </div>
+    
     <div class="container">
       <h2>Policies</h2>
       <div class="row mb-3 align-items-center">
@@ -64,6 +65,7 @@
             <th>Sum Assured</th>
             <th>Issue Date</th>
             <th>Maturity Date</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -78,9 +80,21 @@
             <td><span style="font-family: 'RupeeFont';">₹</span>{{ policy.sumAssured }}</td>
             <td>{{ policy.issueDate | date: "dd-MM-yyyy" }}</td>
             <td>{{ policy.maturityDate | date: "dd-MM-yyyy" }}</td>
+            <td>{{policy.policyStatus}}</td>
             <td>
-              <button *ngIf="isSwitchOn" class="btn btn-info" (click)="viewPolicy(policy)">View More</button>
-              <button *ngIf="!isSwitchOn" class="btn btn-info" (click)="buyPolicy(policy)">Buy Policy</button>
+              <button 
+                *ngIf="isSwitchOn" 
+                class="btn btn-info me-2" 
+                (click)="viewPolicy(policy)">
+                View More
+              </button>
+              <button 
+                *ngIf="isSwitchOn" 
+                class="btn btn-danger" 
+                (click)="Payments(policy)">
+                Payments
+              </button>
+              <span *ngIf="!isSwitchOn">Under Verification</span>
             </td>
           </tr>
         </tbody>

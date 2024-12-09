@@ -59,6 +59,10 @@ import { ComplaintComponent } from './customer/complaint/complaint.component';
 import { ShowComplaintsComponent } from './customer/show-complaints/show-complaints.component';
 import { DocumentComponent } from './customer/document/document.component';
 import { AgentHeaderComponent } from './agent/agent-header/agent-header.component';
+import { CommonModule } from '@angular/common';
+import { ShowClaimsComponent } from './customer/show-claims/show-claims.component';
+import { ClaimRequestComponent } from './customer/claim-request/claim-request.component';
+import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payments.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +112,9 @@ import { AgentHeaderComponent } from './agent/agent-header/agent-header.componen
     ShowComplaintsComponent,
     DocumentComponent,
     AgentHeaderComponent,
+    ShowClaimsComponent,
+    ClaimRequestComponent,
+    PolicyPaymentsComponent,
 
     
   ],
@@ -122,6 +129,7 @@ import { AgentHeaderComponent } from './agent/agent-header/agent-header.componen
     RecaptchaModule,
     RecaptchaV3Module,
     FormsModule,
+    CommonModule, 
     
   ],
   providers: [MessageService,

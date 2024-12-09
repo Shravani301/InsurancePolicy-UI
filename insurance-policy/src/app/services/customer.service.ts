@@ -149,4 +149,22 @@ export class CustomerService {
     const searchUrl = `${this.apiUrl}/Agent?PageNumber=${pgNo}&PageSize=${pgSize}`;
     return this.http.get(searchUrl, { observe: 'response' });
   }
+  
+  getClaimsByCustomerId(customerId: string, pageNumber: number, pageSize: number): Observable<any> {
+    const url = `${this.apiUrl}/Claim/customer/${customerId}/?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    return this.http.get(url, {
+      observe: 'response',
+    });
+  }  
+  getInstallmentsById(policyId: string, pageNumber: number, pageSize: number): Observable<any> {
+    const url = `${this.apiUrl}/Installment/policy/${policyId}/?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    return this.http.get(url, {
+      observe: 'response',
+    });
+  }  
+
+
+
+
+
 }

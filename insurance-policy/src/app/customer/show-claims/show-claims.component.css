@@ -211,24 +211,4 @@
 }
 .readonly-field:focus {
     outline: 2px solid #00d1b2;
-}/* Default button styling */
-.btn-group .btn {
-  border-radius: 0;
-  transition: all 0.3s ease;
-  border: #218838;
-}
-
-/* Active button styling */
-.active-switch {
-  background-color: #00d1b2; /* Bootstrap primary color */
-  color: #fff;
-  font-weight: bold;
-  border: 2px solid #4e334e;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Hover effect for non-active buttons */
-.btn-group .btn:not(.active-switch):hover {
-  background-color: #4e334e;
-  color: whitesmoke;
 }

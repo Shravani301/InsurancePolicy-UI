@@ -79,8 +79,9 @@ export class CustomerService {
 
   // Get scheme details by scheme ID
   getSchemeById(schemeId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/schemes/${schemeId}`);
+    return this.http.get<any>(`${this.apiUrl}/InsuranceScheme/${schemeId}`);
   }
+
 
   // Get detailed scheme information
   getDetail(schemeId: number): Observable<any> {
@@ -133,5 +134,19 @@ export class CustomerService {
 
   downloadDocument(documentId: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${documentId}`, { responseType: 'blob' });
+  }
+  getPolicy(policyId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/Policy/${policyId}`);
+  }
+
+  // Method to purchase/apply for a policy
+  purchasePolicy(policy: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Policy`, policy);
+  }
+
+  
+  getAgents(pgNo: number = 1, pgSize: number = 5): Observable<any> {
+    const searchUrl = `${this.apiUrl}/Agent?PageNumber=${pgNo}&PageSize=${pgSize}`;
+    return this.http.get(searchUrl, { observe: 'response' });
   }
 }

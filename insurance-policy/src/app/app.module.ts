@@ -59,7 +59,6 @@ import { ComplaintComponent } from './customer/complaint/complaint.component';
 import { ShowComplaintsComponent } from './customer/show-complaints/show-complaints.component';
 import { DocumentComponent } from './customer/document/document.component';
 import { AgentHeaderComponent } from './agent/agent-header/agent-header.component';
-import { UploadComponent } from './customer/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +108,7 @@ import { UploadComponent } from './customer/upload/upload.component';
     ShowComplaintsComponent,
     DocumentComponent,
     AgentHeaderComponent,
-    UploadComponent,
+
     
   ],
   imports: [

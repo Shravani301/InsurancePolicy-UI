@@ -37,6 +37,7 @@ import { ShowComplaintsComponent } from './customer/show-complaints/show-complai
 import { ViewPolicyComponent } from './customer/view-policy/view-policy.component';
 import { DocumentComponent } from './customer/document/document.component';
 import { PaymentComponent } from './payment/payment.component';
+import { BuyPolicyComponent } from './customer/buy-policy/buy-policy.component';
 
 
 const routes: Routes = [
@@ -165,6 +166,10 @@ const routes: Routes = [
   {
     path: 'customer/viewScheme/:id',
     component: ShowSchemesComponent
+  },
+  {
+    path: 'customer/buyPolicy/:id',
+    component: BuyPolicyComponent
   },
   {
     path: 'customer/document',

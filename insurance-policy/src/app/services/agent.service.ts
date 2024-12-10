@@ -12,7 +12,7 @@ export class AgentService {
   constructor(private http: HttpClient) {}
 
     getCommissionsByAgentId(agentId: string): Observable<any> {
-      const url = `${this.baseUrl}/commissions/agent/${agentId}`;
+      const url = `${this.baseUrl}/commission/agent/${agentId}`;
       return this.http.get<any>(url, { observe: 'response' });
     }
   
@@ -29,4 +29,14 @@ export class AgentService {
     const url = `${this.baseUrl}/Customer/agent/${agentId}/customers`;
     return this.http.get<any>(url, { observe: 'response' });
  }  
+
+ getAgentProfile(id: string): Observable<any> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}` // Assuming token-based authentication
+  });
+
+  // API call with the provided `id`
+  return this.http.get<any>(`${this.baseUrl}/agent/${id}`, { observe: 'response' });
+}  
 }

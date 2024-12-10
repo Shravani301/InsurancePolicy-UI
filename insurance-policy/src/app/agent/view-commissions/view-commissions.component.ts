@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
 import { ToastService } from 'src/app/services/toast.service';
+import { AgentService } from 'src/app/services/agent.service';
 
 @Component({
   selector: 'app-view-commissions',
@@ -21,7 +22,7 @@ export class ViewCommissionsComponent implements OnInit {
   agentId: any | null = ''; // Agent ID fetched from localStorage
 
   constructor(
-    private adminService: AdminService,
+    private agent:AgentService,
     private location: Location,
     private toastService: ToastService
   ) {}
@@ -42,7 +43,7 @@ export class ViewCommissionsComponent implements OnInit {
       return;
     }
 
-    this.adminService.getTotalCommissionByAgent(this.agentId).subscribe({
+    this.agent.getCommissionsByAgentId(this.agentId).subscribe({
       next: (response) => {
         const paginationHeader = response.headers.get('X-Pagination');
         if (paginationHeader) {

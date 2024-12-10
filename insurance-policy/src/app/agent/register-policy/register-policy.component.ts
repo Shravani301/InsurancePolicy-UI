@@ -38,7 +38,7 @@ export class RegisterPolicyComponent implements OnInit {
   modalImageURL: string = ''; // To store the URL for the modal
   showModal: boolean = false; // To control the modal visibility
   searchQuery: string = ''; // Search input query
-  
+  agentId:any='';
 
 
   relationships: string[] = [
@@ -76,6 +76,7 @@ export class RegisterPolicyComponent implements OnInit {
     // Extract schemeId from the URL
     this.route.paramMap.subscribe((params) => {
       this.schemeId = params.get('id') || '';
+      this.agentId=localStorage.getItem('id');
     });
     this.policy = {
       customerId: localStorage.getItem('id'),
@@ -240,8 +241,6 @@ closeCustomerSelectionModal() {
     Validators.min(this.schemeData.minInvestTime),
     Validators.max(this.schemeData.maxInvestTime),
   ]);
-  
-    
   addPolicy() {
     const policyPayload = {
       insuranceSchemeId: this.policy.insuranceSchemeId,
@@ -250,32 +249,29 @@ closeCustomerSelectionModal() {
       premiumType: this.policy.premiumType,
       policyTerm: this.policy.policyTerm,
       premiumAmount: this.policy.premiumAmount,
+      agentId:localStorage.getItem('id'),
       taxId: 'ba1830ae-4cb1-ef11-ac89-9d80da5fbf90', // Fixed taxId
       insuranceSettingId: 'e416bd97-4cb1-ef11-ac89-9d80da5fbf90', // Fixed insuranceSettingId
       nominees: this.policy.nominees.map((nominee: any) => ({
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
       })),
-      selectedDocumentIds: this.selectedDocuments
-      .filter((docId) => docId && docId.includes(':')) // Filter valid entries with ':'
-      .map((docId) => docId.split(':')[1].trim()), // Extract part after ':' and trim spaces
-  
-  ...(this.policy.agentId ? { agentId: this.policy.agentId } : {}), // Include agentId if available
+      selectedDocumentIds: this.selectedDocumentIds, // Directly use the populated array
     };
+  
+    console.log('Policy payload before submission:', policyPayload); // Debug the payload
   
     this.customer.purchasePolicy(policyPayload).subscribe({
       next: () => {
-        this.toastService.showToast("success",'Policy Applied Successfully');
+        this.toastService.showToast("success", 'Policy Applied Successfully');
         this.goBack();
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error applying policy:', err);
-        this.toastService.showToast("warn",'Something went wrong!');
+        this.toastService.showToast("warn", 'Something went wrong!');
       },
     });
   }
-  
-    
 
   goBack() {
     this.location.back();

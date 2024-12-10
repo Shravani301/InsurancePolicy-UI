@@ -49,6 +49,7 @@ import { AgentLandingComponent } from './agent/agent-landing/agent-landing.compo
 import { CustomerRegistrationComponent } from './agent/customer-registration/customer-registration.component';
 import { ViewCommissionsComponent } from './agent/view-commissions/view-commissions.component';
 import { RegisterPolicyComponent } from './agent/register-policy/register-policy.component';
+import { AgentProfileComponent } from './agent/agent-profile/agent-profile.component';
 
 
 const routes: Routes = [
@@ -265,6 +266,10 @@ const routes: Routes = [
   {
     path: 'agent/registerPolicy/:id',
     component: RegisterPolicyComponent
+  },
+  {
+    path: 'agent/profile',
+    component: AgentProfileComponent
   },
   {
     path: 'employee-dashboard',

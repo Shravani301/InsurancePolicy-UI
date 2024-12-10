@@ -28,7 +28,7 @@ export class BuyPolicyComponent implements OnInit {
   mappedRequiredDocuments: string[] = [];
   showUploadModal: boolean = false;
   uploadDocumentName: string = '';
-  selectedDocuments: any[] = [];
+  //selectedDocuments: any[] = [];
   selectedDocumentIds:string[] = [];
   uploadedDocuments: { [key: string]: string } = {}; // Map to store uploaded document URLs by document name
   showViewModal: boolean = false; // To control the visibility of the view modal
@@ -225,24 +225,24 @@ export class BuyPolicyComponent implements OnInit {
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
       })),
-      selectedDocumentIds: this.selectedDocuments
-      .filter((docId) => docId && docId.includes(':')) // Filter valid entries with ':'
-      .map((docId) => docId.split(':')[1].trim()), // Extract part after ':' and trim spaces
-  
-  ...(this.policy.agentId ? { agentId: this.policy.agentId } : {}), // Include agentId if available
+      selectedDocumentIds: this.selectedDocumentIds, // Directly use the populated array
+      ...(this.policy.agentId ? { agentId: this.policy.agentId } : {}), // Include agentId if available
     };
+  
+    console.log('Policy payload before submission:', policyPayload); // Debug the payload
   
     this.customer.purchasePolicy(policyPayload).subscribe({
       next: () => {
-        this.toastService.showToast("success",'Policy Applied Successfully');
+        this.toastService.showToast("success", 'Policy Applied Successfully');
         this.goBack();
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error applying policy:', err);
-        this.toastService.showToast("warn",'Something went wrong!');
+        this.toastService.showToast("warn", 'Something went wrong!');
       },
     });
   }
+  
   
     
 
@@ -350,7 +350,7 @@ export class BuyPolicyComponent implements OnInit {
   uploadFile(index: number) {
     const selectedFile = this.selectedFiles[index];
     if (!selectedFile) {
-       this.toastService.showToast("error",'No file selected.');
+      this.toastService.showToast("error", 'No file selected.');
       return;
     }
   
@@ -360,16 +360,18 @@ export class BuyPolicyComponent implements OnInit {
         const metadata = {
           documentName: documentName,
           documentPath: cloudinaryResponse.url,
-          customerId: localStorage.getItem('id') || '',
+          customerId:localStorage.getItem('id') || '',
         };
   
         this.customer.saveMetadataToBackend(metadata).subscribe({
           next: (metadataResponse: any) => {
             const savedDocumentId = metadataResponse.documentId; // Capture the document ID
-           this.uploadedDocuments[documentName] = cloudinaryResponse.url; // Store the uploaded URL
-            this.selectedDocumentIds.push(savedDocumentId); // Push document ID to the array
-            console.log(this.selectedDocumentIds);
-             this.toastService.showToast("success",`${documentName} uploaded successfully.`);
+            this.uploadedDocuments[documentName] = cloudinaryResponse.url; // Store the uploaded URL
+            if (!this.selectedDocumentIds.includes(savedDocumentId)) {
+              this.selectedDocumentIds.push(savedDocumentId); // Push document ID to the array
+            }
+            console.log('Updated selectedDocumentIds:', this.selectedDocumentIds);
+            this.toastService.showToast("success", `${documentName} uploaded successfully.`);
           },
           error: (err: HttpErrorResponse) => {
             console.error(`Error saving metadata for ${documentName}:`, err);
@@ -381,6 +383,7 @@ export class BuyPolicyComponent implements OnInit {
       },
     });
   }
+  
   
   loading: boolean = false;
 

@@ -22,6 +22,8 @@ export class ChangePasswordComponent {
   jwtHelper = new JwtHelperService();
   isAdmin = false;
   isCustomer = false;
+  isAgent = false;
+  isEmployee = false;
 
   constructor(
     private auth: AuthService,
@@ -52,6 +54,13 @@ export class ChangePasswordComponent {
       this.isCustomer = true;
     } else if (role === 'Admin') {
       this.isAdmin = true;
+    }
+    else if (role === 'Agent') {
+      this.isAgent = true;
+    }
+    else if(role==='Employee')
+    {
+      this.isEmployee=true;
     }
   }
 

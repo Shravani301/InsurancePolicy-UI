@@ -152,31 +152,34 @@ body {
   
   .signup-prompt a:hover {
     text-decoration: underline;
-  }
-  .captcha-container {
+  }.captcha-container {
     display: flex;
     align-items: center;
-    gap: 10px; /* Space between the image and the button */
-    margin-bottom: 10px;
+    gap: 4px; /* Space between elements */
   }
- 
+  
   .captcha-image {
     filter: blur(1px); /* Apply blur effect */
     border: 1px solid #ccc;
     width: 150px;  /* Adjust image width */
     height: auto;  /* Maintain aspect ratio */
+    margin-bottom: 4px;
   }
- 
+  
   .refresh-captcha-btn {
-    background-color: #4CAF50; /* Green background */
-    color: white;
+    background-color: #edf2ed; /* Green background */
+    color: #00334e; /* Matching text color */
     padding: 5px 15px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
- 
+  
   .refresh-captcha-btn:hover {
-    background-color: #45a049;
+    background-color: #888988;
   }
+  

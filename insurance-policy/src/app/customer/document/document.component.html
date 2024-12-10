@@ -66,7 +66,7 @@
 
     <!-- Document Table -->
     <table class="table table-striped">
-      <thead>
+      <thead class="table-dark">
         <tr>
           <th>Sr.</th>
           <th>Document Name</th>
@@ -81,7 +81,13 @@
           <td>{{ doc.status ? 'Approved' : 'Pending' }}</td>
           <td>
             <button class="btn btn-info btn-sm me-2" (click)="viewDocument(doc)">View</button>
-            <button class="btn btn-warning btn-sm" (click)="reuploadDocument(doc)">Reupload</button>
+            <button 
+            *ngIf="doc.status === 2" 
+            class="btn btn-warning btn-sm" 
+            (click)="reuploadDocument(doc)">
+            ReUpload
+          </button>
+          
           </td>
         </tr>
         <tr *ngIf="filteredDocuments.length === 0">

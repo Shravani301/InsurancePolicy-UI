@@ -41,6 +41,8 @@ import { BuyPolicyComponent } from './customer/buy-policy/buy-policy.component';
 import { ShowClaimsComponent } from './customer/show-claims/show-claims.component';
 import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payments.component';
 import { AddSchemeComponent } from './admin/add-scheme/add-scheme.component';
+import { ViewPaymentsComponent } from './admin/view-payments/view-payments.component';
+import { CustomerDocumentsComponent } from './admin/customer-documents/customer-documents.component';
 
 
 const routes: Routes = [
@@ -157,6 +159,18 @@ const routes: Routes = [
   {
     path: 'admin/addScheme/:id',
     component: AddSchemeComponent
+  },
+  {
+    path: 'admin/customer/documnets/:id',
+    component: CustomerDocumentsComponent
+  },
+  {
+    path: 'admin/customer/policies/:id',
+    component: ViewPoliciesComponent,
+  },
+  {
+    path:'admin/payments',
+    component:ViewPaymentsComponent
   },
   {
     path: 'customer/profile',

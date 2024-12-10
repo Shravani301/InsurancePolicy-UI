@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-view-customers',
@@ -20,7 +22,9 @@ export class ViewCustomersComponent implements OnInit {
   hasNext: boolean = false;
   hasPrevious: boolean = false;
 
-  constructor(private adminService: AdminService, private location: Location) {}
+  constructor(private adminService: AdminService, private location: Location,
+    private toastService: ToastService,private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getCustomers();
@@ -103,10 +107,23 @@ export class ViewCustomersComponent implements OnInit {
   }
 
   viewDocument(customer: any): void {
-    console.log('View documents for:', customer);
+    console.log('View documents for:', customer);    
+    if(customer.customerId)
+    {
+      this.router.navigate(['admin/customer/documnets/', customer.customerId]);
+    }
+    else
+      this.toastService.showToast('error', 'Invalid plan selected.');
   }
 
   viewPolicies(customer: any): void {
-    console.log('View policies for:', customer);
+    console.log('View policies for:', customer); 
+    if(customer.customerId)
+    {
+      this.router.navigate(['admin/customer/policies/', customer.customerId]);
+    }
+    else
+      this.toastService.showToast('error', 'Invalid plan selected.');
+
   }
 }

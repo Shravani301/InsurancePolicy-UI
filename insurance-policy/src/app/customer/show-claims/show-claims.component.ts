@@ -3,6 +3,7 @@ import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-show-claims',
   templateUrl: './show-claims.component.html',
@@ -33,6 +34,7 @@ export class ShowClaimsComponent implements OnInit {
   rejectReason: string = '';
 
   constructor(private adminService: AdminService, private location: Location,private customerService:CustomerService,
+    private router: Router,
     private toastService: ToastService
   ) {}
 
@@ -88,8 +90,12 @@ export class ShowClaimsComponent implements OnInit {
     });
   }
 
-  showPolicy(index: number): void {
-    this.policyData = this.filteredClaimData[index];
+  showPolicy(policyId:string): void {
+    if(policyId){
+      this.router.navigate(['customer/Policy/', policyId]);
+    } else {
+      this.toastService.showToast('error', 'Invalid Policy selected.');
+    }
   }
 
   approveClaim(claimId: string): void {

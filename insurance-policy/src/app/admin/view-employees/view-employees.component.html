@@ -134,21 +134,22 @@
       <span>Page <b>{{ currentPage }}</b> of <b>{{ totalPages }}</b></span>
       <nav *ngIf="totalPages > 1" class="pagination-container">
         <ul class="pagination">
-          <li class="page-item" [class.disabled]="!hasPrev">
+          <li class="page-item" [class.disabled]="currentPage === 1">
             <button class="page-link" (click)="changePage(currentPage - 1)">Prev</button>
           </li>
           <li
-            *ngFor="let page of [].constructor(totalPages); let i = index"
             class="page-item"
+            *ngFor="let page of [].constructor(totalPages); let i = index"
             [class.active]="i + 1 === currentPage"
           >
             <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
           </li>
-          <li class="page-item" [class.disabled]="!hasNext">
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
           </li>
         </ul>
       </nav>
+      
     </div>
   </div>
 

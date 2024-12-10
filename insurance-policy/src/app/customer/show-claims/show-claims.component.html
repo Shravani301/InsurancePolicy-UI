@@ -40,10 +40,10 @@
         <div class="col-md-6 text-end">
           <div class="search-container d-flex justify-content-end">
             <input
-              type="number"
+              type="text"
               class="form-control"
               [(ngModel)]="searchQuery"
-              placeholder="Search by Claim ID ..."
+              placeholder="Search by Name ..."
               style="max-width: 300px;"
             />
             <button class="btn-search ms-2" (click)="onSearch()">Search</button>
@@ -87,7 +87,7 @@
               >
             </td>
             <td>
-              <button class="btn btn-info btn-sm me-1" (click)="showPolicy(i)">
+              <button class="btn btn-info btn-sm me-1" (click)="showPolicy(claim.policyId)">
                 View Policy
               </button>
             </td>

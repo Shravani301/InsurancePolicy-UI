@@ -2,8 +2,9 @@
     <div class="top_link">
       <button (click)="goBack()" class="btn-back ms-3 mt-2">Back</button>
     </div>
-     <div class="container">
-      <h2>Agents</h2>
+  
+    <div class="container">
+      <h2>Documents</h2>
       <div class="row mb-3">
         <div class="row mb-3 align-items-center">
             <!-- Page Size and Filter -->
@@ -28,7 +29,7 @@
                   type="text"
                   class="form-control"
                   [(ngModel)]="searchQuery"
-                  placeholder="Search by agentName..."
+                  placeholder="Search by documentName..."
                   style="max-width: 300px;"
                 />
                 <button class="btn-search ms-2" (click)="onSearch()">Search</button>
@@ -36,41 +37,62 @@
             </div>
           </div>
       </div>
-      <table class="table table-light table-hover">
+      <!-- Add Document Button
+      <button
+        class="btn btn-primary mb-3"
+        (click)="showAddDocumentForm = !showAddDocumentForm"
+      >
+        {{ showAddDocumentForm ? 'Cancel' : 'Add Document' }}
+      </button>
+  
+      <!-- Add Document Form 
+      <div *ngIf="showAddDocumentForm" class="mb-4 p-3 border rounded bg-light">
+        <form [formGroup]="DocTypeForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="documentName" class="form-label">Document Name</label>
+            <select formControlName="documentName" id="documentName" class="form-select">
+              <option value="" disabled>Select a document name</option>
+              <option *ngFor="let type of documentTypes" [value]="type.name">
+                {{ type.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <input type="file" (change)="onFileSelected($event)" class="form-control" />
+          </div>
+          <button type="submit" class="btn btn-success">Upload</button>
+        </form>
+      </div> -->
+  
+      <!-- Document Table -->
+      <table class="table table-striped">
         <thead class="table-dark">
           <tr>
             <th>Sr.</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Qualification</th>
-            <th>Email</th>
-            <th>Phone</th>
+            <th>Document Name</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let agent of filteredAgents; let i = index">
+          <tr *ngFor="let doc of filteredDocuments; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
-            <td>{{ agent.agentFirstName }}</td>
-            <td>{{ agent.agentLastName }}</td>
-            <td>{{ agent.qualification }}</td>
-            <td>{{ agent.email }}</td>
-            <td>{{ agent.phone }}</td>
-            <td>{{ agent.status ? 'Active' : 'Inactive' }}</td>
+            <td>{{ doc.documentName }}</td>
+            <td>{{ doc.status ? 'Approved' : 'Pending' }}</td>
             <td>
-                <a
-                  [href]="'mailto:' + agent.email + '?subject=Support Request&body=Dear ' + agent.agentFirstName + ','"
-                  class="btn btn-info btn-md"
-                  target="_blank"
-                >
-                  Contact via Mail
-                </a>
-              </td>          
-            </tr>
-          <tr *ngIf="filteredAgents.length === 0">
-            <td colspan="7" class="text-center">No Agents Found</td>
-          </tr>          
+              <button class="btn btn-info btn-sm me-2" (click)="viewDocument(doc)">View</button>
+              <button 
+              *ngIf="doc.status === 2" 
+              class="btn btn-warning btn-sm" 
+              (click)="reuploadDocument(doc)">
+              ReUpload
+            </button>
+            
+            </td>
+          </tr>
+          <tr *ngIf="filteredDocuments.length === 0">
+            <td colspan="4" class="text-center">No Documents Found</td>
+          </tr>
         </tbody>
       </table>
       <nav *ngIf="pageCount > 1" class="pagination-container">
@@ -94,6 +116,12 @@
       </nav>
     </div>
   
-    <!-- Modal for Inactivate Confirmation -->
+    <!-- Modal -->
+    <div class="modal-overlay" *ngIf="showModal">
+      <div class="modal-content">
+        <img [src]="modalImageURL" alt="Document Preview" class="img-fluid" />
+        <button class="btn btn-secondary mt-3" (click)="closeModal()">Close</button>
+      </div>
+    </div>
   </div>
   <app-footer-end></app-footer-end>

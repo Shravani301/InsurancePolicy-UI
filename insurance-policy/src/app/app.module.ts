@@ -64,6 +64,8 @@ import { ShowClaimsComponent } from './customer/show-claims/show-claims.componen
 import { ClaimRequestComponent } from './customer/claim-request/claim-request.component';
 import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payments.component';
 import { AddSchemeComponent } from './admin/add-scheme/add-scheme.component';
+import { ViewPaymentsComponent } from './admin/view-payments/view-payments.component';
+import { CustomerDocumentsComponent } from './admin/customer-documents/customer-documents.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,8 @@ import { AddSchemeComponent } from './admin/add-scheme/add-scheme.component';
     ClaimRequestComponent,
     PolicyPaymentsComponent,
     AddSchemeComponent,
+    ViewPaymentsComponent,
+    CustomerDocumentsComponent,
 
     
   ],

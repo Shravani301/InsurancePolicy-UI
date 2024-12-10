@@ -131,3 +131,42 @@ h2 {
     color: white; /* Ensure the text remains white */
     border-color: #ff4c4c; /* Match border color with hover background */
   }
+  /* Modal background with color and opacity */
+.modal.custom-modal {
+    background-color: rgba(243, 250, 244, 0.8); /* Light greenish background with opacity */
+  }
+  
+  /* Modal dialog centered */
+  .modal-dialog {
+    max-width: 600px; /* Adjust modal width if needed */
+    margin: auto;
+  }
+  
+  /* Modal content */
+  .modal-content {
+    background-color: #ffffff; /* White content background */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for content */
+    padding: 20px;
+  }
+  
+  /* Modal header */
+  .modal-header {
+    background-color: #f3faf4; /* Matches the modal background */
+    border-bottom: 1px solid #dcdcdc;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  /* Modal title */
+  .modal-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Modal footer */
+  .modal-footer {
+    border-top: 1px solid #dcdcdc;
+    justify-content: flex-end;
+  }
+  

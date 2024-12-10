@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+
 @Component({
   selector: 'app-view-complaints',
   templateUrl: './view-complaints.component.html',
@@ -24,6 +25,10 @@ export class ViewComplaintsComponent implements OnInit {
   replyModal: any;
   searchQuery: string = '';
   filteredQueries: any[] = [];
+  selectedQuery: any = null; // Store the selected query
+  responseText: string = ''; // Store the response text
+  employeeId:any='';
+  role:any='';
   private jwtHelper = new JwtHelperService();
 
   constructor(
@@ -35,6 +40,8 @@ export class ViewComplaintsComponent implements OnInit {
     this.checkUserRole();
     this.initializeForm();
     this.getAllQueries();
+    this.employeeId=localStorage.getItem('id');
+    this.role=localStorage.getItem('role');
   }
 
   // Check user role from JWT
@@ -122,12 +129,64 @@ resetSearch(): void {
     return (this.currentPage - 1) * this.pageSize + index + 1;
   }
 
+
   // Open reply modal with selected query
   onReply(query: any): void {
-    this.replyModal.show();
-    this.complaintResponseForm.patchValue({ response: query.response || '' });
+    this.selectedQuery = query; // Set the selected query
+    this.responseText = ''; // Clear the previous response
+
+    const modalElement = document.getElementById('replyModal');
+    if (modalElement) {
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+    }
   }
 
+  // Close the reply modal
+  closeModal(): void {
+    const modalElement = document.getElementById('replyModal');
+    if (modalElement) {
+      modalElement.classList.remove('show');
+      modalElement.style.display = 'none';
+    }
+  }
+
+  // Submit the response
+  submitResponse(): void {
+    if (!this.responseText || this.responseText.trim() === '') {
+      alert('Response cannot be empty!');
+      return;
+    }
+  
+    if (this.selectedQuery) {
+      const employeeId = localStorage.getItem('employeeId'); // Retrieve employeeId from localStorage
+  
+      if (!employeeId) {
+        alert('Employee ID is missing. Please log in again.');
+        return;
+      }
+  
+      const queryId = this.selectedQuery.id; // Get the queryId
+      const response = this.responseText.trim(); // Trim response text
+  
+      // Call the service to resolve the query
+      this.employeeService.resolveComplaint(queryId, response, employeeId).subscribe({
+        next: () => {
+          alert('Response submitted successfully!');
+          this.selectedQuery.response = response; // Update the query response locally
+          this.responseText = ''; // Clear the response text
+          this.closeModal(); // Close the modal
+          this.getAllQueries(); // Refresh the queries list
+        },
+        error: (err) => {
+          console.error('Error submitting response:', err);
+          alert('Failed to submit response. Please try again later.');
+        }
+      });
+    }
+  }
+  
+  
   // Update the selected complaint with a response
   updateComplaint(): void {
     if (this.complaintResponseForm.valid) {

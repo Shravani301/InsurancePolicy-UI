@@ -185,12 +185,8 @@ export class AdminService {
    * @param rejectionReason The reason for rejection
    * @returns Observable with the response
    */
-  rejectWithdrawalRequest(requestId: string, rejectionReason: string): Observable<any> {
-    return this.http.put(
-      `${this.baseUrl}/WithdrawalRequest/${requestId}/reject?rejectionReason=${encodeURIComponent(rejectionReason)}`,
-      {},
-      { observe: 'response' }
-    );
+  rejectWithdrawalRequest(requestId: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/WithdrawalRequest/${requestId}/reject`, {}, { observe: 'response' });
   }
 
   /**
@@ -269,6 +265,9 @@ export class AdminService {
     });
   }
 
+  getDocuments(customerId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this. backendUrl}/customer/${customerId}`);
+  }
   addAgent(data: any) {
     return this.http.post(this.baseUrl + "/Agent", data,{ observe: 'response' });
   }
@@ -303,5 +302,12 @@ export class AdminService {
   updateDocument(updatedDocument: any): Observable<any> {
     return this.http.put(`${this.backendUrl}`,updatedDocument);
   } 
+  payments(page: number, size: number): Observable<any> {
   
+    return this.http.get(`${this.baseUrl}/Payment?PageNumber=${page}&PageSize=${size}`, { observe:'response' });
+  }
+  // getTotalCommissionByAgent(id: string): Observable<any> {
+  //   return this.http.get<any>(`${this.baseUrl}/WithdrawalRequest/agent/${id}/total-commission`, { observe:'response' });
+  // }
+ 
 }

@@ -110,6 +110,10 @@ onSubmitData(): void {
         // If role is Customer, store ID as well
         if (this.role.roleName === 'Customer') {
           localStorage.setItem('id', this.role.customerId); // Assuming `id` is the property for the user ID
+        }else if (this.role.roleName === 'Agent') {
+          localStorage.setItem('id', this.role.customerId); // Assuming `id` is the property for the user ID
+        }else if (this.role.roleName === 'Employee') {
+          localStorage.setItem('id', this.role.customerId); // Assuming `id` is the property for the user ID
         }
 
         // Redirect based on roleName

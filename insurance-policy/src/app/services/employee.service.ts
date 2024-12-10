@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -56,9 +56,14 @@ getCustomerQueries(pageNumber: number, pageSize: number, searchQuery?: string): 
    * @param queryId The ID of the complaint to resolve
    * @returns Observable with the resolution response
    */
-  resolveComplaint(queryId: string): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${queryId}/resolve`, {}, { observe: 'response' });
+  resolveComplaint(queryId: string, response: string, employeeId: string): Observable<any> {
+    const params = new HttpParams()
+      .set('response', response)
+      .set('employeeId', employeeId);
+  
+    return this.http.put<any>(`${this.baseUrl}/CustomerQuery/${queryId}/resolve`, null, { params });
   }
+  
 
   /**
    * Fetch all complaints for a specific customer by their ID.

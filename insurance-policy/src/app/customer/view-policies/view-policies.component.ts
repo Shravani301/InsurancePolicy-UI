@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -19,18 +19,24 @@ export class ViewPoliciesComponent {
   pageSizes: number[] = [5, 10, 20, 30];
   pageSize = this.pageSizes[0];
   isSwitchOn = true; // Controls whether to show purchased or applied policies
-
+  userId:any='';
+  role:any='';
   constructor(private customer: CustomerService, private router: Router, private location: Location,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.getPolicies();
+    this.role = localStorage.getItem('role');
   }
 
   getPolicies() {
-    const userId = localStorage.getItem("id")!;
-    this.customer.getPolicies(userId, this.currentPage, this.pageSize).subscribe({
+    this.userId = localStorage.getItem("id")!;
+    if(!this.userId) {
+      this.userId=this.activatedRoute.snapshot.paramMap.get('id');
+    }
+    this.customer.getPolicies(this.userId, this.currentPage, this.pageSize).subscribe({
       next: (response) => {
         const paginationHeader = response.headers.get('X-Pagination');
         if (paginationHeader) {

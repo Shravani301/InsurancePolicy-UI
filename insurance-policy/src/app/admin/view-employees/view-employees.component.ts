@@ -49,23 +49,55 @@ export class ViewEmployeesComponent implements OnInit {
   getEmployees(): void {
     this.admin.getEmployees(this.currentPage, this.pageSize).subscribe({
       next: (response) => {
+        const headers = {
+          currentPage: parseInt(response.headers.get('X-Current-Page') || '1', 10),
+          hasNext: response.headers.get('X-Has-Next') === 'true',
+          hasPrevious: response.headers.get('X-Has-Previous') === 'true',
+          totalPages: parseInt(response.headers.get('X-Total-Pages') || '0', 10),
+          totalCount: parseInt(response.headers.get('X-Total-Count') || '0', 10),
+        };
+
+        // Set pagination properties
+        this.currentPage = headers.currentPage;
+        this.hasNext = headers.hasNext;
+        this.hasPrev = headers.hasPrevious;
+        this.totalPages = headers.totalPages;
+        this.totalEmployeeCount = headers.totalCount;
+
+        // Log raw response for debugging
+        console.log('API Response:', response);
+  
+        // Check if pagination header exists
         const paginationHeader = response.headers.get('X-Pagination');
         if (paginationHeader) {
+          console.log('Pagination Header:', paginationHeader);
           const paginationData = JSON.parse(paginationHeader);
-          this.totalEmployeeCount = paginationData.TotalCount;
-          this.totalPages = paginationData.TotalPages;
-          this.hasNext = paginationData.HasNext;
-          this.hasPrev = paginationData.HasPrevious;
+  
+  
+          console.log('Parsed Pagination Data:', {
+            TotalCount: this.totalEmployeeCount,
+            TotalPages: this.totalPages,
+            HasNext: this.hasNext,
+            HasPrev: this.hasPrev,
+          });
+        } else {
+          console.warn('Pagination header is missing.');
         }
+  
+        // Update employee data
         this.employees = response.body || [];
         this.filteredEmployees = [...this.employees];
+  
+        console.log('Employees:', this.employees);
       },
-      error: () => {
+      error: (error) => {
+        console.error('Failed to fetch employees:', error);
         this.employees = [];
-        console.error('Failed to fetch employees.');
-      }
+        this.filteredEmployees = [];
+      },
     });
   }
+  
 
   sortEmployees(): void {
     if (this.sortColumn) {
@@ -91,15 +123,17 @@ export class ViewEmployeesComponent implements OnInit {
     return (this.currentPage - 1) * this.pageSize + index + 1;
   }
 
+  
   changePage(page: number): void {
-    if (page > 0 && page <= this.totalPages) {
+    if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.getEmployees();
+      this.getEmployees(); // Fetch data for the new page
     }
   }
 
   onPageSizeChange(event: Event): void {
     this.pageSize = +(event.target as HTMLSelectElement).value;
+    this.currentPage = 1;
     this.getEmployees();
   }
 

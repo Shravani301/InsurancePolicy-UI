@@ -44,15 +44,16 @@
                     {{ installment.status === 1 ? 'Paid' : 'Unpaid' }}
                 </span>
             </td>
+           
             <td>
-                <button 
-                  class="btn btn-primary"
-                  [routerLink]="['/payment']" 
-                  [queryParams]="{ amount: installment.amountDue }">
-                  Pay Now
-                </button>
-              </td>
-              
+              <button
+                [disabled]="!isPayButtonEnabled(installment.dueDate)"
+                class="btn btn-primary"
+                (click)="handlePayment(installment)"
+              >
+                Pay
+              </button>
+            </td>            
         </tr>
     </tbody>
 </table><div class="d-flex justify-content-between align-items-center mt-4">

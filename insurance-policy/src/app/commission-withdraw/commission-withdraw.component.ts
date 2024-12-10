@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-commission-withdraw',
@@ -23,7 +24,7 @@ export class CommissionWithdrawComponent implements OnInit {
   selectedRequestId: string = '';
   rejectReason: string = '';
 
-  constructor(private adminService: AdminService, private location: Location) {}
+  constructor(private adminService: AdminService, private location: Location,private toastService:ToastService) {}
 
   ngOnInit(): void {
     this.getWithdrawalRequests();
@@ -55,11 +56,11 @@ export class CommissionWithdrawComponent implements OnInit {
   approveWithdrawal(requestId: string): void {
     this.adminService.approveWithdrawalRequest(requestId).subscribe({
       next: () => {
-        alert('Withdrawal request approved successfully.');
+        this.toastService.showToast("success",'Withdrawal request approved successfully.');
         this.getWithdrawalRequests();
       },
       error: (error: HttpErrorResponse) => {
-        alert('Failed to approve the withdrawal request.');
+        this.toastService.showToast("error",'Failed to approve the withdrawal request.');
         console.error(error);
       },
     });
@@ -70,13 +71,8 @@ export class CommissionWithdrawComponent implements OnInit {
     this.showRejectBox = !this.showRejectBox;
   }
 
-  rejectWithdrawal(): void {
-    if (!this.rejectReason.trim()) {
-      alert('Please provide a reason for rejection.');
-      return;
-    }
-
-    this.adminService.rejectWithdrawalRequest(this.selectedRequestId, this.rejectReason).subscribe({
+  rejectWithdrawal(requestId: string): void {
+    this.adminService.rejectWithdrawalRequest(this.selectedRequestId).subscribe({
       next: () => {
         alert('Withdrawal request rejected successfully.');
         this.toggleRejectBox();
@@ -88,10 +84,26 @@ export class CommissionWithdrawComponent implements OnInit {
       },
     });
   }
-
-  toggleTotalCommission(requestId: string): void {
-    this.showTotalCommissions[requestId] = !this.showTotalCommissions[requestId];
+  
+  toggleTotalCommission(requestId: any): void {
+    // Check if the commission is already toggled
+    if (this.showTotalCommissions[requestId]) {
+      // Hide the commission by toggling to `false`
+      this.showTotalCommissions[requestId] = false;
+    } else {
+      // Fetch the commission from the API
+      this.adminService.getTotalCommissionByAgent(requestId).subscribe({
+        next: (response) => {
+          const totalCommission = response.body.totalCommission; // Extract the total commission
+          this.showTotalCommissions[requestId] = totalCommission; // Save it for display
+        },
+        error: () => {
+          console.error('Failed to fetch total commission');
+        },
+      });
+    }
   }
+  
 
   onSearch(): void {
     const lowerQuery = this.searchQuery.toLowerCase();

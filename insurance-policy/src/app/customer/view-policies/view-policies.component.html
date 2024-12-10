@@ -89,11 +89,11 @@
                 View More
               </button>
               <button 
-                *ngIf="isSwitchOn" 
-                class="btn btn-danger" 
-                (click)="Payments(policy)">
-                Payments
-              </button>
+  *ngIf="isSwitchOn && role === 'Customer'" 
+  class="btn btn-danger" 
+  (click)="Payments(policy)">
+  Payments
+</button>
               <span *ngIf="!isSwitchOn">Under Verification</span>
             </td>
           </tr>

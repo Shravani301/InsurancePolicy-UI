@@ -89,7 +89,7 @@ export class CustomerService {
 
   // Get tax percentage
   getTaxPercent(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/tax`);
+    return this.http.get<any>(`${this.apiUrl}/TaxSettings`);
   }
 
   // Register a claim
@@ -99,7 +99,7 @@ export class CustomerService {
 
   // Make a payment
   makePayment(payment: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/payments`, payment);
+    return this.http.post<any>(`${this.apiUrl}/Payment`, payment);
   } 
   getDocumentTypes(): Observable<any[]> {
     return this.http.get<any[]>(`${this.backendUrl}/types`);
@@ -161,9 +161,10 @@ export class CustomerService {
       observe: 'response',
     });
   }  
-
-
-
-
-
+  updateInstallment(installment:any): Observable<any> {
+    const url = `${this.apiUrl}/Installment`;
+    return this.http.put(url,installment, {
+      observe: 'response',
+    });
+  }  
 }

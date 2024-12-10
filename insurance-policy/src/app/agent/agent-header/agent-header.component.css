@@ -1,0 +1,87 @@
+body {
+    background-color: #f3faf4;
+  }
+  .logo {
+    height: 40px; /* Adjust the height as needed */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Add some spacing between the logo and the title */
+    vertical-align: middle; /* Align vertically with the text */
+    border-radius: 70%;
+  }
+ 
+  .navbar-brand {
+    display: flex;
+    align-items: center; /* Align logo and text vertically */
+    font-size: 1.5rem;
+    color: #00d1b2 !important; /* Accent color for the brand */
+  }
+ 
+  .navbar {
+    padding: 10px 20px; /* Add padding to the navbar for better spacing */
+  }
+ 
+  .nav-link {
+    color: #ffffff !important; /* Text color for links */
+    margin-right: 15px;
+    font-weight: 500;
+  }
+ 
+  .nav-link:hover {
+    color: #00d1b2 !important; /* Accent color on hover */
+  }
+ 
+  .dropdown-menu.dropdown-dark {
+    background-color: #00334e; /* Slightly lighter dark shade for dropdown */
+    border: none;
+  }
+ 
+  .dropdown-item {
+    color: #ffffff !important;
+  }
+ 
+  .dropdown-item:hover {
+    background-color: #005a78; /* Highlight color for dropdown items */
+  }
+ 
+  .header {
+    background-color: #001f3f; /* Dark shade for header */
+    padding: 10px 0;
+  }
+ 
+  .navbar-brand {
+    font-size: 1.5rem;
+    color: #00d1b2 !important; /* Accent color for the brand */
+  }
+ 
+  .nav-link {
+    color: #ffffff !important; /* Text color for links */
+    margin-right: 15px;
+    font-weight: 500;
+  }
+ 
+  .nav-link:hover {
+    color: #00d1b2 !important; /* Accent color on hover */
+  }
+ 
+  .dropdown-menu.dropdown-dark {
+    background-color: #00334e; /* Slightly lighter dark shade for dropdown */
+    border: none;
+  }
+ 
+  .dropdown-item {
+    color: #ffffff !important;
+  }
+ 
+  .dropdown-item:hover {
+    background-color: #005a78; /* Highlight color for dropdown items */
+  }
+ 
+  .btn-logout {
+    color: #ffffff;
+    background-color: #ff3860; /* Danger button for logout */
+    border: none;
+  }
+ 
+  .btn-logout:hover {
+    background-color: #ff1c41; /* Darker shade on hover */
+  }

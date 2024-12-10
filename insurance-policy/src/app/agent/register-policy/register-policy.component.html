@@ -1,0 +1,409 @@
+<div class="wrapper">
+    <app-customer-header></app-customer-header>
+    <div class="top_link">
+      <button (click)="goBack()" class="btn-back ms-3 mt-2">
+        Back
+      </button>
+    </div>
+    <div class="container">
+      <!-- Customer Details Section -->
+      <div class="container-title">Insurance Policy</div>
+  
+      <div class="section">
+        <h4 (click)="toggleSection('customerDetails')">Customer Details</h4>
+        <div *ngIf="openSections['customerDetails']">
+          <table class="table">
+            <tbody>
+             <tr>
+                <td>First Name</td>
+                <td><input type="text" class="form-control" [value]="customerDetail.customerFirstName" readonly /></td>
+              </tr>
+              <tr>
+                <td>Last Name</td>
+                <td><input type="text" class="form-control" [value]="customerDetail.customerLastName" readonly /></td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td><input type="email" class="form-control" [value]="customerDetail.email" readonly /></td>
+              </tr>
+              <tr>
+                <td>Phone</td>
+                <td><input type="text" class="form-control" [value]="customerDetail.phone" readonly /></td>
+              </tr>
+              <tr>
+                <td>HouseNo</td>
+                <td><input type="text" class="form-control" [value]="customerDetail.houseNo" readonly /></td>
+              </tr>
+              <tr>
+                <td>ApartMent</td>
+                <td><input type="text" class="form-control" [value]="customerDetail.apartment" readonly /></td>
+              </tr>
+              <tr>
+                <td>City</td>
+                <td><input type="text" class="form-control" [value]="customerDetail.city" readonly /></td>
+              </tr>
+              <tr>
+                <td>State</td>
+                <td><input type="text" class="form-control" [value]="customerDetail.state" readonly /></td>
+              </tr>
+              <tr>
+                <td>Pincode</td>
+                <td><input type="number" class="form-control" [value]="customerDetail.pincode" readonly /></td>
+              </tr>      
+  
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+      <!-- Scheme Details Section -->
+      <div class="section">
+        <h4 (click)="toggleSection('schemeDetails')">Scheme Details</h4>
+        <div *ngIf="openSections['schemeDetails']">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>Plan Name</td>
+                <td><input type="text" class="form-control" [value]="schemeData.planName" readonly>
+                </td>
+              </tr>
+              <tr>
+                <td>Scheme Name</td>
+                <td><input type="text" class="form-control" [value]="schemeData.schemeName" readonly /></td>
+              </tr>
+              <tr>
+                <td>Description</td>
+                <td><textarea class="form-control" [value]="schemeData.description" readonly></textarea></td>
+              </tr>
+              <tr>
+                <td>Profit Ratio</td>
+                <td><input type="text" class="form-control" [value]="schemeData.profitRatio" readonly /></td>
+              </tr>
+              <tr>
+                <td>Age Limit</td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [value]="schemeData.minAge + ' - ' + schemeData.maxAge +'years'"
+                    readonly
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Investment Time</td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [value]="schemeData.minInvestTime + ' - ' + schemeData.maxInvestTime +' months'"
+                    readonly
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>premiumAmount Limit</td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [value]="schemeData.minAmount + ' - ' + schemeData.maxAmount"
+                    readonly
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Required Documents</td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [value]="mappedRequiredDocuments.join(', ')"
+                    readonly
+                  />
+                </td>
+              </tr>            
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+      <!-- Policy Details Section -->
+      <div class="section">
+        <h4 (click)="toggleSection('policyDetails')">Policy Details</h4>
+        <div *ngIf="openSections['policyDetails']">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>Premium Type</td>
+                <td>
+                  <select class="form-control" [(ngModel)]="policy.premiumType" (change)="onPremiumTypeChange()">
+                    <option *ngFor="let type of premiumTypes" [value]="type">{{ type }}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Investment Amount</td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="policy.premiumAmount"
+                    [min]="schemeData.minAmount"
+                    [max]="schemeData.maxAmount"
+                    placeholder="Enter amount between {{schemeData.minAmount}} and {{schemeData.maxAmount}}"
+                    (blur)="validatePremiumAmount()"
+                  />
+                </td>
+              </tr>
+              
+              <tr>
+                <td>Policy Term</td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="policy.policyTerm"
+                    [min]="schemeData.minInvestTime"
+                    [max]="schemeData.maxInvestTime"
+                    placeholder="Enter term between {{schemeData.minInvestTime}} and {{schemeData.maxInvestTime}} months"
+                    (blur)="validatePolicyTerm()"
+                  />
+                </td>
+              </tr>
+              
+              
+              <tr>
+                <td>Maturity Date</td>
+                <td><input type="text" class="form-control" [value]="policy.maturityDate | date: 'dd-MM-yyyy'" readonly /></td>
+              </tr>
+              <tr>
+                <td>Sum Assured</td>
+                <td><input type="text" class="form-control" [value]="policy.sumAssured + ' %'" readonly /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+    <!-- Agents Section -->
+    <div class="section" *ngIf="agentName">
+      <h4 (click)="toggleSection('agents')">Agent</h4>
+      <div *ngIf="openSections['agents']">
+        <input
+          type="text"
+          class="form-control"
+          [value]="agentName"
+          readonly
+        />
+      </div>
+    </div>
+    
+      <!-- Documents Section -->
+      <div class="section">
+        <h4 (click)="toggleSection('documents')">Documents</h4>
+        <div *ngIf="openSections['documents']">
+          <table class="table table-layout">
+            <tbody>
+              <tr *ngFor="let doc of mappedRequiredDocuments; let i = index">
+                <td>{{ doc }}</td>
+                <td>
+                  <input
+                    type="file"
+                    class="form-control"
+                    (change)="handleFileSelection($event, i)"
+                    *ngIf="!uploadedDocuments[doc]"
+                  />
+                </td>
+                <td>
+                  <button
+                    class="btn btn-primary"
+                    (click)="uploadFile(i)"
+                    [disabled]="!selectedFiles[i]"
+                    *ngIf="!uploadedDocuments[doc]"
+                  >
+                    Upload
+                  </button>
+                  <a
+                    *ngIf="uploadedDocuments[doc]"
+                    href="javascript:void(0)"
+                    (click)="viewDocument(uploadedDocuments[doc])"
+                    class="btn btn-link"
+                  >
+                    View
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+      <!-- View Modal -->
+      <div
+        class="modal-overlay"
+        *ngIf="showModal"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(0, 0, 0, 0.8);
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1050;
+        "
+      >
+        <div
+          class="modal-content"
+          style="
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+          "
+        >
+          <div *ngIf="loading" class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <img
+            *ngIf="!loading"
+            [src]="modalImageURL"
+            alt="Document Preview"
+            class="img-fluid"
+          />
+          <button
+            class="btn btn-secondary mt-3"
+            (click)="closeModal()"
+            style="position: absolute; top: 10px; right: 10px;"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+  
+  
+      <!-- Nominee Section -->
+      <div class="section">
+        <h4 (click)="toggleSection('nominee')">Nominee</h4>
+        <div *ngIf="openSections['nominee']">
+          <table class="table table-layout">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Relationship</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let nominee of policy.nominees; let i = index">
+                <td>
+                  <input
+                    [(ngModel)]="nominee.name"
+                    placeholder="Enter nominee name"
+                    class="form-control"
+                  />
+                </td>
+                <td>
+                  <select
+                    [(ngModel)]="nominee.relation"
+                    class="form-control"
+                    placeholder="Select relationship"
+                  >
+                    <option *ngFor="let rel of relationships" [value]="rel">
+                      {{ rel }}
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-danger"
+                    (click)="removeNominee(i)"
+                    [disabled]="policy.nominees.length === 1"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-primary mt-2" (click)="addNominee()">
+            Add Nominee
+          </button>
+        </div>
+      </div>
+      
+      <button class="btn btn-success mt-3" (click)="addPolicy()">Apply</button>
+    </div>
+  </div>
+  <!-- Customer Selection Modal -->
+  <div
+  class="modal-overlay"
+  *ngIf="showCustomerSelectionModal"
+  style="display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.8); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1050;"
+>
+  <div
+    class="modal-content"
+    style="max-width: 600px; background: #fff; padding: 20px; border-radius: 8px; text-align: center; position: relative;"
+  >
+    <h4>Select a Customer</h4>
+    <!-- Search Input -->
+    <div style="margin-bottom: 15px;">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="searchQuery"
+        (input)="filterCustomers()"
+        placeholder="Search customers by name or email"
+        style="width: 100%;"
+      />
+    </div>
+    <div style="overflow-y: auto; max-height: 400px; margin-top: 15px;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Customer Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of filteredCustomers">
+            <td>
+              <input
+                type="radio"
+                name="selectedCustomer"
+                (change)="selectCustomer(customer)"
+              />
+            </td>
+            <td>{{ customer.customerFirstName }} {{ customer.customerLastName }}</td>
+            <td>{{ customer.email }}</td>
+          </tr>
+          <tr *ngIf="filteredCustomers.length === 0">
+            <td colspan="3" class="text-center">No customers found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-primary mt-3"
+      (click)="confirmCustomerSelection()"
+      [disabled]="!selectedCustomer"
+    >
+      Confirm Selection
+    </button>
+    <button
+      class="btn btn-secondary mt-3"
+      (click)="closeCustomerSelectionModal()"
+      style="position: absolute; top: 10px; right: 10px;"
+    >
+      Close
+    </button>
+  </div>
+</div>
+
+  <app-footer-end></app-footer-end>

@@ -66,6 +66,10 @@ import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payme
 import { AddSchemeComponent } from './admin/add-scheme/add-scheme.component';
 import { ViewPaymentsComponent } from './admin/view-payments/view-payments.component';
 import { CustomerDocumentsComponent } from './admin/customer-documents/customer-documents.component';
+import { AgentLandingComponent } from './agent/agent-landing/agent-landing.component';
+import { CustomerRegistrationComponent } from './agent/customer-registration/customer-registration.component';
+import { ViewCommissionsComponent } from './agent/view-commissions/view-commissions.component';
+import { RegisterPolicyComponent } from './agent/register-policy/register-policy.component';
 
 @NgModule({
   declarations: [
@@ -121,6 +125,10 @@ import { CustomerDocumentsComponent } from './admin/customer-documents/customer-
     AddSchemeComponent,
     ViewPaymentsComponent,
     CustomerDocumentsComponent,
+    AgentLandingComponent,
+    CustomerRegistrationComponent,
+    ViewCommissionsComponent,
+    RegisterPolicyComponent,
 
     
   ],

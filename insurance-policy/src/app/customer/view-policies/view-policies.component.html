@@ -66,7 +66,7 @@
             <th>Issue Date</th>
             <th>Maturity Date</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -89,13 +89,22 @@
                 View More
               </button>
               <button 
-  *ngIf="isSwitchOn && role === 'Customer'" 
-  class="btn btn-danger" 
-  (click)="Payments(policy)">
-  Payments
-</button>
+              *ngIf="isSwitchOn && role === 'Customer'" 
+              class="btn btn-warning me-2"
+              (click)="addClaim(policy)">
+                Claim Request
+                
+              </button>
+              <button 
+                *ngIf="isSwitchOn && role === 'Customer'" 
+                class="btn btn-danger" 
+                (click)="Payments(policy)">
+                Payments
+              </button>             
+              
               <span *ngIf="!isSwitchOn">Under Verification</span>
             </td>
+            
           </tr>
         </tbody>
         <tfoot *ngIf="policies.length === 0">

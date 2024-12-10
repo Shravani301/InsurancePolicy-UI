@@ -19,6 +19,7 @@ export class ShowPlansComponent {
   pageSize = this.pageSizes[0];
   searchQuery = '';
   isSearch = false;
+  role:any='';
 
   totalPages = 0;
   hasNext = false;
@@ -32,6 +33,7 @@ export class ShowPlansComponent {
   ) {}
 
   ngOnInit(): void {
+    this.role = localStorage.getItem('role');
     this.getPlans();
   }
 
@@ -117,8 +119,11 @@ export class ShowPlansComponent {
 
   viewScheme(plan: any): void {
     if (plan && plan.planId) {
-      this.router.navigate(['customer/viewScheme/', plan.planId]);
-    } else {
+      if(this.role==='Customer')  
+        this.router.navigate(['customer/viewScheme/', plan.planId]);
+      else if(this.role==='Agent')
+        this.router.navigate(['agent/viewScheme/', plan.planId]);
+      } else {
       this.toastService.showToast('error', 'Invalid plan selected.');
     }
   }

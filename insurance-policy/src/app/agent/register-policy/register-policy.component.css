@@ -1,0 +1,186 @@
+/* General container styling */
+.wrapper {
+    background-color: #f3faf4;
+    min-height: 93vh;
+    padding-bottom: 10px;
+  }
+  
+.container {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8); /* Glassy effect */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px); /* Glass effect */
+}
+
+/* Title styling */
+.container-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: rgba(0, 0, 0, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Table layout for consistent alignment */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures consistent column widths */
+}
+
+table tr {
+    height: 35px; /* Reduced row height */
+    transition: background-color 0.2s ease;
+}
+
+table tr:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Hover effect for rows */
+}
+
+/* Ensure first column width is consistent */
+table td:first-child {
+    width: 30%; /* Fixed width for labels */
+    text-align: left;
+    vertical-align: middle;
+    padding: 8px 10px; /* Consistent padding */
+}
+
+/* Second column (input fields) styling */
+table td:last-child {
+    width: 70%; /* Fixed width for input fields */
+    vertical-align: middle;
+    padding: 8px 10px; /* Consistent padding */
+}
+
+/* Form field styling */
+table td input,
+table td select,
+table td textarea {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.7); /* Light transparency for glassy look */
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Focus state for fields */
+table td input:focus,
+table td select:focus,
+table td textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly less transparent on focus */
+}
+
+/* Styling for readonly fields */
+table td input[readonly],
+table td select[readonly],
+table td textarea[readonly] {
+    color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(211, 211, 211, 0.5); /* Light ash color for readonly fields */
+    cursor: not-allowed;
+}
+
+/* Section header styling */
+.section h4 {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    table td:first-child {
+        width: auto; /* Allow flexible width on smaller screens */
+    }
+}
+/* Table layout for consistent alignment */
+.table-layout {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  .table-layout td {
+    vertical-align: middle;
+    padding: 8px;
+  }
+  
+  .table-layout td:first-child {
+    width: 30%; /* Fixed width for the label column */
+  }
+  
+  .table-layout td:nth-child(2) {
+    width: 40%; /* Fixed width for the input field */
+  }
+  
+  .table-layout td.action-buttons {
+    width: 30%; /* Fixed width for buttons */
+    text-align: right; /* Align buttons to the right */
+  }
+  
+  /* Form input styles */
+  .table-layout input,
+  .table-layout select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .table-layout input[readonly],
+  .table-layout select[readonly] {
+    background-color: #f5f5f5;
+    color: #777;
+  }
+  
+  /* Buttons */
+  .btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333;
+  }
+  
+  .btn-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .btn-link:hover {
+    text-decoration: underline;
+  }

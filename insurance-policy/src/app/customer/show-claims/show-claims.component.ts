@@ -138,6 +138,7 @@ export class ShowClaimsComponent implements OnInit {
       if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
+
   }
 
   toggleSort(column: string): void {
@@ -145,4 +146,5 @@ export class ShowClaimsComponent implements OnInit {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.sortClaims();
   }
+ 
 }

@@ -24,7 +24,7 @@ export class ShowSchemesComponent implements OnInit {
   userRole: string = ''; // To store the role of the logged-in user
   customerId: number = parseInt(localStorage.getItem('id') || '0', 10); // Customer ID from local storage
   associatedSchemes: Record<number, boolean> = {}; // Store association status per scheme
-
+role:any='';
   constructor(
     private admin: AdminService,
     private customerService: CustomerService,
@@ -36,6 +36,7 @@ export class ShowSchemesComponent implements OnInit {
 
   ngOnInit(): void {
     const idParam = this.activatedRoute.snapshot.paramMap.get('id');
+    this.role = localStorage.getItem('role') || 'Customer';
     if (idParam) {
       this.planId = idParam;
       this.getSchemes();
@@ -133,7 +134,7 @@ export class ShowSchemesComponent implements OnInit {
       .isCustomerAssociatedWithScheme(scheme.schemeId, this.customerId)
       .subscribe({
         next: (response) => {
-          if (response.IsAssociated) {
+          if (!response.IsAssociated) {
             // Redirect only if the customer is associated with the scheme
             this.router.navigateByUrl(`/customer/buyPolicy/${scheme.schemeId}`);
           } else {
@@ -156,5 +157,10 @@ export class ShowSchemesComponent implements OnInit {
 
   isAssociated(schemeId: number): boolean {
     return this.associatedSchemes[schemeId] || false;
+  }
+  registerPolicy(scheme: any): void {
+    this.router.navigateByUrl(`/agent/registerPolicy/${scheme.schemeId}`);
+    console.log('Registering policy:', scheme);
+    // Implement the logic for registering a policy
   }
 }

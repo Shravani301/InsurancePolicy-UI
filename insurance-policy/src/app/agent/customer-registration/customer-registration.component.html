@@ -1,0 +1,193 @@
+<div class="registration-form-container">
+    <h2>Registration Form</h2>
+    <a routerLink="/agent-dashboard">backtohome</a>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmitData()">
+      <div class="form-card scrollable-form">
+        <!-- First Name and Last Name -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name <span class="required">*</span></label>
+            <input
+              id="firstName"
+              class="form-control glossy-input"
+              formControlName="customerFirstName"
+              placeholder="Enter First Name"
+            />
+            <div *ngIf="isInvalid('customerFirstName')" class="error">
+              First Name is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name <span class="required">*</span></label>
+            <input
+              id="lastName"
+              class="form-control glossy-input"
+              formControlName="customerLastName"
+              placeholder="Enter Last Name"
+            />
+            <div *ngIf="isInvalid('customerLastName')" class="error">
+              Last Name is required.
+            </div>
+          </div>
+        </div>
+  
+        <!-- Email and Phone -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input
+              id="email"
+              class="form-control glossy-input"
+              formControlName="email"
+              placeholder="Enter Email"
+            />
+            <div *ngIf="isInvalid('email')" class="error">Valid email is required.</div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone <span class="required">*</span></label>
+            <input
+              id="phone"
+              class="form-control glossy-input"
+              formControlName="phone"
+              placeholder="Enter Phone Number"
+            />
+            <div *ngIf="isInvalid('phone')" class="error">
+              Valid 10-digit phone number is required.
+            </div>
+          </div>
+        </div>
+  
+        <!-- Username -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="userName">Username <span class="required">*</span></label>
+            <input
+              id="userName"
+              class="form-control glossy-input"
+              formControlName="userName"
+              placeholder="Enter Username"
+            />
+            <div *ngIf="isInvalid('userName')" class="error">Username is required.</div>
+          </div>
+        </div>
+  
+        <!-- Password and Confirm Password -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Password <span class="required">*</span></label>
+            <div class="password-wrapper">
+              <input
+                [type]="hidePassword ? 'password' : 'text'"
+                id="password"
+                class="form-control glossy-input"
+                formControlName="password"
+                placeholder="Enter Password"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                (click)="togglePasswordVisibility()"
+              >
+                <i
+                  [ngClass]="hidePassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                ></i>
+              </button>
+            </div>
+            <div *ngIf="isInvalid('password')" class="error">
+              Password must include uppercase, lowercase, number, and special character.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+            <div class="password-wrapper">
+              <input
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+                id="confirmPassword"
+                class="form-control glossy-input"
+                formControlName="confirmPassword"
+                placeholder="Confirm Password"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                (click)="toggleConfirmPasswordVisibility()"
+              >
+                <i
+                  [ngClass]="hideConfirmPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                ></i>
+              </button>
+            </div>
+            <div *ngIf="registrationForm.hasError('passwordMismatch', 'confirmPassword')" class="error">
+              Passwords must match.
+            </div>
+          </div>
+        </div>
+  
+        <!-- Address -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="houseNo">House No <span class="required">*</span></label>
+            <input
+              id="houseNo"
+              class="form-control glossy-input"
+              formControlName="houseNo"
+              placeholder="Enter House Number"
+            />
+            <div *ngIf="isInvalid('houseNo')" class="error">House No is required.</div>
+          </div>
+          <div class="form-group">
+            <label for="apartment">Apartment <span class="required">*</span></label>
+            <input
+              id="apartment"
+              class="form-control glossy-input"
+              formControlName="apartment"
+              placeholder="Enter Apartment Name"
+            />
+            <div *ngIf="isInvalid('apartment')" class="error">Apartment is required.</div>
+          </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+              <label for="pincode">Pincode <span class="required">*</span></label>
+              <input
+                id="pincode"
+                class="form-control glossy-input"
+                formControlName="pincode"
+                placeholder="Enter Pincode"
+              />
+              <div *ngIf="isInvalid('pincode')" class="error">Valid 6-digit pincode is required.</div>
+            </div>
+          </div>
+    
+        <!-- City and State -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City <span class="required">*</span></label>
+            <input
+              id="city"
+              class="form-control glossy-input"
+              formControlName="city"
+              placeholder="Enter City"
+            />
+            <div *ngIf="isInvalid('city')" class="error">City is required.</div>
+          </div>
+          <div class="form-group">
+            <label for="state">State <span class="required">*</span></label>
+            <input
+              id="state"
+              class="form-control glossy-input"
+              formControlName="state"
+              placeholder="Enter State"
+            />
+            <div *ngIf="isInvalid('state')" class="error">State is required.</div>
+          </div>
+          
+        </div>
+  
+        <!-- Submit -->
+        <button type="submit" class="btn-register" [disabled]="registrationForm.invalid">Register</button>
+      </div>
+    </form>
+    <p-toast></p-toast>
+  </div>
+  

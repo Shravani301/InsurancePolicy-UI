@@ -76,10 +76,11 @@
                 <button
                   *ngIf="!isAssociated(scheme.schemeId)"
                   class="btn btn-success"
-                  (click)="buyPolicy(scheme)"
+                  (click)="role === 'Customer' ? buyPolicy(scheme) : registerPolicy(scheme)"
                 >
-                  Buy Policy
+                  {{ role === 'Customer' ? 'Buy Policy' : 'Register Policy' }}
                 </button>
+
               </td>
               
           </tr>

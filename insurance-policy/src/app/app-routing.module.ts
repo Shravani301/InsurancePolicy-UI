@@ -43,6 +43,12 @@ import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payme
 import { AddSchemeComponent } from './admin/add-scheme/add-scheme.component';
 import { ViewPaymentsComponent } from './admin/view-payments/view-payments.component';
 import { CustomerDocumentsComponent } from './admin/customer-documents/customer-documents.component';
+import { ClaimRequestComponent } from './customer/claim-request/claim-request.component';
+import { AgentHeaderComponent } from './agent/agent-header/agent-header.component';
+import { AgentLandingComponent } from './agent/agent-landing/agent-landing.component';
+import { CustomerRegistrationComponent } from './agent/customer-registration/customer-registration.component';
+import { ViewCommissionsComponent } from './agent/view-commissions/view-commissions.component';
+import { RegisterPolicyComponent } from './agent/register-policy/register-policy.component';
 
 
 const routes: Routes = [
@@ -155,7 +161,7 @@ const routes: Routes = [
       },
             
     ]
-  }, 
+  },
   {
     path: 'admin/addScheme/:id',
     component: AddSchemeComponent
@@ -178,6 +184,10 @@ const routes: Routes = [
   },  
   {
     path: 'customer/viewPlan',
+    component: ShowPlansComponent
+  },
+  {
+    path: 'agent/viewPlan',
     component: ShowPlansComponent
   },
   {
@@ -205,6 +215,10 @@ const routes: Routes = [
     component: ShowAgentsComponent
   },
   {
+    path: 'customer/claimRequest/:id',
+    component: ClaimRequestComponent,
+  },
+  {
     path: 'customer/add-complaint',
     component: ComplaintComponent
   },
@@ -223,6 +237,34 @@ const routes: Routes = [
   {
     path: 'agent-dashboard',
     component: AgentDashboardComponent,
+    children: [
+      {
+        path:'agent-header',  
+        component: AgentHeaderComponent
+      },
+      {
+        path:'',  
+        component: AgentLandingComponent
+      },     
+    ],
+  },
+  {
+    path: 'agent/viewScheme/:id',
+    component: ShowSchemesComponent
+  },
+  {
+    path:'agent/customerRegistration',
+    component:CustomerRegistrationComponent
+
+  },
+  {
+    path:'agent/commissions',
+    component:ViewCommissionsComponent
+
+  },
+  {
+    path: 'agent/registerPolicy/:id',
+    component: RegisterPolicyComponent
   },
   {
     path: 'employee-dashboard',

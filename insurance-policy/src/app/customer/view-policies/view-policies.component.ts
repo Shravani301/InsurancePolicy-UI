@@ -142,4 +142,8 @@ Payments(policy:any)
     }
     this.router.navigateByUrl(`customer/policy/pay/${policy.policyNo}`);
   }
+  addClaim(policy:any): void {
+    //this.router.navigateByUrl(`customer/claimRequest/${policy.policyId}`);
+    this.router.navigate(['/customer/claimRequest', policy.policyId]);
+  }
 }

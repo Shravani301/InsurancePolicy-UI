@@ -14,7 +14,6 @@ export class ViewComplaintsComponent implements OnInit {
   isEmployee = false;
   isAdmin = false;
   isSearch = false;
-  searchQuery: string | undefined;
   currentPage = 1;
   totalComplaintCount = 0;
   queries: any[] = [];
@@ -23,7 +22,8 @@ export class ViewComplaintsComponent implements OnInit {
   pageSize = this.pageSizes[0];
   complaintResponseForm!: FormGroup;
   replyModal: any;
-
+  searchQuery: string = '';
+  filteredQueries: any[] = [];
   private jwtHelper = new JwtHelperService();
 
   constructor(
@@ -83,18 +83,27 @@ export class ViewComplaintsComponent implements OnInit {
 }
 
 
-  // Handle search functionality
-  onSearch(): void {
+onSearch(): void {
+  if (this.searchQuery.trim()) {
     this.isSearch = true;
-    this.getAllQueries();
+    this.filteredQueries = this.queries.filter((query) =>
+      query.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+    
+  );
+  this.queries=this.filteredQueries;
+    this.isSearch = true;
+  } else {
+    this.resetSearch();
   }
+}
 
-  // Reset search filters
-  resetSearch(): void {
-    this.searchQuery = undefined;
-    this.isSearch = false;
-    this.getAllQueries();
-  }
+resetSearch(): void {
+  this.searchQuery = '';
+  this.isSearch = false;
+  this.filteredQueries = [...this.queries]; // Reset filtered data to original customer data
+  this.getAllQueries();
+}
+
 
   // Change the current page
   changePage(page: number): void {

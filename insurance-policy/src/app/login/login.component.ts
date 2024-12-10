@@ -16,7 +16,7 @@ export class LoginComponent {
   myToken: any = '';
   role: any = '';
   captchaText: string = ''; // Captcha text
- 
+  captchaImage: string = '';
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
@@ -44,8 +44,43 @@ export class LoginComponent {
     this.captchaText = Array.from({ length: 6 })
       .map(() => characters[Math.floor(Math.random() * characters.length)])
       .join('');
-  }
  
+      const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+ 
+    if (context) {
+      canvas.width = 150; // Adjust width as needed
+      canvas.height = 40; // Adjust height as needed
+ 
+      // Background color
+      context.fillStyle = '#f2f2f2';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+ 
+      // Add noise (optional)
+      for (let i = 0; i < 50; i++) {
+        context.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.5)`;
+        context.beginPath();
+        context.arc(
+          Math.random() * canvas.width,
+          Math.random() * canvas.height,
+          Math.random() * 3,
+          0,
+          Math.PI * 2
+        );
+        context.fill();
+      }
+ 
+      // CAPTCHA text
+      context.font = '30px Arial';
+      context.fillStyle = '#333';
+      context.textAlign = 'center';
+      context.setTransform(1, 0.1 * (Math.random() - 0.5), 0.1 * (Math.random() - 0.5), 1, 0, 0);
+      context.fillText(this.captchaText, canvas.width / 2, canvas.height / 1.5);
+ 
+      // Convert canvas to base64 image
+      this.captchaImage = canvas.toDataURL('image/png');
+    }
+  }
   // Handle form submission
   // Handle form submission
 onSubmitData(): void {

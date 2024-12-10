@@ -153,4 +153,30 @@ body {
   .signup-prompt a:hover {
     text-decoration: underline;
   }
-  
+  .captcha-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the image and the button */
+    margin-bottom: 10px;
+  }
+ 
+  .captcha-image {
+    filter: blur(1px); /* Apply blur effect */
+    border: 1px solid #ccc;
+    width: 150px;  /* Adjust image width */
+    height: auto;  /* Maintain aspect ratio */
+  }
+ 
+  .refresh-captcha-btn {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+  }
+ 
+  .refresh-captcha-btn:hover {
+    background-color: #45a049;
+  }

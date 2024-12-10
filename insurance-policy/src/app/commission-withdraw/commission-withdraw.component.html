@@ -28,7 +28,6 @@
           <tr>
             <th>Sr.</th>
             <th>Agent Name</th>
-            <th>Customer Name</th>
             <th>Request Type</th>
             <th>Amount</th>
             <th>Status</th>
@@ -41,7 +40,6 @@
           <tr *ngFor="let commission of filteredCommissions; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
             <td>{{ commission.agentName }}</td>
-            <td>{{ commission.customerName }}</td>
             <td>{{ commission.requestType }}</td>
             <td>{{ commission.amount }}</td>
             <td>

@@ -6,7 +6,11 @@
         Back
       </button>
     </div>
-  
+    <div>
+      <button id="button" class="btn btn-secondary m-4" (click)="registerScheme()">
+        Add New Scheme
+      </button>
+    </div>
     <div class="container">
       <h5 class="heading">Plan Schemes</h5>
   
@@ -49,31 +53,136 @@
             <th>Profit %</th>
             <th>Register Commission %</th>
             <th>EMI Commission %</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let scheme of planSchemes; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
-            <td>{{ scheme.schemeName }}</td>
-            <td>&#x20B9;{{ scheme.minAmount }}</td>
-            <td>&#x20B9;{{ scheme.maxAmount }}</td>
-            <td>{{ scheme.minAge }}</td>
-            <td>{{ scheme.maxAge }}</td>
-            <td>{{ scheme.minInvestTime}}</td>
-            <td>{{ scheme.maxInvestTime }}</td>
-            <td>{{ scheme.profitRatio }}</td>
-            <td>{{ scheme.registrationCommRatio }}</td>
-            <td>{{ scheme.installmentCommRatio }}</td>
             <td>
-              <button class="btn btn-primary" (click)="UpdateSchemeData(scheme)">Edit</button>
-              <button class="btn-reset mt-2" (click)="deleteScheme(scheme.schemeId)">Delete</button>
+              <span *ngIf="!scheme.isEditing">{{ scheme.schemeName }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.schemeName"
+                class="form-control"
+                type="text"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">&#x20B9;{{ scheme.minAmount }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.minAmount"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">&#x20B9;{{ scheme.maxAmount }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.maxAmount"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">{{ scheme.minAge }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.minAge"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">{{ scheme.maxAge }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.maxAge"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">{{ scheme.minInvestTime }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.minInvestTime"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">{{ scheme.maxInvestTime }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.maxInvestTime"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">{{ scheme.profitRatio }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.profitRatio"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">{{ scheme.registrationCommRatio }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.registrationCommRatio"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span *ngIf="!scheme.isEditing">{{ scheme.installmentCommRatio }}</span>
+              <input
+                *ngIf="scheme.isEditing"
+                [(ngModel)]="scheme.installmentCommRatio"
+                class="form-control"
+                type="number"
+              />
+            </td>
+            <td>
+              <span [ngClass]="{'text-success': scheme.status, 'text-danger': !scheme.status}">
+                {{ scheme.status ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <button
+                *ngIf="!scheme.isEditing"
+                class="btn btn-primary btn-md mb-2"
+                (click)="editScheme(scheme)"
+              >
+                Edit
+              </button>
+              <button
+                *ngIf="scheme.isEditing"
+                class="btn btn-success btn-md mb-2"
+                (click)="saveScheme(scheme)"
+              >
+                Save
+              </button>
+              <button
+                class="btn btn-warning btn-sm"
+                (click)="togglePlanStatus(scheme)"
+              >
+                {{ scheme.status ? 'InActivate' : 'Activate' }}
+              </button>
             </td>
           </tr>
           <tr *ngIf="planSchemes.length === 0">
             <td colspan="13" class="text-center">No Plan Scheme Data Found</td>
           </tr>
         </tbody>
+        
       </table>
   
       <div class="d-flex justify-content-between align-items-center mt-4">

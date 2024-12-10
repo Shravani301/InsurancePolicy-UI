@@ -1,0 +1,178 @@
+<div class="wrapper">
+    <app-admin-header></app-admin-header>
+    <div class="top_link">
+        <button (click)="goBack()" class="btn-back ms-3 mt-2">
+            <img
+                src="https://drive.google.com/u/0/uc?id=16U__U5dJdaTfNGobB_OpwAJ73vM50rPV&export=download"
+                alt=""
+            />
+            Back
+        </button>
+    </div>
+
+    <div class="container">
+        <h2 class="heading">Register Insurance Scheme</h2>
+        <form [formGroup]="addSchemeForm" class="form-container">
+            <label for="schemeName">Scheme Name</label>
+            <input
+                type="text"
+                id="schemeName"
+                formControlName="schemeName"
+                class="form-control"
+                placeholder="Enter Scheme Name"
+            />
+
+            <label for="schemeImage">Scheme Image</label>
+            <div class="upload-group">
+                <input
+                    type="file"
+                    id="schemeImage"
+                    (change)="onImageSelect($event)"
+                    class="form-control"
+                />
+                <button
+                    type="button"
+                    class="btn btn-primary mt-2"
+                    [disabled]="!selectedFile"
+                    (click)="uploadImage()"
+                >
+                    Upload
+                </button>
+            </div>
+            <!-- <small *ngIf="schemeImageUrl" class="text-success">
+                Image uploaded successfully! URL: {{ schemeImageUrl }}
+            </small>-->
+
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                formControlName="description"
+                class="form-control"
+                placeholder="Enter Description"
+            ></textarea> 
+
+            <label for="minAmount">Min Investment</label>
+            <input
+                type="number"
+                id="minAmount"
+                formControlName="minAmount"
+                class="form-control"
+                placeholder="Enter Minimum Amount"
+            />
+
+            <label for="maxAmount">Max Investment</label>
+            <input
+                type="number"
+                id="maxAmount"
+                formControlName="maxAmount"
+                class="form-control"
+                placeholder="Enter Maximum Amount"
+            />
+
+            <label for="minInvestTime">Min Term (Months)</label>
+            <input
+                type="number"
+                id="minInvestTime"
+                formControlName="minInvestTime"
+                class="form-control"
+                placeholder="Enter Minimum Term"
+            />
+
+            <label for="maxInvestTime">Max Term (Months)</label>
+            <input
+                type="number"
+                id="maxInvestTime"
+                formControlName="maxInvestTime"
+                class="form-control"
+                placeholder="Enter Maximum Term"
+            />
+
+            <label for="minAge">Min Age</label>
+            <input
+                type="number"
+                id="minAge"
+                formControlName="minAge"
+                class="form-control"
+                placeholder="Enter Minimum Age"
+            />
+
+            <label for="maxAge">Max Age</label>
+            <input
+                type="number"
+                id="maxAge"
+                formControlName="maxAge"
+                class="form-control"
+                placeholder="Enter Maximum Age"
+            />
+
+            <label for="profitRatio">Profit %</label>
+            <input
+                type="number"
+                id="profitRatio"
+                formControlName="profitRatio"
+                class="form-control"
+                placeholder="Enter Profit Ratio"
+            />
+
+            <label for="registrationCommRatio">Registration Commission %</label>
+            <input
+                type="number"
+                id="registrationCommRatio"
+                formControlName="registrationCommRatio"
+                class="form-control"
+                placeholder="Enter Registration Commission"
+            />
+
+            <label for="installmentCommRatio">Installment Commission %</label>
+            <input
+                type="number"
+                id="installmentCommRatio"
+                formControlName="installmentCommRatio"
+                class="form-control"
+                placeholder="Enter Installment Commission"
+            />
+
+                <!-- Required Documents Dropdown -->
+<div class="form-group d-flex align-items-center">
+    <label for="requiredDocuments" class="form-label me-3 text-nowrap">Required Documents</label>
+    <div class="dropdown">
+      <button
+        class="btn btn-light dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Select Documents
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li *ngFor="let document of documentTypes">
+          <div class="form-check ms-3">
+            <input
+              type="checkbox"
+              class="form-check-input custom-checkbox"
+              [id]="'checkbox' + document.id"
+              [value]="document.id"
+              (change)="toggleDocumentSelection(document.id)"
+            />
+            <label class="form-check-label" [for]="'checkbox' + document.id">
+              {{ document.name }}
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+                  
+                  
+
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary" (click)="OnCancel()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="addScheme()">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <app-footer-end></app-footer-end>
+</div>

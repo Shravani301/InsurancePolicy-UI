@@ -40,6 +40,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { BuyPolicyComponent } from './customer/buy-policy/buy-policy.component';
 import { ShowClaimsComponent } from './customer/show-claims/show-claims.component';
 import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payments.component';
+import { AddSchemeComponent } from './admin/add-scheme/add-scheme.component';
 
 
 const routes: Routes = [
@@ -153,6 +154,10 @@ const routes: Routes = [
             
     ]
   }, 
+  {
+    path: 'admin/addScheme/:id',
+    component: AddSchemeComponent
+  },
   {
     path: 'customer/profile',
     component: CustomerProfileComponent

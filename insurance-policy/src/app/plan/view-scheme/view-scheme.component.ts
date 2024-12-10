@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-view-scheme',
@@ -24,7 +25,8 @@ export class ViewSchemeComponent implements OnInit {
     private admin: AdminService,
     private location: Location,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -108,16 +110,9 @@ export class ViewSchemeComponent implements OnInit {
   }
 
   addScheme(): void {
-    this.router.navigateByUrl(`/admin/add/scheme/${this.planId}`);
+    this.router.navigateByUrl(`/admin/addScheme/${this.planId}`);
   }
   
-  // buyPolicy(scheme: any): void {
-  //   console.log('Buying policy for scheme:', scheme);
-  //   // Add your logic to navigate or handle the buy policy action
-  // }
-  UpdateSchemeData(scheme: any): void {
-    this.router.navigateByUrl(`/admin/update/scheme/${scheme.schemeId}`);
-  }
 
   deleteScheme(schemeId: number): void {
     if (confirm('Are you sure you want to delete this scheme?')) {
@@ -131,6 +126,62 @@ export class ViewSchemeComponent implements OnInit {
           alert('Failed to delete scheme.');
         },
       });
+    }
+  }
+  editScheme(scheme: any): void {
+    scheme.isEditing = true; // Enable editing mode
+  }
+  
+  saveScheme(scheme: any): void {
+    scheme.isEditing = false; // Disable editing mode
+    // Perform API call to save changes
+    this.updateSchemeData(scheme);
+  }
+  
+  updateSchemeData(scheme: any): void {
+    // Create a shallow copy of the scheme object
+    const schemeToUpdate = { ...scheme };
+  
+    // Remove the isEditing property
+    delete schemeToUpdate.isEditing;
+  
+    // Add the planId to the object
+    schemeToUpdate.planId = this.planId;
+  
+    // API call to update the scheme
+    this.admin.updateScheme(schemeToUpdate).subscribe({
+      next: () => {
+        alert('Scheme updated successfully');
+        this.getSchemes(); // Refresh the schemes list if necessary
+      },
+      error: (err) => {
+        console.error('Error updating scheme:', err);
+      },
+    });
+  }
+  registerScheme(): void {
+    this.router.navigateByUrl(`/admin/addScheme/${this.planId}`);
+  }
+  
+
+  togglePlanStatus(scheme: any): void {
+    if (scheme.status) {
+      // Call the delete API for deactivation
+      this.deleteScheme(scheme.schemeId);
+    } else {
+      // Call the activate API
+      if (confirm('Are you sure you want to activate this scheme?')) {
+        this.admin.activateScheme(scheme.schemeId).subscribe({
+          next: () => {
+            this.toastService.showToast('success', 'scheme activated successfully.');
+            this.getSchemes();
+          },
+          error: (err) => {
+            console.error('Failed to activate scheme:', err);
+            this.toastService.showToast('error', 'Failed to activate the scheme.');
+          },
+        });
+      }
     }
   }
 }

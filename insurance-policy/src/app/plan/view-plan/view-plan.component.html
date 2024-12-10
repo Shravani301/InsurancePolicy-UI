@@ -60,9 +60,13 @@
     </button>
             </td>
             <td>
-              <button class="btn-info" (click)="viewScheme(plan)">
-                View Schemes
-              </button>
+              <button
+              class="btn btn-info"
+              [disabled]="!plan.status"
+              (click)="viewScheme(plan)"
+            >
+              View Schemes
+            </button>
             </td>
           </tr>
           <tr *ngIf="filteredPlans.length === 0">

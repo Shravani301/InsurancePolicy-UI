@@ -15,7 +15,7 @@ export class ViewClaimComponent implements OnInit {
   // Pagination
   totalClaimCount: number = 0;
   currentPage: number = 1;
-  pageSizes: number[] = [1, 2, 5, 10, 15, 20, 30, 40, 50];
+  pageSizes: number[] = [5, 10, 15, 20, 30, 40, 50];
   pageSize: number = this.pageSizes[0];
   totalPages: number = 1;
 

@@ -63,6 +63,7 @@ import { CommonModule } from '@angular/common';
 import { ShowClaimsComponent } from './customer/show-claims/show-claims.component';
 import { ClaimRequestComponent } from './customer/claim-request/claim-request.component';
 import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payments.component';
+import { AddSchemeComponent } from './admin/add-scheme/add-scheme.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { PolicyPaymentsComponent } from './customer/policy-payments/policy-payme
     ShowClaimsComponent,
     ClaimRequestComponent,
     PolicyPaymentsComponent,
+    AddSchemeComponent,
 
     
   ],

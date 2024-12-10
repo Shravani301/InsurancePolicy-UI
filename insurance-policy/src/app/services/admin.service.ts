@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AdminService {
   private baseUrl = 'https://localhost:7052/api';
-
+  private backendUrl = 'https://localhost:7052/api/Document';
   constructor(private http: HttpClient) {}
 
   getProfile(){
@@ -137,7 +137,17 @@ export class AdminService {
     const url = `${this.baseUrl}/InsuranceScheme/Plan/${planId}?pageNumber=${page}&pageSize=${size}`;
     return this.http.get<any>(url, { observe: 'response' });
   }
+  activateScheme(schemeId: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/InsuranceScheme/activate?id=${schemeId}`, { observe: 'response' });
+  }
 
+  updateScheme(scheme: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/InsuranceScheme`,scheme, { observe: 'response' });
+  }
+
+  addScheme(schemeData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/InsuranceScheme`, schemeData);
+  }
   /**
    * Delete an insurance scheme by its ID.
    * @param schemeId The ID of the scheme to delete
@@ -276,4 +286,22 @@ export class AdminService {
     return this.http.put(`${this.baseUrl}/Agent/activate?id=${agentId}`, { observe: 'response' });
   }
 
+  getDocumentTypes(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/Document/types`, { observe:'response' });
+  }
+ 
+  uploadDocument(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file); // Ensure 'file' matches the backend's expected parameter
+
+    return this.http.post(`${this.backendUrl}/upload`, formData); // Correct endpoint
+  }
+
+  saveMetadataToBackend(metadata: any): Observable<any> {
+    return this.http.post(this. backendUrl, metadata);
+  }
+  updateDocument(updatedDocument: any): Observable<any> {
+    return this.http.put(`${this.backendUrl}`,updatedDocument);
+  } 
+  
 }

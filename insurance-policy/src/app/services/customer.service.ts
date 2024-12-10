@@ -22,16 +22,15 @@ export class CustomerService {
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
   
-  isCustomerAssociatedWithScheme(schemeId: number, customerId: number): Observable<{ IsAssociated: boolean }> {
+  isCustomerAssociatedWithScheme(schemeId: number, customerId: number): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`
     });
   
-    return this.http.get<{ IsAssociated: boolean }>(
+    return this.http.get<any>(
       `${this.apiUrl}/InsuranceScheme/${schemeId}/customer/${customerId}/exists`,
-      { headers }
-    );
+      { headers, observe: 'response' });
   }  
   
   getCustomerProfile(id: string): Observable<any> {

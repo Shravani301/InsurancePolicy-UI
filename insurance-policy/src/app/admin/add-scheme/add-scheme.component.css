@@ -1,0 +1,137 @@
+.wrapper {
+    background-color: #f3faf4; /* Page background */
+    min-height: 100vh; /* Ensures the wrapper covers the full viewport height */
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.container {
+    background-color: rgba(252, 252, 252, 0.4);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; /* Ensures the container grows to fill available space */
+    margin-bottom: 20px; /* Adds space between the container and footer */
+    max-width: 800px; /* Limits container width */
+    margin: 0 auto; /* Centers the container */
+}
+
+.heading {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Label and input alignment */
+    column-gap: 20px;
+    row-gap: 20px;
+    align-items: center;
+}
+
+.form-control {
+    width: 100%;
+    border: 2px solid #00d1b2;
+    border-radius: 6px;
+    padding: 10px; /* Added padding for better appearance */
+    font-size: 14px; /* Slightly larger font */
+}
+
+textarea.form-control {
+    resize: none; /* Prevents resizing of the text area */
+    height: 80px; /* Sets a consistent height for the text area */
+}
+
+.form-control:focus {
+    outline: 2px solid #00d1b2;
+    box-shadow: 0 0 4px rgba(0, 209, 178, 0.6);
+}
+
+.error-div small {
+    font-size: 12px;
+    color: #dc3545;
+    grid-column: span 2; /* Error messages span across both columns */
+}
+
+.checkbox-group {
+    grid-column: span 2; /* Checkbox group spans both columns */
+}
+
+.checkbox-group label {
+    margin-right: 15px;
+    font-size: 14px;
+}
+
+.button-group {
+    grid-column: span 2; /* Buttons span across both columns */
+    display: flex;
+    justify-content: center; /* Centers buttons */
+    gap: 15px; /* Space between buttons */
+}
+
+.btn-primary {
+    background-color: #00d1b2;
+    border-color: #00d1b2;
+    color: white;
+    padding: 8px 20px;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    background-color: #03d6b7;
+    border-color: #03d6b7;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    padding: 8px 20px;
+    font-size: 14px;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+/* Align labels and inputs */
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items:start;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    flex: 0 0 100%; /* Label takes up 30% of the width */
+    margin-right: 10px; /* Add spacing between label and input */
+    text-align: right; /* Align label text to the right */
+}
+
+/* Style dropdown button */
+.dropdown .btn {
+    width: 100%; /* Make dropdown button stretch across the remaining space */
+    text-align: left; /* Align text inside the button to the left */
+}
+
+/* Adjust spacing for checkboxes inside dropdown */
+.form-check {
+    margin-bottom: 10px;
+}
+
+/* Custom checkbox color when checked */
+.custom-checkbox:checked {
+    background-color: #00d1b2; /* Custom green background */
+    border-color: #00d1b2; /* Matching border color */
+}
+
+
+app-footer-end {
+    background-color: #f8f9fa;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    margin-top: 1%; /* Ensures the footer stays at the bottom */
+}

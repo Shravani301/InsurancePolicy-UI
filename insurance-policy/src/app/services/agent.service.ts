@@ -39,4 +39,34 @@ export class AgentService {
   // API call with the provided `id`
   return this.http.get<any>(`${this.baseUrl}/agent/${id}`, { observe: 'response' });
 }  
+
+getCustomersByAgentId(id: string,pageNumber:number,pageSize:number): Observable<any> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}` // Assuming token-based authentication
+  });
+
+  // API call with the provided `id`
+  return this.http.get<any>(
+    `${this.baseUrl}/Customer/agent/${id}/customers`, 
+    { 
+      params: { 
+        PageNumber: pageNumber.toString(), 
+        PageSize: pageSize.toString() 
+      },
+      observe: 'response' 
+    }
+  );
+  
+}  
+getPoliciesByAgentId(userId: string, pageNumber: number, pageSize: number): Observable<any> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  });
+
+  const url = `https://localhost:7052/api/Policy/agent/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+  return this.http.get<any>(url, { headers, observe: 'response' });
+}
+
 }

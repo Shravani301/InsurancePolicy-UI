@@ -72,6 +72,8 @@ import { ViewCommissionsComponent } from './agent/view-commissions/view-commissi
 import { RegisterPolicyComponent } from './agent/register-policy/register-policy.component';
 import { AgentProfileComponent } from './agent/agent-profile/agent-profile.component';
 import { EmployeeHeaderComponent } from './employee/employee-header/employee-header.component';
+import { ShowCustomersComponent } from './agent/show-customers/show-customers.component';
+import { ShowPoliciesComponent } from './agent/show-policies/show-policies.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +135,8 @@ import { EmployeeHeaderComponent } from './employee/employee-header/employee-hea
     RegisterPolicyComponent,
     AgentProfileComponent,
     EmployeeHeaderComponent,
+    ShowCustomersComponent,
+    ShowPoliciesComponent,
 
     
   ],

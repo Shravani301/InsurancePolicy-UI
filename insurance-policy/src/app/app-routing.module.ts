@@ -50,6 +50,8 @@ import { CustomerRegistrationComponent } from './agent/customer-registration/cus
 import { ViewCommissionsComponent } from './agent/view-commissions/view-commissions.component';
 import { RegisterPolicyComponent } from './agent/register-policy/register-policy.component';
 import { AgentProfileComponent } from './agent/agent-profile/agent-profile.component';
+import { ShowCustomersComponent } from './agent/show-customers/show-customers.component';
+import { ShowPoliciesComponent } from './agent/show-policies/show-policies.component';
 
 
 const routes: Routes = [
@@ -270,6 +272,14 @@ const routes: Routes = [
   {
     path: 'agent/profile',
     component: AgentProfileComponent
+  },
+  {
+    path: 'agent/customers',
+    component:ShowCustomersComponent
+  },
+  {
+    path: 'agent/policies',
+    component:ShowPoliciesComponent
   },
   {
     path: 'employee-dashboard',

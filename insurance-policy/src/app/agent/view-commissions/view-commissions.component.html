@@ -29,7 +29,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="searchQuery"
-                placeholder="Search by AgentName..."
+                placeholder="Search ......"
                 style="max-width: 300px;"
               />
               <button class="btn-search ms-2" (click)="onSearch()">Search</button>
@@ -41,7 +41,7 @@
         <thead class="table-dark">
           <tr>
             <th>Sr.</th>
-            <th>Agent Name</th>
+            
             <th>Commission Type</th>
             <th>Issue Date</th>
             <th>Amount</th>
@@ -51,7 +51,6 @@
         <tbody>
           <tr *ngFor="let commission of filteredCommissions; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
-            <td>{{ commission.agentName }}</td>
             <td>{{ commission.commissionType }}</td>
             <td>{{ commission.issueDate | date: 'dd-MM-yyyy' }}</td>
             <td>{{ commission.amount }}</td>

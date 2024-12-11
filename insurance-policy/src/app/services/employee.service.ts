@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -73,4 +73,34 @@ getCustomerQueries(pageNumber: number, pageSize: number, searchQuery?: string): 
   getComplaintsByCustomerId(customerId: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/customer/${customerId}`, { observe: 'response' });
   }
+  
+  rejectDocument(docId: any,empId:any): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}/Document/reject/${docId}?employeeId=${empId}`,
+      {},
+      { observe: 'response' }
+    );
+  } approveDocument(docId: any,empId:any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/Document/approve/${docId}?employeeId=${empId}`, {}, { observe: 'response' });
+  }
+
+  rejectPolicy(policyId: any): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}/Policy/${policyId}/reject`,{ observe: 'response' });
+  } approvePolicy(policyId: any): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}/Policy/${policyId}/approve`,
+      {},
+      { observe: 'response' }
+    ); }
+
+    getEmployeeProfile(id: string): Observable<any> {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}` // Assuming token-based authentication
+      });
+    
+      // API call with the provided `id`
+      return this.http.get<any>(`${this.baseUrl}/employee/${id}`, { observe: 'response' });
+    }  
 }

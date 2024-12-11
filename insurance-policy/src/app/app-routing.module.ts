@@ -52,6 +52,10 @@ import { RegisterPolicyComponent } from './agent/register-policy/register-policy
 import { AgentProfileComponent } from './agent/agent-profile/agent-profile.component';
 import { ShowCustomersComponent } from './agent/show-customers/show-customers.component';
 import { ShowPoliciesComponent } from './agent/show-policies/show-policies.component';
+import { WithdrawalsComponent } from './agent/withdrawals/withdrawals.component';
+import { EmployeeHeaderComponent } from './employee/employee-header/employee-header.component';
+import { EmployeeLandingComponent } from './employee/employee-landing/employee-landing.component';
+import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
 
 
 const routes: Routes = [
@@ -250,6 +254,10 @@ const routes: Routes = [
         component: AgentLandingComponent
       },     
     ],
+    canActivate: [AuthGuard],
+    data: {
+      role: ['Agent'] // Role as an array
+    },
   },
   {
     path: 'agent/viewScheme/:id',
@@ -278,16 +286,62 @@ const routes: Routes = [
     component:ShowCustomersComponent
   },
   {
+    path: 'employee/Policy/:id/:id1',
+    component: ViewPolicyComponent
+},
+{
+  path: 'admin/Policy/:id/:id1',
+  component: ViewPolicyComponent
+},
+  {
     path: 'agent/policies',
     component:ShowPoliciesComponent
   },
   {
     path: 'employee-dashboard',
     component: EmployeeDashboardComponent,
+    children: [
+      {
+        path:'employee-header',  
+        component: EmployeeHeaderComponent
+      },
+      {
+        path:'',  
+        component: EmployeeLandingComponent
+      },  
+    ]  ,
+    canActivate: [AuthGuard],
+    data: {
+      role: ['Employee'] // Role as an array
+    },
+  },
+  {
+    path:'employee/customers',
+    component: ViewCustomersComponent
+  },
+  {
+    path:'employee/profile',
+    component: EmployeeProfileComponent
+  },
+  {
+    path: 'employee/customer/documnets/:id',
+    component: CustomerDocumentsComponent
+  },
+  {
+    path: 'agent/withdrawls',
+    component: WithdrawalsComponent
+  },
+  {
+    path: 'employee/agent',
+    component: AddAgentComponent
   },
   {
     path: 'view-plan',
     component: ViewPlanComponent,
+  },
+  {
+    path: 'employee/viewAgent',
+    component: ViewAgentComponent
   },
   {
     path: 'payment',

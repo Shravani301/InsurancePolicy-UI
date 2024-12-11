@@ -40,9 +40,10 @@ export class ViewPolicyComponent implements OnInit {
     // Extract policyId from URL
     this.policyId = this.activatedroute.snapshot.paramMap.get('id') || '';
     console.log('Extracted Policy ID:', this.policyId);
-
+    this.customerId = this.activatedroute.snapshot.paramMap.get('id1') || '';
     // Check customer ID in local storage
-    this.customerId = localStorage.getItem('id') || '';
+    if(!this.customerId)
+      this.customerId = localStorage.getItem('id') || '';
     if (!this.customerId) {
       console.error('Customer ID is missing in local storage.');
       return;

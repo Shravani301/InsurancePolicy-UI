@@ -23,11 +23,14 @@ export class CommissionWithdrawComponent implements OnInit {
   showRejectBox = false;
   selectedRequestId: string = '';
   rejectReason: string = '';
+  role:any='';
 
   constructor(private adminService: AdminService, private location: Location,private toastService:ToastService) {}
 
   ngOnInit(): void {
     this.getWithdrawalRequests();
+    const storedRole=localStorage.getItem('role');
+    this.role=storedRole;
   }
 
   goBack(): void {
@@ -72,7 +75,7 @@ export class CommissionWithdrawComponent implements OnInit {
   }
 
   rejectWithdrawal(requestId: string): void {
-    this.adminService.rejectWithdrawalRequest(this.selectedRequestId).subscribe({
+    this.adminService.rejectWithdrawalRequest(requestId).subscribe({
       next: () => {
         alert('Withdrawal request rejected successfully.');
         this.toggleRejectBox();

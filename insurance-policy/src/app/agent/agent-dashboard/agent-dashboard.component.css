@@ -3,7 +3,7 @@ body {
     background-color: white; /* Global background color */
   }
  
-  .admin-dashboard {
+  .agent-dashboard {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Full height of the viewport */

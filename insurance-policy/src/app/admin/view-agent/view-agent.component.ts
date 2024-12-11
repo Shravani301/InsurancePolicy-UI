@@ -18,7 +18,7 @@ export class ViewAgentComponent implements OnInit {
   pageSizes = [5, 10, 15, 20];
   searchQuery: string = '';
   isSearch = false;
-
+  role:any='';
   showInactivateModal = false;
   selectedAgent: any = null;
 
@@ -29,7 +29,9 @@ export class ViewAgentComponent implements OnInit {
     private toastService: ToastService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    const storedRole=localStorage.getItem('role');
+    this.role=storedRole;
     this.getAgents();
   }
 
@@ -144,6 +146,9 @@ export class ViewAgentComponent implements OnInit {
   }
 
   addAgent(): void {
-    this.router.navigateByUrl('admin/agent');
+    if(this.role=='Admin')
+      this.router.navigateByUrl('admin/agent');
+    else if(this.role=='Employee')
+      this.router.navigateByUrl('employee/agent');  
   }
 }

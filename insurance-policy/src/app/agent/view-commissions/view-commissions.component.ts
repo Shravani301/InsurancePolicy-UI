@@ -4,6 +4,7 @@ import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
 import { ToastService } from 'src/app/services/toast.service';
 import { AgentService } from 'src/app/services/agent.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-commissions',
@@ -24,7 +25,8 @@ export class ViewCommissionsComponent implements OnInit {
   constructor(
     private agent:AgentService,
     private location: Location,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private route: Router
   ) {}
 
   ngOnInit(): void {
@@ -105,5 +107,9 @@ export class ViewCommissionsComponent implements OnInit {
   // Calculate serial number for the current page
   calculateSRNumber(index: number): number {
     return (this.currentPage - 1) * this.pageSize + index + 1;
+  }
+  withdraw()
+  {
+    this.route.navigate(['agent/withdrawls']);
   }
 }

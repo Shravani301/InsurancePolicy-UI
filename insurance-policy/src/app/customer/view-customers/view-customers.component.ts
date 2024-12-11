@@ -21,12 +21,14 @@ export class ViewCustomersComponent implements OnInit {
   totalPages: number = 0;
   hasNext: boolean = false;
   hasPrevious: boolean = false;
-
+  role:any='';
+  // Search and Sorting
   constructor(private adminService: AdminService, private location: Location,
     private toastService: ToastService,private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.role = localStorage.getItem('role');
     this.getCustomers();
   }
 
@@ -110,7 +112,10 @@ export class ViewCustomersComponent implements OnInit {
     console.log('View documents for:', customer);    
     if(customer.customerId)
     {
-      this.router.navigate(['admin/customer/documnets/', customer.customerId]);
+      if(this.role==='Admin')
+        this.router.navigate(['admin/customer/documnets/', customer.customerId]);
+      else if (this.role==='Employee')
+        this.router.navigate(['employee/customer/documnets/', customer.customerId]);
     }
     else
       this.toastService.showToast('error', 'Invalid plan selected.');

@@ -78,16 +78,27 @@
           <tr *ngFor="let doc of filteredDocuments; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
             <td>{{ doc.documentName }}</td>
-            <td>{{ doc.status ? 'Approved' : 'Pending' }}</td>
+            <td>{{ doc.status==0 ? 'Pending' : doc.status==1 ? 'Approved':'Rejected' }}</td>
             <td>
               <button class="btn btn-info btn-sm me-2" (click)="viewDocument(doc)">View</button>
-              <button 
-              *ngIf="doc.status === 2" 
+              <!-- <button 
+              *ngIf="doc.status === 2 && role==='Customer'" 
               class="btn btn-warning btn-sm" 
               (click)="reuploadDocument(doc)">
               ReUpload
-            </button>
-            
+            </button> -->
+            <button
+            *ngIf="doc.status===0 && role === 'Employee'"
+            class="btn btn-success btn-sm me-2"
+            (click)="approveDocument(doc.documentId)">
+            Approve
+          </button>
+          <button
+            *ngIf="doc.status===0 && role === 'Employee'"
+            class="btn btn-danger btn-sm"
+            (click)="toggleRejectBox(doc.documentId)">
+            Reject
+          </button>
             </td>
           </tr>
           <tr *ngIf="filteredDocuments.length === 0">
@@ -122,6 +133,24 @@
         <img [src]="modalImageURL" alt="Document Preview" class="img-fluid" />
         <button class="btn btn-secondary mt-3" (click)="closeModal()">Close</button>
       </div>
+    </div>
+  </div>
+  <!-- Inline Reject Box -->
+  <div *ngIf="showRejectBox" class="reject-box mt-4 p-3 border rounded">
+    <h5>Reject Document</h5>
+    <div class="mb-3">
+      <label for="docId" class="form-label">Rejecte Document</label>
+      <input
+        type="text"
+        id="docId"
+        class="form-control readonly-field"
+        [value]="selecteddocId"
+        readonly
+      />
+    </div>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-secondary me-2" (click)="toggleRejectBox()">Cancel</button>
+      <button class="btn btn-danger" (click)="rejectDocument()">Reject</button>
     </div>
   </div>
   <app-footer-end></app-footer-end>

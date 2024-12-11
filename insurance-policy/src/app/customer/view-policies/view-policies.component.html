@@ -88,6 +88,18 @@
                 (click)="viewPolicy(policy)">
                 View More
               </button>
+              <button
+              *ngIf="!isSwitchOn && role === 'Employee'"
+              class="btn btn-success btn-sm me-2"
+              (click)="approvePolicy(policy.policyId)">
+              Approve
+            </button>
+            <button
+              *ngIf="!isSwitchOn && role === 'Employee'"
+              class="btn btn-danger btn-sm"
+              (click)="toggleRejectBox(policy.policyId)">
+              Reject
+            </button>
               <button 
               *ngIf="isSwitchOn && role === 'Customer'" 
               class="btn btn-warning me-2"
@@ -122,4 +134,21 @@
       </nav>
     </div>
   </div>
+  <!-- Inline Reject Box -->
+  <div *ngIf="showRejectBox" class="reject-box mt-4 p-3 border rounded">
+    <h5>Reject Policy</h5>
+    <div class="mb-3">
+      <label for="docId" class="form-label">Rejecte Policy</label>
+      <input
+        type="text"
+        id="docId"
+        class="form-control readonly-field"
+        [value]="selectedPolicyId"
+        readonly
+      />
+    </div>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-secondary me-2" (click)="toggleRejectBox()">Cancel</button>
+      <button class="btn btn-danger" (click)="rejectPolicy()">Reject</button>
+    </div>
   <app-footer-end></app-footer-end>

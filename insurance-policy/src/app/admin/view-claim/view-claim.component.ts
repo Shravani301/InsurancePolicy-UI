@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-claims',
@@ -11,6 +12,7 @@ export class ViewClaimComponent implements OnInit {
   claimData: any[] = [];
   filteredClaimData: any[] = [];
   policyData: any = {};
+  role:any='';
 
   // Pagination
   totalClaimCount: number = 0;
@@ -30,9 +32,14 @@ export class ViewClaimComponent implements OnInit {
   selectedClaimId: string = '';
   rejectReason: string = '';
 
-  constructor(private adminService: AdminService, private location: Location) {}
+  constructor(private adminService: AdminService, private location: Location,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
+    const storedRole=localStorage.getItem('role');
+    if(!storedRole)
+      this.role=storedRole;
     this.getClaims();
   }
 
@@ -84,9 +91,15 @@ export class ViewClaimComponent implements OnInit {
     });
   }
 
-  showPolicy(index: number): void {
-    this.policyData = this.filteredClaimData[index];
+  showPolicy(policyId: any, customerId: any): void {
+    if(this.role==='Employee')
+      this.router.navigateByUrl(`employee/Policy/${policyId}/${customerId}`);
+    else if(this.role==='Admin')
+      this.router.navigateByUrl(`admin/Policy/${policyId}/${customerId}`);
+    else
+    console.log('Role is not matched');
   }
+  
 
   approveClaim(claimId: string): void {
     this.adminService.approveClaim(claimId).subscribe({

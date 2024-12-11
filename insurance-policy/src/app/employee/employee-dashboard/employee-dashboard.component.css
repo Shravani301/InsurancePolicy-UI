@@ -1,0 +1,17 @@
+body {
+    margin: 0; /* Remove default margin */
+    background-color: white; /* Global background color */
+  }
+  
+  .employee-dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full height of the viewport */
+    background-color: white; /* Background for admin dashboard */
+  }
+  
+  .dashboard-content {
+    flex: 1; /* Push the footer to the bottom */
+    padding: 20px; /* Optional padding for the content */
+  }
+ 

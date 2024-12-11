@@ -47,20 +47,21 @@ export class ShowPoliciesComponent {
         }
   
         const allPolicies = response.body || [];
+        this.policies = allPolicies;
         // Filter policies based on the isSwitchOn state
-        if (this.isSwitchOn) {
-          // Show purchased policies (ACTIVE, CLAIMED, DROPPED, INACTIVE)
-          this.policies = allPolicies.filter(
-            (policy:any) =>
-              policy.policyStatus === 'ACTIVE' ||
-              policy.policyStatus === 'CLAIMED' ||
-              policy.policyStatus === 'DROPPED' ||
-              policy.policyStatus === 'INACTIVE'
-          );
-        } else {
-          // Show applied policies (PENDING)
-          this.policies = allPolicies.filter((policy:any) => policy.policyStatus === 'PENDING');
-        }
+        // if (this.isSwitchOn) {
+        //   // Show purchased policies (ACTIVE, CLAIMED, DROPPED, INACTIVE)
+        //   this.policies = allPolicies.filter(
+        //     (policy:any) =>
+        //       policy.policyStatus === 'ACTIVE' ||
+        //       policy.policyStatus === 'CLAIMED' ||
+        //       policy.policyStatus === 'DROPPED' ||
+        //       policy.policyStatus === 'INACTIVE'
+        //   );
+        // } else {
+        //   // Show applied policies (PENDING)
+        //   this.policies = allPolicies.filter((policy:any) => policy.policyStatus === 'PENDING');
+        // }
       },
       error: (err: HttpErrorResponse) => {
         console.error(err);
@@ -68,11 +69,11 @@ export class ShowPoliciesComponent {
       },
     });
   }
-  toggleSwitch(state: boolean) {
-    if (this.isSwitchOn === state) return; // Avoid redundant calls
-    this.isSwitchOn = state;
-    this.getPolicies(); // Refresh and filter policies based on the new state
-  }
+  // toggleSwitch(state: boolean) {
+  //   if (this.isSwitchOn === state) return; // Avoid redundant calls
+  //   this.isSwitchOn = state;
+  //   this.getPolicies(); // Refresh and filter policies based on the new state
+  // }
     
   onSearch(): void {
     if (this.searchQuery && this.searchQuery.toString().trim()) {

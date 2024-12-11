@@ -5,6 +5,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from 'src/app/services/toast.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'app-customer-documents',
@@ -24,7 +25,8 @@ export class CustomerDocumentsComponent  {
   totalPages: number = 0;
   totalAgentCount = 0;
   customerId: string ='';
-
+  role:any='';
+  empId:any='';
 
   showAddDocumentForm: boolean = false; // Tracks form visibility
   showModal: boolean = false; // Controls modal visibility
@@ -36,7 +38,8 @@ export class CustomerDocumentsComponent  {
   DocTypeForm!: FormGroup;
 
   constructor(private customer: CustomerService,private admin:AdminService, private location: Location,
-    private activatedRoute: ActivatedRoute, private router: Router, private toastService: ToastService
+    private activatedRoute: ActivatedRoute, private router: Router, private toastService: ToastService,
+    private employee:EmployeeService
   ) {}
 
   ngOnInit() {
@@ -49,6 +52,20 @@ export class CustomerDocumentsComponent  {
       console.error('Missing planId in route parameters');
       this.router.navigate(['/error']);
     }
+    const storedRole=localStorage.getItem('role');
+    this.role=storedRole;
+    if (this.role === 'Employee') {
+      const storedId = localStorage.getItem('id');
+      console.log("Retrieved ID from localStorage:", storedId);
+  
+      this.empId = storedId;
+  
+      if (!this.empId) {
+          console.error("User ID not found in localStorage for role 'Customer'.");
+          return;
+      }
+    }
+    
     this.DocTypeForm = new FormGroup({
       documentName: new FormControl('', [Validators.required]),     
 
@@ -235,7 +252,32 @@ export class CustomerDocumentsComponent  {
       this.isSearch = false;
     }
   }
-  
+  toggleRejectBox(docId: string = ''): void {
+    this.showRejectBox = !this.showRejectBox;
+    this.selecteddocId = docId;
+  }
+
+  rejectDocument(): void {
+    this.employee.rejectDocument(this.selecteddocId,this.empId).subscribe({
+      next: () => {
+        this.getDocuments();
+        this.toggleRejectBox(); // Close the box after successful rejection
+      },
+      error: () => console.error('Error rejecting document'),
+    });
+  }
+  approveDocument(documentId:any): void {
+    this.employee.approveDocument(documentId,this.empId).subscribe({
+      next: () => {
+        this.getDocuments();
+      },
+      error: () => console.error('Error approve document'),
+    });
+  }
+ // Reject Box State
+ showRejectBox: boolean = false;
+ selecteddocId: string = '';
+
 
   goBack() {
     this.location.back();

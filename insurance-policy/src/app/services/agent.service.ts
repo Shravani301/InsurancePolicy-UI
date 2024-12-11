@@ -69,4 +69,15 @@ getPoliciesByAgentId(userId: string, pageNumber: number, pageSize: number): Obse
   return this.http.get<any>(url, { headers, observe: 'response' });
 }
 
+getWithdrawalRequestsByAgentId(agentId: number,pageNumber: number, pageSize: number): Observable<any>  {
+  return this.http.get(`${this.baseUrl}/WithdrawalRequest/agent/${agentId}`, {
+    observe: 'response',
+  });
+}
+addWithdrawalRequest(data: any): Observable<any>
+{
+  return this.http.post(`${this.baseUrl}/withdrawalRequest`,data, {
+    observe: 'response',
+  });
+}
 }

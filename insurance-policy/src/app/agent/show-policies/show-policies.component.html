@@ -4,7 +4,7 @@
         Back
       </button>
     </div>
-    <div class="btn-group mt-2" role="group" aria-label="Button switch">
+    <!-- <div class="btn-group mt-2" role="group" aria-label="Button switch">
       <button
         type="button"
         class="btn "
@@ -21,7 +21,7 @@
       >
         Applied
       </button>
-    </div>
+    </div> -->
     
     <div class="container">
       <h2>Policies</h2>
@@ -59,6 +59,7 @@
         <thead class="table-dark">
           <tr>
             <th>Sr.</th>
+            <th>Customer Name</th>
             <th>Scheme</th>
             <th>Premium</th>
             <th>Mode</th>
@@ -71,6 +72,7 @@
         <tbody>
           <tr *ngFor="let policy of policies; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
+            <td>{{policy.customerName}}</td>
             <td>{{ policy.insuranceSchemeName }}</td>
             <td><span style="font-family: 'RupeeFont';">₹</span>{{ policy.premiumAmount }}</td>
             <td>

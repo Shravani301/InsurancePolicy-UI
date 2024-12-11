@@ -1,0 +1,243 @@
+.wrapper {
+    background-color: #f3faf4;
+    padding: 20px;
+    min-height: 93vh;
+}
+
+.container {
+    background-color: rgba(252, 252, 252, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#pageSizeSelect {
+    border-color: #00d1b2;
+    border-width: 2px;
+    outline: none;
+}
+
+#pageSizeSelect:focus {
+    outline: 2px solid #00d1b2;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.top_link .back-button {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn-back {
+    border-radius: 4px;
+    border-color: #00d1b2;
+}
+
+.btn-back:hover {
+    background-color: #00d1b2;
+}
+
+.btn-search {
+    border-radius: 6px;
+    border: 2px solid azure;
+    background-color: #00d1b2;
+    padding: 6px 18px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-search:hover {
+    background-color: #03d6b7;
+    color: white;
+    border-color: #03d6b7;
+}
+
+.btn-reset {
+    border-radius: 4px;
+    border: 2px solid #ff6767;
+    background-color: #ff6767;
+    padding: 4px 12px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-reset:hover {
+    background-color: #ff4c4c;
+    color: white;
+    border-color: #ff4c4c;
+}
+
+.table {
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table tbody tr:hover {
+    background-color: #eaf7ff;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-container input.form-control {
+    width: 200px;
+    outline: none;
+    border-color: #00d1b2;
+    border-width: 2px;
+}
+
+.search-container input.form-control:focus {
+    outline: 2px solid #00d1b2;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.pagination {
+    margin: 0;
+}
+
+.pagination .page-link {
+    color: #00d1b2;
+    border-color: #00d1b2;
+    border-width: 2px;
+    padding: 10px 15px;
+    display: inline-block;
+    width: auto;
+    text-align: center;
+    border-radius: 0;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.pagination .page-link:hover,
+.pagination .page-link:focus {
+    color: white;
+    background-color: #00d1b2;
+    box-shadow: 0px 0px 10px rgba(0, 209, 178, 0.6);
+    outline: none;
+}
+
+.pagination .active .page-link {
+    background-color: #00d1b2;
+    color: white;
+    border-color: #00d1b2;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.pagination .page-item .page-link {
+    cursor: pointer;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #138496;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+.custom-badge {
+    padding: 5px 10px;
+    font-weight: normal;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.modal-background {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+}
+
+.modal-content {
+    background-color: #f3faf4;
+    border-radius: 8px;
+}
+
+.readonly-field {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #333;
+    opacity: 0.8;
+    outline: 2px solid #00d1b2;
+}
+
+.readonly-field:focus {
+    outline: 2px solid #00d1b2;
+}
+
+.form-control {
+    outline: 2px solid #00d1b2;
+}
+
+  /* Footer styles */
+  app-footer-end {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    margin-top: auto;
+  }
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1040;
+  }
+
+  .modal-dialog {
+    z-index: 1050;
+    position: relative;
+  }
+
+  body.modal-open {
+    overflow: hidden;
+  }

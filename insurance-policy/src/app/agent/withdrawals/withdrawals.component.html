@@ -21,7 +21,7 @@
               </select>
             </div>
           </div>
-    
+  
           <!-- Search -->
           <div class="col-md-6 text-end">
             <div class="search-container d-flex justify-content-end">
@@ -37,6 +37,7 @@
           </div>
         </div>
       </div>
+  
       <table class="table table-striped table-bordered mt-4">
         <thead class="table-dark">
           <tr>
@@ -46,7 +47,7 @@
             <th>Status</th>
             <th>Date</th>
             <th>Total Commissions</th>
-            <th *ngIf="role!=='Employee'">Actions</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -58,18 +59,15 @@
               <span
                 *ngIf="commission.status === 0"
                 class="badge bg-warning custom-badge"
-                >Pending</span
-              >
+              >Pending</span>
               <span
                 *ngIf="commission.status === 1"
                 class="badge bg-success custom-badge"
-                >Approved</span
-              >
+              >Approved</span>
               <span
                 *ngIf="commission.status === 2"
                 class="badge bg-danger custom-badge"
-                >Rejected</span
-              >
+              >Rejected</span>
             </td>
             <td>{{ commission.requestDate | date: 'dd-MM-yyyy' }}</td>
             <td>
@@ -77,28 +75,20 @@
                 class="btn btn-info btn-sm"
                 (click)="toggleTotalCommission(commission.agentId)"
               >
-                {{ 
-                  showTotalCommissions[commission.agentId] 
-                    ? showTotalCommissions[commission.agentId] 
-                    : 'Show' 
+                {{
+                  showTotalCommissions[commission.agentId]
+                    ? showTotalCommissions[commission.agentId]
+                    : 'Show'
                 }}
               </button>
-            </td>           
-
-            <td *ngIf="role!=='Employee'">
+            </td>
+  
+            <td>
               <button
-                *ngIf="commission.status === 0"
-                class="btn btn-success btn-sm me-2"
-                (click)="approveWithdrawal(commission.withdrawalRequestId)"
+                class="btn btn-info btn-sm"
+                (click)="openWithdrawModal(commission)"
               >
-                Approve
-              </button>
-              <button
-                *ngIf="commission.status === 0"
-                class="btn btn-danger btn-sm"
-                (click)="rejectWithdrawal(commission.withdrawalRequestId)"
-              >
-                Reject
+                Request Withdrawal
               </button>
             </td>
           </tr>
@@ -128,6 +118,46 @@
             </li>
           </ul>
         </nav>
+      </div>
+    </div>
+  
+    <!-- Withdraw Modal -->
+    <div *ngIf="showWithdrawModal" class="modal d-block" tabindex="-1">
+      <div class="modal-backdrop"></div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Withdraw Request</h2>
+            <button type="button" class="btn-close" aria-label="Close" (click)="closeWithdrawModal()"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Agent Name:</strong> {{ selectedRequest?.agentName }}</p>
+            <p><strong>Total Commission:</strong>  <button
+                class="btn btn-warning btn-sm"
+                (click)="toggleTotalCommission(agentId)"
+              >
+                {{
+                  showTotalCommissions[agentId]
+                    ? showTotalCommissions[agentId]
+                    : 'Show'
+                }}
+              </button></p>
+            <div class="mb-3">
+              <label for="withdrawAmount" class="form-label">Withdrawal Amount</label>
+              <input
+                type="number"
+                id="withdrawAmount"
+                class="form-control"
+                [(ngModel)]="withdrawAmount"
+                placeholder="Enter amount"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeWithdrawModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="submitWithdrawRequest()">Submit</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

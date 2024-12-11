@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'app-policies',
@@ -21,21 +22,51 @@ export class ViewPoliciesComponent {
   isSwitchOn = true; // Controls whether to show purchased or applied policies
   userId:any='';
   role:any='';
+  empId:any='';
+  selectedPolicyId:string='';
   constructor(private customer: CustomerService, private router: Router, private location: Location,
     private toastService: ToastService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private employee:EmployeeService
   ) {}
 
   ngOnInit(): void {
-    this.getPolicies();
+    
     this.role = localStorage.getItem('role');
+    if (this.role === 'Employee') {
+      const storedId = localStorage.getItem('id');
+      console.log("Retrieved ID from localStorage:", storedId);
+  
+      this.empId = storedId;
+  
+      if (!this.empId) {
+          console.error("User ID not found in localStorage for role 'Customer'.");
+          return;
+      }
+    }
+    if (this.role === 'Customer') {
+      const storedId = localStorage.getItem('id');
+      console.log("Retrieved ID from localStorage:", storedId);
+  
+      this.userId = storedId;
+  
+      if (!this.userId) {
+          console.error("User ID not found in localStorage for role 'Customer'.");
+          return;
+      }
+    } else if (this.role === 'Admin' || this.role === 'Employee') {
+      this.userId = this.activatedRoute.snapshot.paramMap.get('id');
+    }
+  
+    if (!this.userId) {
+      console.error("User ID is missing. Cannot fetch policies.");
+      return; // Exit early if no valid ID is found
+    }
+    this.getPolicies();
   }
 
   getPolicies() {
-    this.userId = localStorage.getItem("id")!;
-    if(!this.userId) {
-      this.userId=this.activatedRoute.snapshot.paramMap.get('id');
-    }
+    
     this.customer.getPolicies(this.userId, this.currentPage, this.pageSize).subscribe({
       next: (response) => {
         const paginationHeader = response.headers.get('X-Pagination');
@@ -117,6 +148,11 @@ export class ViewPoliciesComponent {
   }
 
   viewPolicy(policy: any) {
+    if(this.role==='Employee')
+      this.router.navigateByUrl(`employee/Policy/${policy.policyId}/${policy.customerId}`);
+    else if(this.role==='Admin')
+      this.router.navigateByUrl(`admin/Policy/${policy.policyId}/${policy.customerId}`);
+    else
     this.router.navigateByUrl(`customer/Policy/${policy.policyId}`);
   }
 Payments(policy:any)
@@ -146,4 +182,31 @@ Payments(policy:any)
     //this.router.navigateByUrl(`customer/claimRequest/${policy.policyId}`);
     this.router.navigate(['/customer/claimRequest', policy.policyId]);
   }
+
+  toggleRejectBox(policyId: string = ''): void {
+    this.showRejectBox = !this.showRejectBox;
+    this.selectedPolicyId = policyId;
+  }
+
+  rejectPolicy(): void {
+    this.employee.rejectPolicy(this.selectedPolicyId).subscribe({
+      next: () => {
+        this.getPolicies();
+        this.toggleRejectBox(); // Close the box after successful rejection
+      },
+      error: () => console.error('Error rejecting document'),
+    });
+  }
+  approvePolicy(policyId:any): void {
+    this.employee.approvePolicy(policyId).subscribe({
+      next: () => {
+        this.getPolicies();
+      },
+      error: () => console.error('Error approve document'),
+    });
+  }
+ // Reject Box State
+ showRejectBox: boolean = false;
+ selecteddocId: string = '';
+
 }

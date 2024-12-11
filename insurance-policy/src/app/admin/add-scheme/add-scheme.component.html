@@ -2,10 +2,6 @@
     <app-admin-header></app-admin-header>
     <div class="top_link">
         <button (click)="goBack()" class="btn-back ms-3 mt-2">
-            <img
-                src="https://drive.google.com/u/0/uc?id=16U__U5dJdaTfNGobB_OpwAJ73vM50rPV&export=download"
-                alt=""
-            />
             Back
         </button>
     </div>
@@ -20,6 +16,7 @@
                 formControlName="schemeName"
                 class="form-control"
                 placeholder="Enter Scheme Name"
+                (blur)="addFieldBlurHandler('schemeName')"
             />
 
             <label for="schemeImage">Scheme Image</label>
@@ -29,6 +26,7 @@
                     id="schemeImage"
                     (change)="onImageSelect($event)"
                     class="form-control"
+                    (blur)="addFieldBlurHandler('schemeImage')"
                 />
                 <button
                     type="button"
@@ -49,6 +47,7 @@
                 formControlName="description"
                 class="form-control"
                 placeholder="Enter Description"
+                (blur)="addFieldBlurHandler('description')"
             ></textarea> 
 
             <label for="minAmount">Min Investment</label>
@@ -58,6 +57,8 @@
                 formControlName="minAmount"
                 class="form-control"
                 placeholder="Enter Minimum Amount"
+                (blur)="addFieldBlurHandler('minAmount')"
+
             />
 
             <label for="maxAmount">Max Investment</label>
@@ -67,6 +68,7 @@
                 formControlName="maxAmount"
                 class="form-control"
                 placeholder="Enter Maximum Amount"
+                (blur)="addFieldBlurHandler('maxAmount')"
             />
 
             <label for="minInvestTime">Min Term (Months)</label>
@@ -76,6 +78,7 @@
                 formControlName="minInvestTime"
                 class="form-control"
                 placeholder="Enter Minimum Term"
+                (blur)="addFieldBlurHandler('minInvestTime')"
             />
 
             <label for="maxInvestTime">Max Term (Months)</label>
@@ -85,6 +88,8 @@
                 formControlName="maxInvestTime"
                 class="form-control"
                 placeholder="Enter Maximum Term"
+                (blur)="addFieldBlurHandler('maxInvestTime')"
+
             />
 
             <label for="minAge">Min Age</label>
@@ -94,6 +99,7 @@
                 formControlName="minAge"
                 class="form-control"
                 placeholder="Enter Minimum Age"
+                (blur)="addFieldBlurHandler('minAge')"
             />
 
             <label for="maxAge">Max Age</label>
@@ -103,6 +109,7 @@
                 formControlName="maxAge"
                 class="form-control"
                 placeholder="Enter Maximum Age"
+                (blur)="addFieldBlurHandler('maxAge')"
             />
 
             <label for="profitRatio">Profit %</label>
@@ -112,6 +119,7 @@
                 formControlName="profitRatio"
                 class="form-control"
                 placeholder="Enter Profit Ratio"
+                (blur)="addFieldBlurHandler('profitRatio')"
             />
 
             <label for="registrationCommRatio">Registration Commission %</label>
@@ -121,6 +129,7 @@
                 formControlName="registrationCommRatio"
                 class="form-control"
                 placeholder="Enter Registration Commission"
+                (blur)="addFieldBlurHandler('registrationCommRatio')"
             />
 
             <label for="installmentCommRatio">Installment Commission %</label>
@@ -130,6 +139,7 @@
                 formControlName="installmentCommRatio"
                 class="form-control"
                 placeholder="Enter Installment Commission"
+                (blur)="addFieldBlurHandler('installmentCommRatio')"
             />
 
                 <!-- Required Documents Dropdown -->
@@ -154,6 +164,8 @@
               [id]="'checkbox' + document.id"
               [value]="document.id"
               (change)="toggleDocumentSelection(document.id)"
+              
+              
             />
             <label class="form-check-label" [for]="'checkbox' + document.id">
               {{ document.name }}
@@ -163,11 +175,7 @@
       </ul>
     </div>
   </div>
-  
-                  
-                  
-
-            <div class="button-group">
+  <div class="button-group">
                 <button type="button" class="btn btn-secondary" (click)="OnCancel()">Cancel</button>
                 <button type="button" class="btn btn-primary" (click)="addScheme()">Register</button>
             </div>

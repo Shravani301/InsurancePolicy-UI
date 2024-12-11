@@ -15,13 +15,15 @@ export class ViewAgentComponent implements OnInit {
   totalAgentCount = 0;
   currentPage = 1;
   pageSize = 5;
+  totalPages: number = 1;
   pageSizes = [5, 10, 15, 20];
   searchQuery: string = '';
   isSearch = false;
   role:any='';
   showInactivateModal = false;
   selectedAgent: any = null;
-
+  sortColumn: string = 'agentFirstName';
+  sortDirection: 'asc' | 'desc' = 'asc';
   constructor(
     private admin: AdminService,
     private location: Location,
@@ -42,7 +44,9 @@ export class ViewAgentComponent implements OnInit {
   getAgents(): void {
     this.admin.getFilterAgents(this.currentPage, this.pageSize).subscribe({
       next: (response) => {
-        const paginationHeader = response.headers.get('X-Pagination');
+        const paginationHeader = response.headers.get('X-Pagination');        
+        this.totalPages = parseInt(response.headers.get('X-Total-Pages') || '1', 10);
+
         if (paginationHeader) {
           const paginationData = JSON.parse(paginationHeader);
           this.totalAgentCount = paginationData.TotalCount;
@@ -68,7 +72,7 @@ export class ViewAgentComponent implements OnInit {
   }
 
   changePage(page: number): void {
-    if (page > 0 && page <= this.pageCount) {
+    if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.getAgents();
     }
@@ -76,6 +80,21 @@ export class ViewAgentComponent implements OnInit {
 
   get pageCount(): number {
     return Math.ceil(this.totalAgentCount / this.pageSize);
+  }
+
+  toggleSort(column: string): void {
+    this.sortColumn = column;
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.sortClaims();
+  }
+  sortClaims(): void {
+    this.filteredAgents.sort((a, b) => {
+      const valueA = a[this.sortColumn];
+      const valueB = b[this.sortColumn];
+      if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
   }
 
   toggleAgentStatus(agent: any): void {
@@ -140,10 +159,13 @@ export class ViewAgentComponent implements OnInit {
   }
 
   resetSearch(): void {
-    this.searchQuery = ''; // Clear the search query
-    this.filteredAgents = [...this.agents]; // Reset filtered list to all agents
+    this.searchQuery = ''; // Clear the search query    
     this.isSearch = false; // Mark search as inactive
+    this.filteredAgents = [...this.agents]; // Reset filtered list to all agents
+    
+    //this.sortClaims();
   }
+  
 
   addAgent(): void {
     if(this.role=='Admin')

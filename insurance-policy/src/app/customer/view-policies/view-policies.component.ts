@@ -13,17 +13,23 @@ import { EmployeeService } from 'src/app/services/employee.service';
 })
 export class ViewPoliciesComponent {
   customerData: any;
+  filteredPolicies: any[]=[];
   searchQuery!: string; // Changed to string for scheme name search
   currentPage = 1;
-  totalPolicyCount = 0;
+  totalPolicyCount = 0;  
+  totalPages: number = 1;
   policies: any[] = [];
-  pageSizes: number[] = [5, 10, 20, 30];
+  pageSizes: number[] = [1,2,5, 10, 20, 30];
   pageSize = this.pageSizes[0];
   isSwitchOn = true; // Controls whether to show purchased or applied policies
   userId:any='';
   role:any='';
-  empId:any='';
+  empId:any='';  
+  sortColumn: string = 'insuranceSchemeName';
+  sortDirection: 'asc' | 'desc' = 'asc';
   selectedPolicyId:string='';
+  maxVisiblePages: number = 3; // Maximum number of pages to display
+
   constructor(private customer: CustomerService, private router: Router, private location: Location,
     private toastService: ToastService,
     private activatedRoute: ActivatedRoute,
@@ -69,13 +75,15 @@ export class ViewPoliciesComponent {
     
     this.customer.getPolicies(this.userId, this.currentPage, this.pageSize).subscribe({
       next: (response) => {
-        const paginationHeader = response.headers.get('X-Pagination');
+        const paginationHeader = response.headers.get('X-Pagination');        
+        this.totalPages = parseInt(response.headers.get('X-Total-Pages') || '1', 10);
         if (paginationHeader) {
           const paginationData = JSON.parse(paginationHeader);
           this.totalPolicyCount = paginationData.TotalCount;
         }
   
         const allPolicies = response.body || [];
+        this.filteredPolicies=allPolicies;
         // Filter policies based on the isSwitchOn state
         if (this.isSwitchOn) {
           // Show purchased policies (ACTIVE, CLAIMED, DROPPED, INACTIVE)
@@ -102,6 +110,15 @@ export class ViewPoliciesComponent {
     this.isSwitchOn = state;
     this.getPolicies(); // Refresh and filter policies based on the new state
   }
+  sortPolicies(): void {
+    this.filteredPolicies.sort((a, b) => {
+      const valueA = a[this.sortColumn];
+      const valueB = b[this.sortColumn];
+      if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
     
   onSearch(): void {
     if (this.searchQuery && this.searchQuery.toString().trim()) {
@@ -126,11 +143,23 @@ export class ViewPoliciesComponent {
   }
 
   changePage(page: number) {
-    if (page === this.currentPage) return; // Prevent duplicate API calls
+    if (page >= 1 && page <= this.totalPages) { // Prevent duplicate API calls
     this.currentPage = page;
     this.getPolicies();
   }
+}
+getVisiblePages(): number[] {
+  const half = Math.floor(this.maxVisiblePages / 2);
+  let start = Math.max(this.currentPage - half, 1);
+  let end = start + this.maxVisiblePages - 1;
 
+  if (end > this.totalPages) {
+    end = this.totalPages;
+    start = Math.max(end - this.maxVisiblePages + 1, 1);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
   onPageSizeChange(event: Event) {
     this.pageSize = +(event.target as HTMLSelectElement).value;
     this.currentPage = 1; // Reset to the first page

@@ -100,6 +100,11 @@ h2 {
   border-width: 2px; /* Added outline color */
 }
 
+
+.form-control {
+    
+  outline: 2px solid #00d1b2;
+}
 .search-container input.form-control:focus {
   outline: 2px solid #00d1b2; /* Highlight color for input focus */
 }

@@ -18,7 +18,7 @@ export class ViewPlanComponent implements OnInit {
   pageSize = this.pageSizes[0];
   searchQuery = '';
   isSearch = false;
-
+  maxVisiblePages: number = 3; // Maximum number of pages to display
   totalPages = 0;
   hasNext = false;
   hasPrevious = false;
@@ -80,6 +80,18 @@ export class ViewPlanComponent implements OnInit {
     this.getPlans();
   }
 
+  getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
+  
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
   onSearch(): void {
     if (this.searchQuery.trim()) {
       const query = this.searchQuery.toLowerCase();

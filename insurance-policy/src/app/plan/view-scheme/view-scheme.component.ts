@@ -14,13 +14,14 @@ export class ViewSchemeComponent implements OnInit {
   pageSize = 10;
   currentPage = 1;
   totalSchemeCount = 0;
+  totalPages=0;
   planSchemes: any[] = [];
   pageSizes = [5, 10, 15, 20, 25];
   searchQuery: string = '';
   isSearch = false;
   planId!: any;
-  userRole: string = ''; // To store the role of the logged-in user
-
+  userRole: string = ''; // To store the role of the logged-in user  
+  maxVisiblePages: number = 3; // Maximum number of pages to display
   constructor(
     private admin: AdminService,
     private location: Location,
@@ -39,6 +40,18 @@ export class ViewSchemeComponent implements OnInit {
       console.error('Missing planId in route parameters');
       this.router.navigate(['/error']);
     }
+  }
+  getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
+  
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
 
   // Retrieve user role from localStorage
@@ -62,6 +75,7 @@ export class ViewSchemeComponent implements OnInit {
           this.currentPage = headers.currentPage;
           this.totalSchemeCount = headers.totalPages * this.pageSize;
           this.planSchemes = response.body || [];
+          this.totalPages = headers.totalPages;
         },
         error: (err: HttpErrorResponse) => {
           console.error('Failed to fetch schemes:', err);
@@ -83,7 +97,8 @@ export class ViewSchemeComponent implements OnInit {
   }
 
   changePage(page: number): void {
-    if (page >= 1 && page <= this.pageCount) {
+    if (page >= 1 && page <= this.totalPages)
+      {
       this.currentPage = page;
       this.getSchemes();
     }

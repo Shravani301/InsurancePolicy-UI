@@ -107,17 +107,20 @@ export class ViewClaimComponent implements OnInit {
       error: () => console.error('Error approving claim'),
     });
   }
-
   onSearch(): void {
     if (this.searchQuery.trim()) {
+      const searchLower = this.searchQuery.toLowerCase();
+  
+      // Assuming `customerName` is a single string field in the data
       this.filteredClaimData = this.claimData.filter((claim) =>
-        claim.claimId.toString().includes(this.searchQuery)
+        claim.customerName.toLowerCase().includes(searchLower)
       );
       this.isSearch = true;
     } else {
       this.resetSearch();
     }
   }
+  
 
   resetSearch(): void {
     this.searchQuery = '';

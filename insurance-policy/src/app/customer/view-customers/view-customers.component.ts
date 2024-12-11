@@ -22,6 +22,10 @@ export class ViewCustomersComponent implements OnInit {
   hasNext: boolean = false;
   hasPrevious: boolean = false;
   role:any='';
+  maxVisiblePages: number = 3; // Maximum number of pages to display
+  
+  sortColumn: string = 'customerFirstName';
+  sortDirection: 'asc' | 'desc' = 'asc';
   // Search and Sorting
   constructor(private adminService: AdminService, private location: Location,
     private toastService: ToastService,private router: Router
@@ -70,6 +74,18 @@ export class ViewCustomersComponent implements OnInit {
     });
   }
 
+  getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
+  
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
   onPageSizeChange(event: Event): void {
     this.pageSize = +(event.target as HTMLSelectElement).value;
     this.currentPage = 1;
@@ -130,5 +146,14 @@ export class ViewCustomersComponent implements OnInit {
     else
       this.toastService.showToast('error', 'Invalid plan selected.');
 
+  }
+  sortCustomers(): void {
+    this.filteredCustomerData.sort((a, b) => {
+      const valueA = a[this.sortColumn];
+      const valueB = b[this.sortColumn];
+      if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
   }
 }

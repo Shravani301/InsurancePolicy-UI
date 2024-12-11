@@ -10,10 +10,26 @@
     <div class="row mb-3">
       <div class="col-md-4 d-flex align-items-center">
         <label for="pageSizeSelect" class="form-label me-2">Page Size:</label>
-        <select id="pageSizeSelect" class="form-select" (change)="onPageSizeChange($event)" style="width: auto;">
+        <select id="pageSizeSelect" class="form-select me-4" (change)="onPageSizeChange($event)" style="width: auto;">
           <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
         </select>
+        <div class="d-flex align-items-center ">
+          <label for="filterSelect" class="form-label me-2">Filter By:</label>
+          <select
+            id="filterSelect"
+            class="form-select form-control"
+            [(ngModel)]="sortColumn"
+            (change)="sortCustomers()"
+            style="width: auto;"
+          >
+            <option value="customerFirstName">FirstName</option>
+            <option value="customerLastName">LastName</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+          </select>
+        </div>
       </div>
+      
       <div class="col-md-4 offset-md-4">
         <div class="search-container">
           <input
@@ -67,10 +83,10 @@
           </li>
           <li
             class="page-item"
-            *ngFor="let page of [].constructor(totalPages); let i = index"
-            [class.active]="i + 1 === currentPage"
+            *ngFor="let page of getVisiblePages()"
+            [class.active]="page === currentPage"
           >
-            <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+            <button class="page-link" (click)="changePage(page)">{{ page }}</button>
           </li>
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
@@ -78,6 +94,7 @@
         </ul>
       </nav>
     </div>
+    
   </div>
 </div>
 <app-footer-end></app-footer-end>

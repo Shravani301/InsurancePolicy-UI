@@ -15,7 +15,7 @@ export class AdminLandingComponent implements OnInit {
   totalComplaintCount: any='';
   totalCommissionCount: any= '';
   totalPaymentCount: any= '';
-
+  totalWithdrawl: any='';
   constructor(private total: TotalService) {}
 
   ngOnInit(): void {
@@ -27,6 +27,7 @@ export class AdminLandingComponent implements OnInit {
     this.getTotalComplaintCount();
     this.getTotalCommissionCount();
     this.getTotalPaymentCount();
+    this.getTotalWithdrawl();
   }
 
   getTotalCustomerCount() {
@@ -71,6 +72,18 @@ export class AdminLandingComponent implements OnInit {
         console.error('Error fetching employee count:', err);
       },
     });
+  }
+  
+  getTotalWithdrawl() {
+    this.total.getWithdrawlCount().subscribe(
+      {
+        next: (data:any) => {
+          this.totalWithdrawl = data.body.count;
+        },
+        error: (err) => {
+          console.error('Error fetching customer count:', err);
+        },
+      });
   }
 
   getTotalClaimCount() {

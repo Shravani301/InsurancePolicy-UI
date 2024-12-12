@@ -48,5 +48,37 @@ export class TotalService {
   {
     return this.http.get<number>(`${this.baseUrl}/CustomerQuery/count`,{ observe: 'response' });
   }
+  getAgentsCountByCustomerId(customerId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Agent/Agents/count?customerId=${customerId}`, { observe: 'response' });
+  }
 
+  getClaimsCountByCustomerId(customerId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Claim/customercount?customerId=${customerId}`, { observe: 'response' });
+  }
+
+  getPoliciesCountByCustomerId(customerId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Policy/CustomerCount?customerId=${customerId}`, { observe: 'response' });
+  }
+
+  getDocumentsCountByCustomerId(customerId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Document/CustomerCount?customerId=${customerId}`, { observe: 'response' });
+  }
+
+  getCustomerQueryCountByCustomerId(customerId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/CustomerQuery/customercount?customerId=${customerId}`, { observe: 'response' });
+  }
+  getCustomersCountByAgentId(agentId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Agent/customerByAgent/${agentId}`, { observe: 'response' });
+  }
+
+  getPoliciesCountByAgentId(agentId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Policy/policyByAgent/${agentId}`, { observe: 'response' });
+  }
+
+  getCommissionsCountByAgentId(agentId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Agent/commissionByAgent/${agentId}`, { observe: 'response' });
+  }
+  getWithdrawlCount():Observable<any> {
+    return this.http.get<number>(`${this.baseUrl}/WithdrawalRequest/count`,{ observe: 'response' });
+  }
 }

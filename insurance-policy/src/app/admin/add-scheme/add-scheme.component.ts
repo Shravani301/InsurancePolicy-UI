@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators,AbstractControl,ValidationErrors } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ToastService } from 'src/app/services/toast.service';
-
+ 
 @Component({
     selector: 'app-add-scheme',
     templateUrl: './add-scheme.component.html',
@@ -19,14 +19,14 @@ export class AddSchemeComponent implements OnInit {
   schemeImageUrl: string = ''; // Uploaded image URL
   selectedDocumentIds: number[] = []; // To store the selected document IDs
   planId!: string;
-
+ 
     constructor(
         private admin: AdminService,
         private location: Location,
         private toastService: ToastService,
         private activatedRoute: ActivatedRoute
     ) {}
-
+ 
     ngOnInit(): void {
       const idParam = this.activatedRoute.snapshot.paramMap.get('id');
       if (idParam) {
@@ -34,55 +34,26 @@ export class AddSchemeComponent implements OnInit {
         console.log(this.planId);
         } else {
         console.error('Missing planId in route parameters');
-        
       }
         // Initialize the form
-        this.addSchemeForm = new FormGroup(
-          {
-            schemeName: new FormControl('', [Validators.required]),
-            schemeImage: new FormControl('', [Validators.required]),
-            description: new FormControl('', [Validators.required]),
-            minAmount: new FormControl('', [Validators.required, Validators.min(0)]),
-            maxAmount: new FormControl('', [Validators.required, Validators.min(0)]),
-            minInvestTime: new FormControl('', [Validators.required, Validators.min(0)]),
-            maxInvestTime: new FormControl('', [Validators.required, Validators.min(0)]),
-            minAge: new FormControl('', [Validators.required, Validators.min(0)]),
-            maxAge: new FormControl('', [Validators.required, Validators.min(0)]),
-            profitRatio: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-            registrationCommRatio: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-            installmentCommRatio: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-          },
-          { validators: this.validateMinMaxFields } // Attach the custom validator
-        );
-        
+        this.addSchemeForm = new FormGroup({
+          schemeName: new FormControl('', [Validators.required]),
+          schemeImage: new FormControl(''),
+          description: new FormControl('', [Validators.required]),
+          minAmount: new FormControl('', [Validators.required, Validators.min(0)]),
+          maxAmount: new FormControl('', [Validators.required, Validators.min(0)]),
+          minInvestTime: new FormControl('', [Validators.required, Validators.min(0)]),
+          maxInvestTime: new FormControl('', [Validators.required, Validators.min(0)]),
+          minAge: new FormControl('', [Validators.required, Validators.min(0)]),
+          maxAge: new FormControl('', [Validators.required, Validators.min(0)]),
+          profitRatio: new FormControl('', [Validators.required, Validators.min(0)]),
+          registrationCommRatio: new FormControl('', [Validators.required, Validators.min(0)]),
+          installmentCommRatio: new FormControl('', [Validators.required, Validators.min(0)]),
+      });
         // Fetch the document types
         this.getDocumentTypes();        
     }
-    private validateMinMaxFields(group: AbstractControl): ValidationErrors | null {
-      const minAmount = group.get('minAmount')?.value;
-      const maxAmount = group.get('maxAmount')?.value;
-      const minInvestTime = group.get('minInvestTime')?.value;
-      const maxInvestTime = group.get('maxInvestTime')?.value;
-      const minAge = group.get('minAge')?.value;
-      const maxAge = group.get('maxAge')?.value;
-    
-      const errors: ValidationErrors = {};
-    
-      if (minAmount !== null && maxAmount !== null && minAmount > maxAmount) {
-        errors['minMaxAmount'] = 'Minimum amount must be less than or equal to Maximum amount.';
-      }
-    
-      if (minInvestTime !== null && maxInvestTime !== null && minInvestTime > maxInvestTime) {
-        errors['minMaxInvestTime'] = 'Minimum investment time must be less than or equal to Maximum investment time.';
-      }
-    
-      if (minAge !== null && maxAge !== null && minAge > maxAge) {
-        errors['minMaxAge'] = 'Minimum age must be less than or equal to Maximum age.';
-      }
-    
-      return Object.keys(errors).length ? errors : null;
-    }
-    
+ 
       getDocumentTypes(): void {
         this.admin.getDocumentTypes().subscribe({
           next: (res) => {
@@ -98,7 +69,7 @@ export class AddSchemeComponent implements OnInit {
           },
         });
       }
-
+ 
 // Toggle document selection
 toggleDocumentSelection(documentId: number): void {
   const index = this.selectedDocuments.indexOf(documentId);
@@ -115,7 +86,7 @@ toggleDocumentSelection(documentId: number): void {
       this.selectedFile = input.files[0];
     }
   }
-
+ 
   // Upload image to server
   uploadImage(): void {
     if (this.selectedFile) {
@@ -133,8 +104,7 @@ toggleDocumentSelection(documentId: number): void {
       this.toastService.showToast('error', 'No file selected for upload.');
     }
   }
- 
-  
+
   // Submit form data
   addScheme(): void {
     if (this.addSchemeForm.valid && this.schemeImageUrl) {
@@ -163,14 +133,14 @@ toggleDocumentSelection(documentId: number): void {
       this.toastService.showToast('error', 'Please complete all required fields.');
     }
   }
-
+ 
   OnCancel(): void {
     this.addSchemeForm.reset();
     this.selectedDocuments = [];
     this.schemeImageUrl = '';
     this.toastService.showToast('info', 'Form reset successfully.');
   }
-
+ 
   goBack(): void {
     this.location.back();
   }
@@ -183,65 +153,4 @@ toggleDocumentSelection(documentId: number): void {
             }
         });
     }
-
-    addFieldBlurHandler(fieldName: string): void {
-      const control = this.addSchemeForm.get(fieldName);
-      const formErrors = this.addSchemeForm.errors;
-    
-      if (control?.invalid && control?.touched) {
-        const errorType = Object.keys(control.errors || {})[0];
-        let errorMessage = '';
-    
-        switch (errorType) {
-          case 'required':
-            errorMessage = `${this.getFieldLabel(fieldName)} is required.`;
-            break;
-          case 'min':
-            errorMessage = `${this.getFieldLabel(fieldName)} must be greater than or equal to ${control.errors?.['min']?.min}.`;
-            break;
-          case 'max':
-            errorMessage = `${this.getFieldLabel(fieldName)} must be less than or equal to ${control.errors?.['max']?.max}.`;
-            break;
-          default:
-            errorMessage = `${this.getFieldLabel(fieldName)} is invalid.`;
-        }
-    
-        this.toastService.showToast('error', errorMessage);
-      }
-    
-      // Handle custom validation errors
-      if (formErrors?.['minMaxInvestTime']) {
-        this.toastService.showToast('error', 'Minimum term must be less than or equal to Maximum term.');
-      }
-    
-      if (formErrors?.['minMaxAge']) {
-        this.toastService.showToast('error', 'Minimum age must be less than or equal to Maximum age.');
-      }
-    
-      if (formErrors?.['minMaxAmount']) {
-        this.toastService.showToast('error', 'Minimum amount must be less than or equal to Maximum amount.');
-      }
-    }
-    
-    
-    
-    // Helper method to get user-friendly field labels
-    getFieldLabel(fieldName: string): string {
-      const labels: { [key: string]: string } = {
-        schemeName: 'Scheme Name',
-        schemeImage: 'Scheme Image',
-        description: 'Description',
-        minAmount: 'Minimum Investment',
-        maxAmount: 'Maximum Investment',
-        minInvestTime: 'Minimum Term',
-        maxInvestTime: 'Maximum Term',
-        minAge: 'Minimum Age',
-        maxAge: 'Maximum Age',
-        profitRatio: 'Profit Ratio',
-        registrationCommRatio: 'Registration Commission',
-        installmentCommRatio: 'Installment Commission',
-      };
-      return labels[fieldName] || fieldName;
-    }
-    
 }

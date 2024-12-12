@@ -87,7 +87,7 @@ export class ViewPoliciesComponent {
         // Filter policies based on the isSwitchOn state
         if (this.isSwitchOn) {
           // Show purchased policies (ACTIVE, CLAIMED, DROPPED, INACTIVE)
-          this.policies = allPolicies.filter(
+          this.filteredPolicies = allPolicies.filter(
             (policy:any) =>
               policy.policyStatus === 'ACTIVE' ||
               policy.policyStatus === 'CLAIMED' ||
@@ -96,7 +96,7 @@ export class ViewPoliciesComponent {
           );
         } else {
           // Show applied policies (PENDING)
-          this.policies = allPolicies.filter((policy:any) => policy.policyStatus === 'PENDING');
+          this.filteredPolicies = allPolicies.filter((policy:any) => policy.policyStatus === 'PENDING');
         }
       },
       error: (err: HttpErrorResponse) => {

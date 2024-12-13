@@ -19,14 +19,18 @@ export class CustomerDocumentsComponent  {
   documentTypes: any[] = []; // Document types
   searchQuery: string = '';
   isSearch: boolean = false;
-  pageSizes: number[] = [5, 10, 15];
+  pageSizes: number[] = [5, 10, 15,20,25,30,40,50	];
   pageSize = this.pageSizes[0];
   currentPage: number = 1;
   totalPages: number = 0;
+  hasPrevious=false;
+  hasNext=false;
+  totalDocumentsCount = 0;
   totalAgentCount = 0;
   customerId: string ='';
   role:any='';
   empId:any='';
+  maxVisiblePages: number = 3; // Maximum number of pages to display
 
   showAddDocumentForm: boolean = false; // Tracks form visibility
   showModal: boolean = false; // Controls modal visibility
@@ -76,18 +80,17 @@ export class CustomerDocumentsComponent  {
     this.getDocumentTypes();
     this.getDocuments();
   }
-  onPageSizeChange(event: Event): void {
-    this.pageSize = +(event.target as HTMLSelectElement).value;
-    this.getDocuments();
-  }
-
   changePage(page: number): void {
-    if (page > 0 && page <= this.pageCount) {
+    if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.getDocuments();
     }
   }
-
+  onPageSizeChange(event: Event): void {
+    this.pageSize = +(event.target as HTMLSelectElement).value;
+    this.currentPage = 1;
+    this.getDocuments();
+  }
   get pageCount(): number {
     return Math.ceil(this.totalAgentCount / this.pageSize);
   }
@@ -117,12 +120,20 @@ export class CustomerDocumentsComponent  {
 
   getDocuments() {
     console.log("customerid:", this.customerId);
-    this.admin.getDocuments(this.customerId).subscribe(
-      (response: any[]) => { // Assuming the response is an array
-        
-      console.log(response);
-        this.documents = response; // Assign the plain array directly
-        this.filteredDocuments=this.documents;
+    this.admin.getDocuments(this.customerId, this.currentPage, this.pageSize).subscribe(
+      (response) => {
+        const headers = response.headers;
+  
+        // Parse headers for pagination metadata
+        this.currentPage = parseInt(headers.get('X-Current-Page') || '1', 10);
+        this.hasNext = headers.get('X-Has-Next') === 'true';
+        this.hasPrevious = headers.get('X-Has-Previous') === 'true';
+        this.totalPages = parseInt(headers.get('X-Total-Pages') || '0', 10);
+        this.totalDocumentsCount = parseInt(headers.get('X-Total-Count') || '0', 10);
+  
+        // Assign the response body (documents)
+        this.documents = response.body || [];
+        this.filteredDocuments = [...this.documents];
       },
       (error) => {
         console.error('Error fetching documents:', error);
@@ -130,14 +141,21 @@ export class CustomerDocumentsComponent  {
     );
   }
   
-
-  updatePagination() {
-    this.totalPages = Math.ceil(this.documents.length / this.pageSize);
-    this.filteredDocuments = this.documents.slice(
-      (this.currentPage - 1) * this.pageSize,
-      this.currentPage * this.pageSize
-    );
+  
+  getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
+  
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
+
+  
 
   calculateSRNumber(index: number): number {
     return (this.currentPage - 1) * this.pageSize + index + 1;

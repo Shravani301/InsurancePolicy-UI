@@ -22,7 +22,7 @@ export class CustomerService {
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
   
-  isCustomerAssociatedWithScheme(schemeId: number, customerId: number): Observable<any> {
+  isCustomerAssociatedWithScheme(schemeId: number, customerId: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`

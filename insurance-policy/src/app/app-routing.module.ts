@@ -182,6 +182,10 @@ const routes: Routes = [
     component: ViewPoliciesComponent,
   },
   {
+    path: 'employee/customer/policies/:id',    
+    component: ViewPoliciesComponent,
+  },
+  {
     path:'admin/payments',
     component:ViewPaymentsComponent
   },

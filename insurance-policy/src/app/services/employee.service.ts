@@ -73,6 +73,10 @@ getCustomerQueries(pageNumber: number, pageSize: number, searchQuery?: string): 
   getComplaintsByCustomerId(customerId: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/customer/${customerId}`, { observe: 'response' });
   }
+
+  resolveQuery(queryId:any,response:any,empId:any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/CustomerQuery/${queryId}/resolve?response=${response}&employeeId=${empId}`, { observe: 'response'})
+  }
   
   rejectDocument(docId: any,empId:any): Observable<any> {
     return this.http.put(
@@ -84,6 +88,11 @@ getCustomerQueries(pageNumber: number, pageSize: number, searchQuery?: string): 
     return this.http.put(`${this.baseUrl}/Document/approve/${docId}?employeeId=${empId}`, {}, { observe: 'response' });
   }
 
+  getDocumentById(documentId: string): Observable<any> {
+    return this.http.get<any>(`/api/Document/${documentId}`);
+  }
+  
+  
   rejectPolicy(policyId: any): Observable<any> {
     return this.http.put(
       `${this.baseUrl}/Policy/${policyId}/reject`,{ observe: 'response' });

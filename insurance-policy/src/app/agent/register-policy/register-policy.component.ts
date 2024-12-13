@@ -196,7 +196,8 @@ confirmCustomerSelection() {
 
 // Close the modal without selection
 closeCustomerSelectionModal() {
-  this.toastService.showToast("warn",'Customer selection is required.');
+  this.showCustomerSelectionModal = false; // Close the modal
+   this.goBack();
   // You can redirect back if needed or keep the modal open
 }
  

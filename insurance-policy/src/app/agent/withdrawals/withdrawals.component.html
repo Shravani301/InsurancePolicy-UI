@@ -45,8 +45,8 @@
             <th>Agent Name</th>
             <th>Amount</th>
             <th>Status</th>
-            <th>Date</th>
-            <th>Total Commissions</th>
+            <th>Request Date</th>
+            <th>Total Balance</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -132,7 +132,7 @@
           </div>
           <div class="modal-body">
             <p><strong>Agent Name:</strong> {{ selectedRequest?.agentName }}</p>
-            <p><strong>Total Commission:</strong>  <button
+            <p><strong>Current Balance:</strong>  <button
                 class="btn btn-warning btn-sm"
                 (click)="toggleTotalCommission(agentId)"
               >

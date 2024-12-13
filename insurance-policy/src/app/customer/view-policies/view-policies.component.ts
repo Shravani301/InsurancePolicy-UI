@@ -19,7 +19,7 @@ export class ViewPoliciesComponent {
   totalPolicyCount = 0;  
   totalPages: number = 1;
   policies: any[] = [];
-  pageSizes: number[] = [1,2,5, 10, 20, 30];
+  pageSizes: number[] = [5, 10, 20, 30];
   pageSize = this.pageSizes[0];
   isSwitchOn = true; // Controls whether to show purchased or applied policies
   userId:any='';

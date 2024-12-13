@@ -21,6 +21,10 @@ export class DocumentComponent {
   totalPages: number = 0;
   totalAgentCount = 0;
 
+  maxVisiblePages: number = 3; // Maximum number of pages to display
+  
+  sortColumn: string = 'customerFirstName';
+  sortDirection: 'asc' | 'desc' = 'asc';
 
   showAddDocumentForm: boolean = false; // Tracks form visibility
   showModal: boolean = false; // Controls modal visibility
@@ -42,16 +46,30 @@ export class DocumentComponent {
     this.getDocumentTypes();
     this.getDocuments();
   }
-  onPageSizeChange(event: Event): void {
-    this.pageSize = +(event.target as HTMLSelectElement).value;
-    this.getDocuments();
-  }
+ 
 
-  changePage(page: number): void {
-    if (page > 0 && page <= this.pageCount) {
+  changePage(page: number): void {    
+    if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.getDocuments();
     }
+  } 
+    getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
+  
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+  onPageSizeChange(event: Event): void {
+    this.pageSize = +(event.target as HTMLSelectElement).value;
+    this.currentPage = 1;
+    this.getDocuments();
   }
 
   get pageCount(): number {

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastService } from 'src/app/services/toast.service';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class ViewComplaintsComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
-    private location: Location
+    private location: Location,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -140,6 +142,7 @@ resetSearch(): void {
       modalElement.classList.add('show');
       modalElement.style.display = 'block';
     }
+    
   }
 
   // Close the reply modal
@@ -159,20 +162,21 @@ resetSearch(): void {
     }
   
     if (this.selectedQuery) {
-      const employeeId = localStorage.getItem('employeeId'); // Retrieve employeeId from localStorage
+      const employeeId = localStorage.getItem('id'); // Retrieve employeeId from localStorage
   
       if (!employeeId) {
-        alert('Employee ID is missing. Please log in again.');
+        this.toastService.showToast("error",'Employee ID is missing. Please log in again.');
         return;
       }
   
-      const queryId = this.selectedQuery.id; // Get the queryId
+      const queryId = this.selectedQuery.queryId; // Get the queryId
       const response = this.responseText.trim(); // Trim response text
   
       // Call the service to resolve the query
-      this.employeeService.resolveComplaint(queryId, response, employeeId).subscribe({
+      console.log(queryId);
+      this.employeeService.resolveQuery(queryId, response, employeeId).subscribe({
         next: () => {
-          alert('Response submitted successfully!');
+          this.toastService.showToast("success",'Response submitted successfully!');
           this.selectedQuery.response = response; // Update the query response locally
           this.responseText = ''; // Clear the response text
           this.closeModal(); // Close the modal
@@ -180,7 +184,7 @@ resetSearch(): void {
         },
         error: (err) => {
           console.error('Error submitting response:', err);
-          alert('Failed to submit response. Please try again later.');
+          this.toastService.showToast("error",'Failed to submit response. Please try again later.');
         }
       });
     }
@@ -200,17 +204,17 @@ resetSearch(): void {
         // Perform API call to update response
         this.employeeService.updateComplaint(selectedQuery).subscribe({
           next: () => {
-            alert('Complaint updated successfully!');
+            this.toastService.showToast("success",'Complaint updated successfully!');
             this.getAllQueries();
           },
           error: (err: HttpErrorResponse) => {
             console.error('Error updating complaint:', err);
-            alert('Failed to update complaint. Please try again.');
+           this.toastService.showToast("error",'Failed to update complaint. Please try again.');
           },
         });
       }
     } else {
-      alert('Please fill out the response before submitting.');
+      this.toastService.showToast("error",'Please fill out the response before submitting.');
     }
   }
 

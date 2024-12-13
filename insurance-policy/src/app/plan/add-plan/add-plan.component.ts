@@ -26,10 +26,11 @@ export class AddPlanComponent {
           console.log(data);
           this.addPlanForm.reset();
           this.toastService.showToast('success', 'Plan registered successfully.');
+          this.goBack();
         },
         error: (error: HttpErrorResponse) => {
           console.log(error);
-          this.toastService.showToast('error', error.error.Message || 'Failed to add plan.');
+          this.toastService.showToast('error', error.error?.errorMessage || 'Failed to add plan.');
           this.addPlanForm.reset();
         },
       });
@@ -46,7 +47,6 @@ export class AddPlanComponent {
 
   goBack() {
     this.location.back();
-    this.toastService.showToast('info', 'Navigated back successfully.');
   }
 
   // Utility method to validate all form fields

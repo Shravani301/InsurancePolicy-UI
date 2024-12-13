@@ -22,7 +22,7 @@ export class ShowSchemesComponent implements OnInit {
   isSearch = false;
   planId!: any;
   userRole: string = ''; // To store the role of the logged-in user
-  customerId: number = parseInt(localStorage.getItem('id') || '0', 10); // Customer ID from local storage
+  customerId: any = localStorage.getItem('id');
   associatedSchemes: Record<number, boolean> = {}; // Store association status per scheme
 role:any='';
   constructor(
@@ -134,7 +134,7 @@ role:any='';
       .isCustomerAssociatedWithScheme(scheme.schemeId, this.customerId)
       .subscribe({
         next: (response) => {
-          if (!response.IsAssociated) {
+          if (!response.body.isAssociated) {
             // Redirect only if the customer is associated with the scheme
             this.router.navigateByUrl(`/customer/buyPolicy/${scheme.schemeId}`);
           } else {
@@ -146,10 +146,9 @@ role:any='';
         error: (err) => {
           console.error('Error checking scheme association:', err);
           alert('Unable to verify association with the scheme. Please try again later.');
-        }
-      });
-  }
-  
+        }
+      });
+  }
 
   viewPolicy(scheme: any): void {
     this.router.navigateByUrl(`/customer/viewPolicy/${scheme.schemeId}`);

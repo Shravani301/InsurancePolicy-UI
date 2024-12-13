@@ -139,9 +139,13 @@ export class ViewCustomersComponent implements OnInit {
 
   viewPolicies(customer: any): void {
     console.log('View policies for:', customer); 
-    if(customer.customerId)
+    if(this.role==='Admin'&&customer.customerId)
     {
       this.router.navigate(['admin/customer/policies/', customer.customerId]);
+    }
+    else if(this.role==='Employee'&&customer.customerId)
+    {
+      this.router.navigate(['employee/customer/policies/', customer.customerId]);
     }
     else
       this.toastService.showToast('error', 'Invalid plan selected.');

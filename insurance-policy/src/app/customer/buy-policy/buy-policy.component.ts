@@ -56,6 +56,7 @@ export class BuyPolicyComponent implements OnInit {
   fixedInsuranceSettingId: string = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
   fixedTaxId: string = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
   schemeId: string = '';
+  existingDocuments: { [key: string]: { id: string; path: string } } = {};
 
   constructor(
     private customer: CustomerService,
@@ -99,6 +100,24 @@ export class BuyPolicyComponent implements OnInit {
     });
   }
 
+  filterDocuments(documents: any[], mappedRequiredDocuments: string[]): string[] {
+    // Create a copy of mappedRequiredDocuments to avoid mutating the original array
+    const remainingDocuments = [...mappedRequiredDocuments];
+  
+    documents.forEach((doc) => {
+      if (doc.status === 1) {
+        // Find the index of the documentName in mappedRequiredDocuments
+        const index = remainingDocuments.indexOf(doc.documentName);
+        if (index !== -1) {
+          // Remove the matched document from the list
+          remainingDocuments.splice(index, 1);
+        }
+      }
+    });
+  
+    return remainingDocuments;
+  }
+  
   getSchemeDetail() {
     this.customer.getSchemeById(this.policy.insuranceSchemeId).subscribe({
       next: (res: any) => {
@@ -212,6 +231,10 @@ export class BuyPolicyComponent implements OnInit {
   
     
   addPolicy() {
+    const allDocumentIds = [
+      ...this.selectedDocumentIds, // Newly uploaded documents
+      ...Object.values(this.existingDocuments).map((doc) => doc.id), // Existing documents
+    ];
     const policyPayload = {
       insuranceSchemeId: this.policy.insuranceSchemeId,
       customerId: this.policy.customerId,
@@ -225,7 +248,7 @@ export class BuyPolicyComponent implements OnInit {
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
       })),
-      selectedDocumentIds: this.selectedDocumentIds, // Directly use the populated array
+      selectedDocumentIds: allDocumentIds,// Directly use the populated array
       ...(this.policy.agentId ? { agentId: this.policy.agentId } : {}), // Include agentId if available
     };
   
@@ -271,16 +294,32 @@ export class BuyPolicyComponent implements OnInit {
   getDocuments() {
     const customerId = localStorage.getItem('id') || '';
     const role = localStorage.getItem('role') || 'Customer';
-
+  
     this.customer.getDocuments(customerId, role).subscribe(
-      (documents) => {
+      (documents: any[]) => {
         this.documents = documents;
+  
+        // Process documents to find existing matches
+        this.documents.forEach((doc: any) => {
+          const matchedIndex = this.mappedRequiredDocuments.indexOf(doc.documentName);
+          if (matchedIndex !== -1 && doc.status === 1) {
+            // Add to existingDocuments
+            this.existingDocuments[doc.documentName] = { id: doc.documentId, path: doc.documentPath };
+  
+            // Remove from mappedRequiredDocuments
+            this.mappedRequiredDocuments.splice(matchedIndex, 1);
+          }
+        });
+  
+        console.log('Existing Documents:', this.existingDocuments);
+        console.log('Remaining Required Documents:', this.mappedRequiredDocuments);
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         console.error('Error fetching documents:', error);
       }
     );
   }
+  
   docTypes: string[] = [
     'AADHAAR_CARD',
     'PAN_CARD',

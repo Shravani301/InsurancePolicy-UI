@@ -124,6 +124,8 @@ export class PolicyPaymentsComponent implements OnInit {
       currency: "INR",
       handler: (response: any) => {
         this.onPaymentSuccess(response, installment);
+        this.getInstallments();
+
       },
       
       notes: {

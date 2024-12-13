@@ -125,7 +125,7 @@ toggleDocumentSelection(documentId: number): void {
         },
         error: (error) => {
           console.error('Failed to register scheme:', error);
-          this.toastService.showToast('error', 'Failed to register scheme.');
+          this.toastService.showToast('error',error.message);
         },
       });
     } else {

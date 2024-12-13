@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,7 +13,6 @@ export class AdminService {
   getProfile(){
     let name=localStorage.getItem('userName');
     return this.http.get(this.baseUrl+"/Admin/ByName/"+name);
-
   }
   
           
@@ -265,9 +264,10 @@ export class AdminService {
     });
   }
 
-  getDocuments(customerId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this. backendUrl}/customer/${customerId}`);
+  getDocuments(customerId: string, page: number, size: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/document/customer/${customerId}?PageNumber=${page}&PageSize=${size}`,{observe:'response'});
   }
+  
   addAgent(data: any) {
     return this.http.post(this.baseUrl + "/Agent", data,{ observe: 'response' });
   }

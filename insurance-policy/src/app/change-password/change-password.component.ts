@@ -18,6 +18,7 @@ export class ChangePasswordComponent {
   hideOldPassword = true;
   hideNewPassword = true;
   hideConfirmPassword = true;
+  userName: any='';
 
   jwtHelper = new JwtHelperService();
   isAdmin = false;
@@ -33,7 +34,6 @@ export class ChangePasswordComponent {
   ) {
     this.changePasswordForm = new FormGroup(
       {
-        userName: new FormControl('', Validators.required),
         oldPassword: new FormControl('', Validators.required),
         newPassword: new FormControl('', [
           Validators.required,
@@ -47,6 +47,11 @@ export class ChangePasswordComponent {
   }
 
   ngOnInit() {
+    const storedName=localStorage.getItem('userName');
+    if(!storedName)
+      return;
+    this.userName=storedName;
+
     const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem('token')!);
     const role: string =
       decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
@@ -66,12 +71,16 @@ export class ChangePasswordComponent {
 
   updatePassword() {
     if (this.changePasswordForm.invalid) {
-      this.toastService.showToast('warn', 'Please correct the errors in the form.');
+      this.toastService.showToast('warn', 'Please complete all the details.');
       return;
     }
-
-    const { confirmPassword, ...formData } = this.changePasswordForm.value; // Exclude confirmPassword before submission
-    this.auth.changePassword(formData).subscribe({
+     // Add userName to the payload
+  const { confirmPassword, ...formData } = this.changePasswordForm.value; // Exclude confirmPassword before submission
+    const payload = {
+      ...formData,
+      userName: this.userName, // Include userName field
+    };
+    this.auth.changePassword(payload).subscribe({
       next: () => {
         this.toastService.showToast('success', 'Password updated successfully.');
         this.auth.logOut();
@@ -79,7 +88,7 @@ export class ChangePasswordComponent {
       },
       error: (err: HttpErrorResponse) => {
         console.error(err);
-        this.toastService.showToast('error', 'Something went wrong!');
+        this.toastService.showToast('error', err.error?.message||'Something went wrong!');
       },
     });
   }

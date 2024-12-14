@@ -56,6 +56,8 @@ import { WithdrawalsComponent } from './agent/withdrawals/withdrawals.component'
 import { EmployeeHeaderComponent } from './employee/employee-header/employee-header.component';
 import { EmployeeLandingComponent } from './employee/employee-landing/employee-landing.component';
 import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
+import { AdminOperationsComponent } from './admin/admin-operations/admin-operations.component';
+import { EmployeeOperationsComponent } from './employee/employee-operations/employee-operations.component';
 
 
 const routes: Routes = [
@@ -82,8 +84,7 @@ const routes: Routes = [
       {
         path:'',  
         component: AdminLandingComponent
-      }, 
-     
+      },       
     ],
     canActivate: [AuthGuard],
     data: {
@@ -91,25 +92,160 @@ const routes: Routes = [
     },
   },
   {
-    path: 'admin/viewScheme/:id',
+    path: 'admin',
+    component: AdminOperationsComponent,
+    children: [
+    {
+      path:'addEmployee',
+      component: AddEmployeeComponent
+    },
+    {
+      path: 'viewEmployees',
+      component: ViewEmployeesComponent
+    },
+    {
+      path:'settings/tax',
+      component: TaxSettingComponent
+    },
+    {
+      path: 'viewPlan',
+      component: ViewPlanComponent,
+    },
+    {
+      path: 'addPlan',
+      component: AddPlanComponent,
+    },
+    {
+      path: 'addScheme/:id',
+      component: AddSchemeComponent
+    },
+    
+  {
+    path: 'viewScheme/:id',
     component: ViewSchemeComponent,
-  },   
+  },  
+  ],
+  canActivate: [AuthGuard],
+    data: {
+      role: ['Admin'] // Role as an array
+    },
+   
+  }, 
+  
+
+
   {
-    path:'admin/settings/tax',
-    component: TaxSettingComponent
-  },
-  {
+    path: 'employee',
+    component: EmployeeOperationsComponent,
+    children: [
+      {
+        path:'addAgent',
+        component: AddAgentComponent
+      },
+      {
+        path:'viewAgent',
+        component: ViewAgentComponent
+      }
+
+    ],
+    canActivate: [AuthGuard],
+    data: {
+      role: ['Employee'] // Role as an array
+    },
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ,{
     path:'admin/customers',
     component: ViewCustomersComponent
   },
-  {
-    path: 'admin/viewPlan',
-    component: ViewPlanComponent,
-  },
-  {
-    path: 'admin/addPlan',
-    component: AddPlanComponent,
-  },
+ 
   {
     path: 'admin/viewClaim',
     component: ViewClaimComponent,
@@ -134,10 +270,7 @@ const routes: Routes = [
     path: 'admin/agent',
     component: AddAgentComponent
   },
-  {
-    path:'admin/addEmployee',
-    component: AddEmployeeComponent
-  },
+  
   {
     path:'customer/show-claims',
     component:ShowClaimsComponent
@@ -145,9 +278,6 @@ const routes: Routes = [
   {
     path: 'dashboard/changePassword',
     component: ChangePasswordComponent
-  },{
-    path: 'admin/viewEmployees',
-    component: ViewEmployeesComponent
   },
   
   {
@@ -169,10 +299,7 @@ const routes: Routes = [
             
     ]
   },
-  {
-    path: 'admin/addScheme/:id',
-    component: AddSchemeComponent
-  },
+  
   {
     path: 'admin/customer/documnets/:id',
     component: CustomerDocumentsComponent
@@ -351,10 +478,7 @@ const routes: Routes = [
     path: 'payment',
     component: PaymentComponent
   },
-  {
-    path: 'admin/viewEmployee',
-    component: ViewEmployeesComponent
-  },
+  
   
   {
     path: '**',

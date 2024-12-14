@@ -1,127 +1,204 @@
-<!-- Modal -->
 <div class="wrapper">
-    <!-- <app-employee-header></app-employee-header> -->
-    <div class="top_link">
-      <button (click)="goBack()" class="btn-back ms-3 mt-2" >Back</button>
-    </div>
-    <div class="container" id="addAgent">
-  
-  
-      <h2 class="heading" id="Label">
-        Register Agent
-      </h2>  
-      <form [formGroup]="addAgentForm">
-        <div class="mb-3">
-          <input type="text" formControlName="agentFirstName" placeholder=" FIRST NAME*" />
-          <small *ngIf="
-                addAgentForm.get('agentFirstName')?.dirty &&
-                addAgentForm.get('agentFirstName')?.hasError('required')
-                " class="text-danger">*First Name is required.</small>
-          <small *ngIf="
-              addAgentForm.get('agentFirstName')?.dirty &&
-              addAgentForm.get('agentFirstName')?.hasError('minlength')
-              " class="text-danger">*minimum 3 characters are required.</small>
-          <small *ngIf="
-              addAgentForm.get('agentFirstName')?.dirty &&
-              addAgentForm
-                  .get('agentFirstName')
-                  ?.hasError('onlyCharacters')
-              " class="text-danger">
-            *{{
+  <div class="top_link">
+    <button (click)="goBack()" class="btn-back ms-3 mt-2">Back</button>
+  </div>
+  <div class="container">
+    <h2 class="heading">Register Agent</h2>
+    <form [formGroup]="addAgentForm">
+      <!-- First Name -->
+      <div class="mb-3">
+        <input
+          type="text"
+          formControlName="agentFirstName"
+          placeholder="FIRST NAME*"
+        />
+        <small
+          *ngIf="addAgentForm.get('agentFirstName')?.touched && addAgentForm.get('agentFirstName')?.hasError('required')"
+          class="text-danger"
+        >
+          *First Name is required.
+        </small>
+        <small
+          *ngIf="addAgentForm.get('agentFirstName')?.touched && addAgentForm.get('agentFirstName')?.hasError('minlength')"
+          class="text-danger"
+        >
+          *Minimum 3 characters are required.
+        </small>
+        <small
+          *ngIf="addAgentForm.get('agentFirstName')?.touched && addAgentForm.get('agentFirstName')?.hasError('onlyCharacters')"
+          class="text-danger"
+        >
+          {{
             addAgentForm
-            .get("agentFirstName")
-            ?.getError("onlyCharacters").message
-            }}</small>
-        </div>
-        <div class="mb-3">
-          <input type="text" formControlName="agentLastName" placeholder=" LAST NAME*" />
-          <small *ngIf="
-                addAgentForm.get('agentLastName')?.dirty &&
-                addAgentForm.get('agentLastName')?.hasError('required')
-                " class="text-danger">*Last Name is required.</small>
-          <small *ngIf="
-              addAgentForm.get('agentLastName')?.dirty &&
-              addAgentForm
-                  .get('agentLastName')
-                  ?.hasError('onlyCharacters')
-              " class="text-danger">
-            *{{
-            addAgentForm
-            .get("agentLastName")
-            ?.getError("onlyCharacters").message
-            }}</small>
-        </div>
-  
-        <div class="mb-3">
-          <input type="userName" formControlName="userName" placeholder="USERNAME*" />
-          <small *ngIf="
-                addAgentForm.get('userName')?.dirty &&
-                addAgentForm.get('userName')?.hasError('required')
-                " class="text-danger">*User Name is required.</small>
-          <small *ngIf="
-              addAgentForm.get('userName')?.dirty &&
-              addAgentForm.get('userName')?.hasError('minlength')
-              " class="text-danger">*minimum 6 characters are required.</small>
-        </div>
-        <div class="mb-3">
-          <input type="password" formControlName="password" placeholder="PASSWORD*" />
-          <small *ngIf="
-                addAgentForm.get('password')?.dirty &&
-                addAgentForm.get('password')?.hasError('required')
-                " class="text-danger">*Password is required.</small>
-          <small *ngIf="
-              addAgentForm.get('password')?.dirty &&
-              addAgentForm.get('password')?.hasError('passwordValidator')
-              " class="text-danger" [innerHTML]=" addAgentForm.get('password')?.getError('passwordValidator')
-                  .message
-              "></small>
-        </div>
-        <div class="mb-3">
-          <input type="string" formControlName="qualification" placeholder="Qualification*" />
-          <small *ngIf="
-                addAgentForm.get('qualification')?.dirty &&
-                addAgentForm.get('qualification')?.hasError('required')
-                " class="text-danger">*Qualification is required.</small>
-        </div>
-        <div class="mb-3">
-          <input type="email" formControlName="email" aria-describedby="emailHelp" placeholder="EMAIL*" />
-          <small *ngIf="
-                addAgentForm.get('email')?.dirty &&
-                addAgentForm.get('email')?.hasError('required')
-                " class="text-danger">*Email is required.</small>
-          <small *ngIf="
-              addAgentForm.get('email')?.dirty &&
-              addAgentForm.get('email')?.hasError('email')
-              " class="text-danger">*Invalid format.</small>
-        </div>
-        <div class="mb-3">
-          <input type="text" formControlName="phone" placeholder="MOBILE NUMBER*" />
-          <small *ngIf="
-                addAgentForm.get('phone')?.dirty &&
-                addAgentForm.get('phone')?.hasError('required')
-                " class="text-danger">*Mobile No. is required.</small>
-          <small *ngIf="
-                addAgentForm.get('phone')?.dirty &&
-                addAgentForm.get('phone')?.hasError('pattern')
-                " class="text-danger">*Invalid format</small>
-        </div>
-  
-      </form>
-  
-      <div class="row buttons-row">
-        <div class="col-md-6">
-          <button type="button" class="btn btn-secondary btn-cancel" (click)="onCancel()">
-            Cancel
-          </button>
-        </div>
-        <div class="col-md-6">
-          <button id="save" type="button" class="btn btn-info btn-register" (click)="addAgent()">
-            Register
-          </button>
-        </div>
+              .get('agentFirstName')
+              ?.getError('onlyCharacters').message
+          }}
+        </small>
       </div>
-      
+
+      <!-- Last Name -->
+      <div class="mb-3">
+        <input
+          type="text"
+          formControlName="agentLastName"
+          placeholder="LAST NAME*"
+        />
+        <small
+          *ngIf="addAgentForm.get('agentLastName')?.touched && addAgentForm.get('agentLastName')?.hasError('required')"
+          class="text-danger"
+        >
+          *Last Name is required.
+        </small>
+        <small
+          *ngIf="addAgentForm.get('agentLastName')?.touched && addAgentForm.get('agentLastName')?.hasError('onlyCharacters')"
+          class="text-danger"
+        >
+          {{
+            addAgentForm
+              .get('agentLastName')
+              ?.getError('onlyCharacters').message
+          }}
+        </small>
+      </div>
+
+      <!-- Username -->
+      <div class="mb-3">
+        <input
+          type="text"
+          formControlName="userName"
+          placeholder="USERNAME*"
+        />
+        <small
+          *ngIf="addAgentForm.get('userName')?.touched && addAgentForm.get('userName')?.hasError('required')"
+          class="text-danger"
+        >
+          *Username is required.
+        </small>
+        <small
+          *ngIf="addAgentForm.get('userName')?.touched && addAgentForm.get('userName')?.hasError('minlength')"
+          class="text-danger"
+        >
+          *Minimum 6 characters are required.
+        </small>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3 position-relative password-container">
+        <input
+          type="{{ hidePassword ? 'password' : 'text' }}"
+          formControlName="password"
+          placeholder="PASSWORD*"
+        />
+        <i
+          class="toggle-password fas"
+          [ngClass]="hidePassword ? 'fa-eye' : 'fa-eye-slash'"
+          (click)="togglePasswordVisibility()"
+        ></i>
+        <small
+          *ngIf="addAgentForm.get('password')?.touched && addAgentForm.get('password')?.hasError('required')"
+          class="text-danger"
+        >
+          *Password is required.
+        </small>
+        <small
+          *ngIf="addAgentForm.get('password')?.touched && !addAgentForm.get('password')?.hasError('required') && addAgentForm.get('password')?.hasError('passwordValidator')"
+          class="text-danger"
+          [innerHTML]="
+            addAgentForm.get('password')?.getError('passwordValidator').message
+          "
+        ></small>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="EMAIL*"
+        />
+        <small
+          *ngIf="addAgentForm.get('email')?.touched && addAgentForm.get('email')?.hasError('required')"
+          class="text-danger"
+        >
+          *Email is required.
+        </small>
+        <small
+          *ngIf="addAgentForm.get('email')?.touched && addAgentForm.get('email')?.hasError('email')"
+          class="text-danger"
+        >
+          *Invalid email format.
+        </small>
+      </div>
+
+      <!-- Phone -->
+      <div class="mb-3">
+        <input
+          type="text"
+          formControlName="phone"
+          placeholder="PHONE*"
+        />
+        <small
+          *ngIf="addAgentForm.get('phone')?.touched && addAgentForm.get('phone')?.hasError('required')"
+          class="text-danger"
+        >
+          *Phone is required.
+        </small>
+        <small
+          *ngIf="addAgentForm.get('phone')?.touched && addAgentForm.get('phone')?.hasError('pattern')"
+          class="text-danger"
+        >
+          *Invalid phone number format.
+        </small>
+      </div>
+
+      <!-- Qualification -->
+      <div class="mb-3">
+        <input
+          type="text"
+          formControlName="qualification"
+          placeholder="QUALIFICATION*"
+        />
+        <small
+          *ngIf="addAgentForm.get('qualification')?.touched && addAgentForm.get('qualification')?.hasError('required')"
+          class="text-danger"
+        >
+          *Qualification is required.
+        </small>
+      </div>
+    </form>
+
+    <!-- Buttons -->
+    <div class="row buttons-row">
+      <div class="col-md-6">
+        <button
+          type="button"
+          class="btn btn-secondary btn-cancel"
+          (click)="openCancelModal()"
+        >
+          Cancel
+        </button>
+      </div>
+      <div class="col-md-6">
+        <button
+          type="button"
+          class="btn btn-info btn-register"
+          [disabled]="addAgentForm.invalid"
+          (click)="addAgent()"
+        >
+          Register
+        </button>
+      </div>
     </div>
   </div>
-  
-  <app-footer-end></app-footer-end>
+</div>
+<!-- Cancel Modal -->
+<div *ngIf="showCancelEditModal" class="modal">
+  <div class="modal-content">
+    <h4>Discard Changes?</h4>
+    <p>Are you sure you want to discard changes?</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" (click)="discardChanges()">Yes, Discard</button>
+      <button class="btn btn-secondary" (click)="closeCancelModal()">Cancel</button>
+    </div>
+  </div>
+</div>

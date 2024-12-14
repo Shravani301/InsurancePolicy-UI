@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { AdminService } from 'src/app/services/admin.service';
@@ -9,60 +9,120 @@ import { ToastService } from 'src/app/services/toast.service';
 @Component({
   selector: 'app-add-agent',
   templateUrl: './add-agent.component.html',
-  styleUrls: ['./add-agent.component.css']
+  styleUrls: ['./add-agent.component.css'],
 })
-export class AddAgentComponent {
-  addAgentForm=new FormGroup({
-agentFirstName:new FormControl('',[Validators.required,ValidateForm.onlyCharactersValidator,Validators.minLength(3)]),
-    agentLastName:new FormControl('',[Validators.required,ValidateForm.onlyCharactersValidator]),
-    userName:new FormControl('',[Validators.required,Validators.minLength(6),Validators.maxLength(20)]),
-    qualification:new FormControl('',Validators['required']),
-    email:new FormControl('',[Validators.required,Validators.email]),
-    phone:new FormControl('',[Validators.required,Validators.pattern(/^[0-9]{10}$/)]),
-    salary:new FormControl('',),
-    password:new FormControl('',[Validators.required,ValidateForm.passwordPatternValidator]),
-  })
+export class AddAgentComponent implements OnInit {
+  addAgentForm: FormGroup;
+  showCancelEditModal: boolean = false;
 
-  token :any='';
-  addModal:any;
-  employeeData:any;
-  
-constructor( private admin:AdminService,private location:Location,private toastService: ToastService){
- 
-}
-  ngOnInit(): void {
+  hidePassword: boolean = true; // Default to hiding the password
 
+  constructor(
+    private adminService: AdminService,
+    private location: Location,
+    private toastService: ToastService
+  ) {
+    // Initialize the form with validation rules
+    this.addAgentForm = new FormGroup({
+      agentFirstName: new FormControl('', [
+        Validators.required,
+        ValidateForm.onlyCharactersValidator,
+        Validators.minLength(3),
+      ]),
+      agentLastName: new FormControl('', [
+        Validators.required,
+        ValidateForm.onlyCharactersValidator,
+      ]),
+      userName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(20),
+      ]),
+      qualification: new FormControl('', Validators.required),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email,
+      ]),
+      phone: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[0-9]{10}$/),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        ValidateForm.passwordPatternValidator,
+      ]),
+    });
   }
-  
-  
-  addAgent(): void{
-    if(this.addAgentForm.valid){
-      
-      console.log(this.addAgentForm.value)
-      this.admin.addAgent(this.addAgentForm.value).subscribe({
-        next:(data)=>{
-          console.log(data)
-          this.toastService.showToast("success","Added Successfully") 
+
+  ngOnInit(): void {}
+
+  /**
+   * Adds a new agent after validating the form.
+   */
+  addAgent(): void {
+    if (this.addAgentForm.valid) {
+      console.log('Submitting:', this.addAgentForm.value);
+      this.adminService.addAgent(this.addAgentForm.value).subscribe({
+        next: (data) => {
+          console.log('Response:', data);
+          this.toastService.showToast('success', 'Agent added successfully');
+          this.goBack();
           this.addAgentForm.reset();
-          location.reload();
-          this.addModal.hide();
-          
         },
-        error:(error:HttpErrorResponse)=>{
-          alert(error.error.Message)
-          console.log(error.message)
-        }
-      })
-    }
-    else{
+        error: (error: HttpErrorResponse) => {
+          console.error('Error:', error.message);
+          this.toastService.showToast(
+            'error',
+            error.error?.errorMessage || 'An error occurred while adding the agent'
+          );
+        },
+      });
+    } else {
       ValidateForm.validateAllFormFileds(this.addAgentForm);
-      this.toastService.showToast("warn","One or more feilds required")
+      this.toastService.showToast('warn', 'Please fill out all required fields');
     }
   }
-  onCancel(){
-    this.addAgentForm.reset()
+
+  /**
+   * Reloads the page after successful submission.
+   */
+  reloadPage(): void {
+    location.reload();
   }
-  goBack(){
-    this.location.back()
+
+  /**
+   * Toggles the visibility of the password input field.
+   */
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  /**
+   * Resets the form on cancel, with a confirmation dialog.
+   */
+  onCancel(): void {
+    if (confirm('Are you sure you want to discard changes?')) {
+      this.addAgentForm.reset();
+    }
+  }
+
+  /**
+   * Navigates back to the previous page.
+   */
+  goBack(): void {
+    this.location.back();
+  }
+  openCancelModal(): void {
+    if(this.addAgentForm.valid||this.addAgentForm.invalid)
+    this.showCancelEditModal = true;
+  }
+
+  closeCancelModal(): void {
+    this.showCancelEditModal = false;
+  }
+
+  discardChanges(): void {
+    this.addAgentForm.reset();
+    this.closeCancelModal();
   }
 }

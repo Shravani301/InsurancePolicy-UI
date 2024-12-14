@@ -1,6 +1,6 @@
 .wrapper {
     background-color: #f3faf4; /* Page background */
-    min-height: 100vh; /* Ensures the wrapper covers the full viewport height */
+    min-height: 82vh; /* Ensures the wrapper covers the full viewport height */
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Pushes footer to the bottom */
@@ -10,7 +10,8 @@
     background-color: rgba(252, 252, 252, 0.4);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 800px;    
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     flex-grow: 1; /* Ensures the container grows to fill available space */
     margin-bottom: 20px; /* Adds space between the container and footer */
 }
@@ -74,10 +75,3 @@
     background-color: #5a6268;
 }
 
-app-footer-end {
-    background-color: #f8f9fa;
-    text-align: center;
-    border-top: 1px solid #ccc;
-    padding: 10px 0;
-    margin-top: auto; /* Ensures the footer stays at the bottom */
-}

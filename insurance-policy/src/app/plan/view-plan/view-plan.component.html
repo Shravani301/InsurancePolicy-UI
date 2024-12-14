@@ -5,7 +5,7 @@
       </button>
     </div>  
     <div>
-        <button id="button" class="btn btn-secondary m-4" (click)="registerPlan()">
+        <button id="button" class="btn btn-secondary m-3" (click)="registerPlan()">
           Add New Plan
         </button>
       </div>
@@ -39,6 +39,7 @@
            <th>Plan Name</th>
             <th>Status</th>
             <th>Action</th>
+            <th>Total Schemes</th>
             <th>More</th>
           </tr>
         </thead>
@@ -51,6 +52,7 @@
                 {{ plan.status ? 'Active' : 'Inactive' }}
               </span>
             </td>
+            
             <td>
               <button
       class="btn btn-warning btn-sm"
@@ -60,9 +62,20 @@
     </button>
             </td>
             <td>
+              <span *ngIf="plan.totalSchemes > 0">{{ plan.totalSchemes }}</span>
+              <button 
+                *ngIf="plan.totalSchemes === 0" 
+                [disabled]="!plan.status" 
+                class="btn btn-search btn-sm" 
+                (click)="addScheme(plan)">
+                Add Scheme
+              </button>
+            </td>
+            
+            <td>
               <button
               class="btn btn-info"
-              [disabled]="!plan.status"
+              [disabled]="!plan.status || plan.totalSchemes==0"
               (click)="viewScheme(plan)"
             >
               View Schemes
@@ -98,5 +111,26 @@
       
     </div>
   </div>
-  <app-footer-end></app-footer-end>
-  
+  <!-- Deactivation Modal -->
+<div *ngIf="showDeactivateModal" class="modal">
+  <div class="modal-content">
+    <h4>Confirm Deactivation</h4>
+    <p>Are you sure you want to deactivate the plan "{{ selectedPlan?.planName }}"?</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" (click)="confirmDeactivation()">Yes, Deactivate</button>
+      <button class="btn btn-secondary" (click)="closeDeactivateModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Activation Modal -->
+<div *ngIf="showActivateModal" class="modal">
+  <div class="modal-content">
+    <h4>Confirm Activation</h4>
+    <p>Are you sure you want to activate the plan "{{ selectedPlan?.planName }}"?</p>
+    <div class="modal-actions">
+      <button class="btn btn-success" (click)="confirmActivation()">Yes, Activate</button>
+      <button class="btn btn-secondary" (click)="closeActivateModal()">Cancel</button>
+    </div>
+  </div>
+</div>

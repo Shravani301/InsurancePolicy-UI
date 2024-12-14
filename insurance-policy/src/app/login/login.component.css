@@ -16,12 +16,18 @@ body {
   /* Login container styles */
   .login-container {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
+    padding-left: 15%;
     height: 100%;
     width: 100%;
+    background-image: url('/assets/login-bg1.jpg'); /* Correct path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   
+
   /* Login card styling */
   .login-card {
     background-color: #ffffff;

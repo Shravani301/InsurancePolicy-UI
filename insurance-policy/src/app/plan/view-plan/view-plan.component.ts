@@ -22,6 +22,8 @@ export class ViewPlanComponent implements OnInit {
   totalPages = 0;
   hasNext = false;
   hasPrevious = false;
+  selectedPlan: any; // Store the selected plan for modal actions
+  
 
   constructor(
     private admin: AdminService,
@@ -136,6 +138,9 @@ export class ViewPlanComponent implements OnInit {
     this.router.navigateByUrl('/admin/addPlan');
   }
 
+  addScheme(plan:any): void {
+    this.router.navigateByUrl(`/admin/addScheme/${plan.planId}`);
+  }
   onDelete(plan: any): void {
     if (confirm('Are you sure you want to deactivate this plan?')) {
       this.admin.deletePlan(plan.planId).subscribe({
@@ -153,24 +158,77 @@ export class ViewPlanComponent implements OnInit {
   }
   
 
+  // togglePlanStatus(plan: any): void {
+  //   if (plan.status) {
+  //     // Call the delete API for deactivation
+  //     this.onDelete(plan);
+  //   } else {
+  //     // Call the activate API
+  //     if (confirm('Are you sure you want to activate this plan?')) {
+  //       this.admin.activatePlan(plan.planId).subscribe({
+  //         next: () => {
+  //           this.toastService.showToast('success', 'Plan activated successfully.');
+  //           this.getPlans();
+  //         },
+  //         error: (err) => {
+  //           console.error('Failed to activate plan:', err);
+  //           this.toastService.showToast('error', 'Failed to activate the plan.');
+  //         },
+  //       });
+  //     }
+  //   }
+  // }
+  showDeactivateModal: boolean = false; // Control deactivation modal visibility
+  showActivateModal: boolean = false; // Control activation modal visibility
+
+  // Existing properties and constructor...
+
   togglePlanStatus(plan: any): void {
+    this.selectedPlan = plan;
     if (plan.status) {
-      // Call the delete API for deactivation
-      this.onDelete(plan);
+      // Open deactivation modal
+      this.showDeactivateModal = true;
     } else {
-      // Call the activate API
-      if (confirm('Are you sure you want to activate this plan?')) {
-        this.admin.activatePlan(plan.planId).subscribe({
-          next: () => {
-            this.toastService.showToast('success', 'Plan activated successfully.');
-            this.getPlans();
-          },
-          error: (err) => {
-            console.error('Failed to activate plan:', err);
-            this.toastService.showToast('error', 'Failed to activate the plan.');
-          },
-        });
-      }
+      // Open activation modal
+      this.showActivateModal = true;
     }
+  }
+
+  confirmDeactivation(): void {
+    this.admin.deletePlan(this.selectedPlan.planId).subscribe({
+      next: () => {
+        this.toastService.showToast('success', 'Plan deactivated successfully.');
+        this.getPlans();
+        this.closeDeactivateModal();
+      },
+      error: (err) => {
+        console.error('Failed to deactivate plan:', err);
+        this.toastService.showToast('error', 'Failed to deactivate the plan.');
+      },
+    });
+  }
+
+  confirmActivation(): void {
+    this.admin.activatePlan(this.selectedPlan.planId).subscribe({
+      next: () => {
+        this.toastService.showToast('success', 'Plan activated successfully.');
+        this.getPlans();
+        this.closeActivateModal();
+      },
+      error: (err) => {
+        console.error('Failed to activate plan:', err);
+        this.toastService.showToast('error', 'Failed to activate the plan.');
+      },
+    });
+  }
+
+  closeDeactivateModal(): void {
+    this.showDeactivateModal = false;
+    this.selectedPlan = null;
+  }
+
+  closeActivateModal(): void {
+    this.showActivateModal = false;
+    this.selectedPlan = null;
   }
 }

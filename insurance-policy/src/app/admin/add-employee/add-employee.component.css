@@ -1,14 +1,9 @@
 .wrapper {
     background-color: #f3faf4;
-    min-height: 93vh;
+    min-height: 84vh;
+    overflow: hidden;
   }
-  
-  .container {
-    background-color: rgba(252, 252, 252, 0.4);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+
   #pageSizeSelect {
     border-color: #00d1b2;
     border-width: 2px;
@@ -33,7 +28,7 @@
     font-weight: bold;
     border: none;
     border-radius: 5px;
-    padding: 5px 15px;
+    padding: 5px 10px;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -68,33 +63,19 @@
     border-color: #03d6b7; /* Change the border color to match the hover background */
   }
   
-  .btn-reset {
-    border-radius: 4px; /* Rounded corners */
-    border: 2px solid #ff6767; /* Specify the border with a solid line */
-    background-color: #ff6767; /* Primary button color */
-    padding: 4px 12px; /* Padding inside the button */
-    color: white; /* Text color */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
-  }
   
-  .btn-reset:hover {
-    background-color: #ff4c4c; /* Slightly darker color on hover */
-    color: white; /* Ensure the text remains white */
-    border-color: #ff4c4c; /* Match border color with hover background */
-  }
   .container {
       background-color: rgba(252, 252, 252, 0.4);
-      padding: 20px;
+      padding: 14px;
       border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 600px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 520px;
       margin: auto; /* Horizontally center the container */
       display: flex;
       flex-direction: column;
       align-items: center; /* Center content inside */
       justify-content: center; /* Center content vertically */
-      min-height: 70vh; /* Adjust height for centering */
+      max-height: 78vh; /* Adjust height for centering */
     }
     
     form {
@@ -109,11 +90,11 @@
     }
     
     form input {
-      width: 90%;
+      width: 80%;
       padding: 10px;
       border: 1px solid #00d1b2;
       border-radius: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       outline: none;
     }
     
@@ -154,3 +135,17 @@
       background-color: #138496;
       border-color: #138496;
     }
+    /* Container to position icon inside the input */
+/* Icon styling */
+.toggle-password {
+  position: absolute;
+  top: 50%; /* Center vertically */
+  right: 4rem; /* Align to the right inside the input field */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+  cursor: pointer;
+  color: #aaa;
+}
+
+.toggle-password:hover {
+  color: #000;
+}

@@ -1,41 +1,67 @@
 <div class="wrapper tax-setting-wrapper">
-    <app-admin-header></app-admin-header>
-  
-    <div class="container flex-grow-1" style="background-color: #fcfcfc40; padding: 20px; border-radius: 8px;">
-      <div class="top_link mb-3">
-        <button (click)="goBack()" class="btn-back">
-          Back
-        </button>
-      </div>
-  
-      <div class="heading text-center">
-        <h2>Tax Settings</h2>
-      </div>
-  
-      <form (ngSubmit)="onUpdateTax()" #taxForm="ngForm">
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-           <input
-              type="number"
-              id="taxPercentage"
-              name="taxPercentage"
-              class="form-control"
-              placeholder="Tax Percentage"
-              [(ngModel)]="taxPercentage"
-              required
-            />
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col text-center">
-            <button type="submit" [disabled]="!taxForm.valid" class="submit">
-              Update Tax
-            </button>
-          </div>
-        </div>
-      </form>
+  <div
+    class="container flex-grow-1"
+    style="background-color: #fcfcfc40; padding: 20px; border-radius: 8px;"
+  >
+    <div class="top_link mb-3">
+      <button (click)="goBack()" class="btn-back">Back</button>
     </div>
-  
-    <app-footer-end></app-footer-end>
+
+    <div class="heading text-center">
+      <h2>Tax Settings</h2>
+    </div>
+
+    <!-- Display Current Tax Percentage -->
+    <div class="text-center mb-3">
+      <p *ngIf="taxPercentage !== null">
+        Current Tax Percentage: <strong>{{ taxPercentage }}%</strong>
+      </p>
+    </div>
+
+    <form (ngSubmit)="onUpdateTax()" #taxForm="ngForm">
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <!-- Tax Input Field -->
+          <input
+            type="number"
+            id="taxPercentage"
+            name="taxPercentage"
+            class="form-control"
+            placeholder="Enter tax percentage between 0.01 and 18"
+            [(ngModel)]="updatedTaxPercentage"
+            min="0.01"
+            max="18"
+          />
+          <!-- Validation Messages -->
+          <small
+            *ngIf="isSubmitted && !updatedTaxPercentage"
+            class="text-danger"
+          >
+            Tax percentage is required.
+          </small>
+          <small
+            *ngIf="
+              isSubmitted &&
+              updatedTaxPercentage !== null &&
+              (updatedTaxPercentage < 0.01 || updatedTaxPercentage > 18)
+            "
+            class="text-danger"
+          >
+            Tax percentage must be between 0.01 and 18%.
+          </small>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col text-center">
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="submit"
+          >
+            Update Tax
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
-  
+</div>

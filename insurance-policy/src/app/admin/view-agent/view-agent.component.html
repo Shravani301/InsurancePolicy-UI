@@ -65,6 +65,8 @@
             <th>Qualification</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Total Customers</th>
+            <th>Total Policies</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -77,6 +79,8 @@
             <td>{{ agent.qualification }}</td>
             <td>{{ agent.email }}</td>
             <td>{{ agent.phone }}</td>
+            <td>{{agent.totalCustomers}}</td>
+            <td>{{agent.totalPolicies}}</td>
             <td>{{ agent.status ? 'Active' : 'Inactive' }}</td>
             <td>
               <button
@@ -137,4 +141,3 @@
       </div>
     </div>
   </div>
-  <app-footer-end></app-footer-end>

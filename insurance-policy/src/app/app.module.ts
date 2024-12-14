@@ -77,6 +77,8 @@ import { ShowPoliciesComponent } from './agent/show-policies/show-policies.compo
 import { WithdrawalsComponent } from './agent/withdrawals/withdrawals.component';
 import { EmployeeLandingComponent } from './employee/employee-landing/employee-landing.component';
 import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
+import { AdminOperationsComponent } from './admin/admin-operations/admin-operations.component';
+import { EmployeeOperationsComponent } from './employee/employee-operations/employee-operations.component';
 
 @NgModule({
   declarations: [
@@ -143,6 +145,8 @@ import { EmployeeProfileComponent } from './employee/employee-profile/employee-p
     WithdrawalsComponent,
     EmployeeLandingComponent,
     EmployeeProfileComponent,
+    AdminOperationsComponent,
+    EmployeeOperationsComponent,
 
     
   ],

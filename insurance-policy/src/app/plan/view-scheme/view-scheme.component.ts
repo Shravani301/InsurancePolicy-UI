@@ -129,29 +129,39 @@ export class ViewSchemeComponent implements OnInit {
   }
   
 
-  deleteScheme(schemeId: number): void {
-    if (confirm('Are you sure you want to delete this scheme?')) {
-      this.admin.deleteScheme(schemeId).subscribe({
-        next: () => {
-          alert('Scheme deleted successfully.');
-          this.getSchemes();
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error('Failed to delete scheme:', err);
-          alert('Failed to delete scheme.');
-        },
-      });
-    }
-  }
+ 
   editScheme(scheme: any): void {
     scheme.isEditing = true; // Enable editing mode
   }
   
   saveScheme(scheme: any): void {
-    scheme.isEditing = false; // Disable editing mode
-    // Perform API call to save changes
+    const isValid =
+      scheme.schemeName &&
+      scheme.minAmount >= 500 &&
+      scheme.maxAmount > scheme.minAmount &&
+      scheme.minAge >= 18 &&
+      scheme.maxAge > scheme.minAge &&
+      scheme.minInvestTime >= 1 &&
+      scheme.maxInvestTime > scheme.minInvestTime &&
+      scheme.profitRatio >= 0 &&
+      scheme.profitRatio <= 25 &&
+      scheme.registrationCommRatio >= 0 &&
+      scheme.registrationCommRatio <= 40 &&
+      scheme.installmentCommRatio >= 0 &&
+      scheme.installmentCommRatio <= 7.5;
+      scheme.claimDeductionPercentage>=0 &&
+      scheme.claimDeductionPercentage<=30;
+      scheme.penaltyDeductionPercentage>=0 &&
+      scheme.penaltyDeductionPercentage<=100;
+  
+    if (!isValid) {
+      alert('Please fix validation errors before saving.');
+      return;
+    }
+  
     this.updateSchemeData(scheme);
   }
+  
   
   updateSchemeData(scheme: any): void {
     // Create a shallow copy of the scheme object
@@ -179,24 +189,77 @@ export class ViewSchemeComponent implements OnInit {
   }
   
 
-  togglePlanStatus(scheme: any): void {
-    if (scheme.status) {
-      // Call the delete API for deactivation
-      this.deleteScheme(scheme.schemeId);
-    } else {
-      // Call the activate API
-      if (confirm('Are you sure you want to activate this scheme?')) {
-        this.admin.activateScheme(scheme.schemeId).subscribe({
-          next: () => {
-            this.toastService.showToast('success', 'scheme activated successfully.');
-            this.getSchemes();
-          },
-          error: (err) => {
-            console.error('Failed to activate scheme:', err);
-            this.toastService.showToast('error', 'Failed to activate the scheme.');
-          },
-        });
-      }
-    }
+  showDeactivateModal = false;
+showActivateModal = false;
+selectedScheme: any = null;
+
+togglePlanStatus(scheme: any): void {
+  this.selectedScheme = scheme;
+  if (scheme.status) {
+    this.showDeactivateModal = true;
+  } else {
+    this.showActivateModal = true;
   }
+}
+
+confirmDeactivation(): void {
+  this.showDeactivateModal = false;
+    this.admin.deleteScheme(this.selectedScheme.schemeId).subscribe({
+      next: () => {
+        this.toastService.showToast('success','Scheme Deactivated successfully.');
+        this.getSchemes();
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Failed to deactivate scheme:', err);
+        alert('Failed to deactivate scheme.');
+      },
+    });
+}
+
+
+confirmActivation(): void {
+  this.showActivateModal = false;
+  // Call API to activate
+  this.admin.activateScheme(this.selectedScheme.schemeId).subscribe({
+    next: () => {
+      this.toastService.showToast('success', 'scheme activated successfully.');
+      this.getSchemes();
+    },
+    error: (err) => {
+      console.error('Failed to activate scheme:', err);
+      this.toastService.showToast('error', 'Failed to activate the scheme.');
+    },
+  });
+}
+
+closeDeactivateModal(): void {
+  this.showDeactivateModal = false;
+}
+
+closeActivateModal(): void {
+  this.showActivateModal = false;
+}
+
+showCancelEditModal = false;
+editingScheme: any = null;
+
+confirmCancelEdit(scheme: any): void {
+  this.showCancelEditModal = true;
+  this.editingScheme = scheme;
+}
+
+discardChanges(): void {
+  this.showCancelEditModal = false;
+  if (this.editingScheme) {
+    // Reset changes by fetching the latest scheme details
+    this.getSchemes();
+    this.editingScheme.isEditing = false;
+    this.editingScheme = null;
+  }
+}
+
+closeCancelEditModal(): void {
+  this.showCancelEditModal = false;
+}
+
 }

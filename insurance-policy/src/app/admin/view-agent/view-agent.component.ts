@@ -171,6 +171,6 @@ export class ViewAgentComponent implements OnInit {
     if(this.role=='Admin')
       this.router.navigateByUrl('admin/agent');
     else if(this.role=='Employee')
-      this.router.navigateByUrl('employee/agent');  
+      this.router.navigateByUrl('employee/addAgent');  
   }
 }

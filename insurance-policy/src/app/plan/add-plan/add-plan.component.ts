@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/services/admin.service';
 import { Location } from '@angular/common';
 import { ToastService } from 'src/app/services/toast.service'; // Import ToastService
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-plan',
@@ -12,7 +13,7 @@ import { ToastService } from 'src/app/services/toast.service'; // Import ToastSe
 })
 export class AddPlanComponent {
 
-  constructor(private admin: AdminService, private location: Location, private toastService: ToastService) {}
+  constructor(private admin: AdminService, private location: Location, private toastService: ToastService,private router:Router) {}
 
   addPlanForm = new FormGroup({
     planName: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]),
@@ -26,7 +27,7 @@ export class AddPlanComponent {
           console.log(data);
           this.addPlanForm.reset();
           this.toastService.showToast('success', 'Plan registered successfully.');
-          this.goBack();
+          this.router.navigate(['admin/viewPlan']);
         },
         error: (error: HttpErrorResponse) => {
           console.log(error);
@@ -36,13 +37,12 @@ export class AddPlanComponent {
       });
     } else {
       this.validateAllFormFields(this.addPlanForm); // Validate form fields
-      this.toastService.showToast('error', 'One or more fields are required.');
+      this.toastService.showToast('error', 'Plan name is required!.');
     }
   }
 
   OnCancel() {
     this.addPlanForm.reset();
-    this.toastService.showToast('info', 'Form reset successfully.');
   }
 
   goBack() {

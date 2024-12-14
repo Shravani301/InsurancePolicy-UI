@@ -310,5 +310,13 @@ export class AdminService {
   //   return this.http.get<any>(`${this.baseUrl}/WithdrawalRequest/agent/${id}/total-commission`, { observe:'response' });
   // }
  
+  getTax():Observable<any[]> 
+  {
+    return this.http.get<any[]>(`${this.baseUrl}/TaxSettings`);
+  }
+  getPlanById(planId:any):Observable<any>
+  {
+    return this.http.get<any>(`${this.baseUrl}/InsurancePlan/${planId}`);
+  }
   
 }

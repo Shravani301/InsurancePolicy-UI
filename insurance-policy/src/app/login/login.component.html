@@ -1,97 +1,67 @@
 <div class="login-box">
   <app-header></app-header>
   <div class="login-container">
-  <div class="login-card">
-  <h2 class="login-title">Login</h2>
-  <p class="subtitle">to the secure future.</p>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmitData()">
-  <!-- Username Field -->
-  <div class="form-group">
-  <input
-              id="userName"
-              class="form-control glossy-input"
-              formControlName="userName"
-              type="text"
-              placeholder="Enter your username"
-            />
-  <div
-              *ngIf="
+    <div class="login-card">
+      <h2 class="login-title">Login</h2>
+      <p class="subtitle">to the secure future.</p>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmitData()">
+        <!-- Username Field -->
+        <div class="form-group">
+          <input id="userName" class="form-control glossy-input" formControlName="userName" type="text"
+            placeholder="Enter your username" />
+          <div *ngIf="
                 loginForm.controls['userName'].touched &&
                 loginForm.controls['userName'].invalid
-              "
-              class="error"
-  >
-              Username is required.
-  </div>
-  </div>
-   
-          <!-- Password Field -->
-  <div class="form-group password-group">
-  <input
-              id="password"
-              class="form-control glossy-input"
-              formControlName="password"
-              [type]="hidePassword ? 'password' : 'text'"
-              placeholder="Enter your password"
-            />
-  <i
-              class="toggle-password"
-              [ngClass]="hidePassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
-              (click)="togglePasswordVisibility()"
-  ></i>
-  <div
-              *ngIf="
+              " class="error">
+            Username is required.
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group password-group">
+          <input id="password" class="form-control glossy-input" formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'" placeholder="Enter your password" />
+          <i class="toggle-password" [ngClass]="hidePassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
+            (click)="togglePasswordVisibility()"></i>
+          <div *ngIf="
                 loginForm.controls['password'].touched &&
                 loginForm.controls['password'].invalid
-              "
-              class="error"
-  >
-              Password must be at least 8 characters.
-  </div>
-  </div>
-   
-          <!-- CAPTCHA Section -->
-          <div class="form-group captcha-group">
-            
-           
-            <!-- CAPTCHA Container with Image and Refresh Button -->
-            <div class="captcha-container">
-              <p><strong>CAPTCHA:</strong></p>
-              <img
-                [src]="captchaImage"
-                alt="CAPTCHA"
-                class="captcha-image"
-              />
-             
-              <!-- Refresh Button -->
-              <button
-                type="button"
-                class="refresh-captcha-btn"
-                (click)="generateCaptcha()"
-              >
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00334e"><path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/></svg></button>
-            </div>
-           
-            <input
-              id="captchaInput"
-              class="form-control glossy-input"
-              formControlName="captchaInput"
-              type="text"
-              placeholder="Enter the CAPTCHA"
-            />
+              " class="error">
+            Password must be at least 8 characters.
           </div>
- 
-          <!-- Submit Button -->
-  <button type="submit" class="btn-login" [disabled]="loginForm.invalid">
-            Login
-  </button>
-   
-          <!-- Sign Up Link -->
-  <p class="signup-prompt">
-            Don’t have an account? <a routerLink="/registration">Sign up</a>
-  </p>
-  </form>
-  </div>
+        </div>
+
+        <!-- CAPTCHA Section -->
+        <div class="form-group captcha-group">
+          <!-- CAPTCHA Container with Image and Refresh Button -->
+          <div class="captcha-container">
+            <p><strong>CAPTCHA:</strong></p>
+            <img [src]="captchaImage" alt="CAPTCHA" class="captcha-image" />
+
+            <!-- Refresh Button -->
+            <button type="button" class="refresh-captcha-btn" (click)="generateCaptcha()">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#00334e">
+                <path
+                  d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z" />
+              </svg></button>
+          </div>
+
+          <input id="captchaInput" class="form-control glossy-input" formControlName="captchaInput" type="text"
+            placeholder="Enter the CAPTCHA" />
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-login" [disabled]="loginForm.invalid">
+          Login
+        </button>
+
+        <!-- Sign Up Link -->
+        <p class="signup-prompt">
+          Don’t have an account? <a routerLink="/registration">Sign up</a>
+        </p>
+      </form>
+    </div>
   </div>
   <app-footer-end></app-footer-end>
-  </div>
+</div>

@@ -1,7 +1,7 @@
 .wrapper {
     background-color: #f3faf4;
     padding: 20px;
-    min-height: 93vh;
+    min-height: 83vh;
   }
   
   .container {
@@ -108,7 +108,7 @@
   }
   
   .search-container input.form-control {
-    width: 200px; /* Decreased input width */
+    width: 160px; /* Decreased input width */
     outline: none;
     border-color: #00d1b2;
     border-width: 2px; /* Added outline color */

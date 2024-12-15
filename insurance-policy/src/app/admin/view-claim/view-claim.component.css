@@ -8,7 +8,7 @@
     background-color: rgba(252, 252, 252, 0.4);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   }
   #pageSizeSelect {
     border-color: #00d1b2;

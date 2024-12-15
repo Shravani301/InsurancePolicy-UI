@@ -13,9 +13,10 @@ export class ViewPaymentsComponent implements OnInit {
   currentPage: number = 1;
   pageSizes: number[] = [5, 10, 15, 20, 30, 40, 50];
   pageSize: number = this.pageSizes[0];
-  // searchQuery: string = '';
+  searchQuery: string = '';
   // isSearch: boolean = false;
-  totalPages: number = 0;
+  totalPages: number = 0;  
+  isSearch: boolean = false;
   hasNext: boolean = false;
   hasPrevious: boolean = false;
 
@@ -99,6 +100,27 @@ export class ViewPaymentsComponent implements OnInit {
   //   this.isSearch = false;
   //   this.filteredCustomerData = [...this.customerData]; // Reset filtered data to original customer data
   // }
+
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.filteredPaymentsData = this.paymentsData.filter((customer) => {
+        const searchLower = this.searchQuery.toLowerCase();
+        return (
+          customer.customerFirstName.toLowerCase().includes(searchLower) ||
+          customer.customerLastName.toLowerCase().includes(searchLower)
+        );
+      });
+      this.isSearch = true;
+    } else {
+      this.resetSearch();
+    }
+  }
+
+  resetSearch(): void {
+    this.searchQuery = '';
+    this.isSearch = false;
+    this.filteredPaymentsData = [...this.paymentsData]; // Reset filtered data to original customer data
+  }
 
   calculateSRNumber(index: number): number {
     return (this.currentPage - 1) * this.pageSize + index + 1;

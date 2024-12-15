@@ -130,14 +130,30 @@ export class CommissionWithdrawComponent implements OnInit {
   }
 
   changePage(page: number): void {
-    this.currentPage = page;
-    this.getWithdrawalRequests();
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.getWithdrawalRequests();
+    }
   }
-
+  getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
+  
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
   onPageSizeChange(event: Event): void {
     this.pageSize = +(event.target as HTMLSelectElement).value;
+    this.currentPage = 1;
     this.getWithdrawalRequests();
   }
+  maxVisiblePages: number = 3; // Maximum number of pages to display
+ 
 
   calculateSRNumber(index: number): number {
     return (this.currentPage - 1) * this.pageSize + index + 1;

@@ -4,7 +4,7 @@
     </div>
   
     <div class="container">
-      <h2>Commission Withdrawals</h2>
+      <h2>Commission Withdrawls</h2>
       <div class="row mb-3">
         <div class="row mb-3 align-items-center">
           <!-- Page Size and Filter -->
@@ -44,8 +44,10 @@
             <th>Agent Name</th>
             <th>Amount</th>
             <th>Status</th>
-            <th>Date</th>
-            <th>Total Commissions</th>
+            <th>Applied Date</th>
+            <th>Customers Registered</th>
+            <th>Policies Registered</th>
+            <th>Current Balance</th>
             <th *ngIf="role!=='Employee'">Actions</th>
           </tr>
         </thead>
@@ -72,6 +74,8 @@
               >
             </td>
             <td>{{ commission.requestDate | date: 'dd-MM-yyyy' }}</td>
+            <td>{{commission.totalCustomers}}</td>
+            <td>{{commission.totalPolicies}}</td>
             <td>
               <button
                 class="btn btn-info btn-sm"
@@ -109,17 +113,17 @@
       </table>
   
       <!-- Pagination -->
-      <div *ngIf="totalPages > 1" class="d-flex justify-content-between align-items-center mt-4">
+      <div class="d-flex justify-content-between align-items-center mt-4">
         <span>Page <b>{{ currentPage }}</b> of <b>{{ totalPages }}</b></span>
-        <nav class="pagination-container">
+        <nav *ngIf="totalPages > 1" class="pagination-container">
           <ul class="pagination">
             <li class="page-item" [class.disabled]="currentPage === 1">
               <button class="page-link" (click)="changePage(currentPage - 1)">Prev</button>
             </li>
             <li
               class="page-item"
-              *ngFor="let page of pageNumbers"
-              [class.active]="currentPage === page"
+              *ngFor="let page of getVisiblePages()"
+              [class.active]="page === currentPage"
             >
               <button class="page-link" (click)="changePage(page)">{{ page }}</button>
             </li>
@@ -131,5 +135,3 @@
       </div>
     </div>
   </div>
-  
-  <app-footer-end></app-footer-end>

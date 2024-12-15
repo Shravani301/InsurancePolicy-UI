@@ -2,8 +2,10 @@
     <div class="top_link">
       <button (click)="goBack()" class="btn-back ms-3 mt-2">Back</button>
     </div>
-    <button id="button" class="btn btn-secondary m-4" (click)="addAgent()">Add Agent</button>
-    <div class="container">
+    <div *ngIf="role==='Employee'">
+      <button id="button" class="btn btn-secondary m-4" (click)="addAgent()">Add Agent</button>
+    </div>
+       <div class="container">
       <h2>Agents</h2>
       <div class="row mb-3">
         <div class="row mb-3 align-items-center">

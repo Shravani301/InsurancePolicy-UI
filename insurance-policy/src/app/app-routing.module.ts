@@ -119,11 +119,38 @@ const routes: Routes = [
       path: 'addScheme/:id',
       component: AddSchemeComponent
     },
-    
-  {
-    path: 'viewScheme/:id',
-    component: ViewSchemeComponent,
-  },  
+    {
+      path: 'viewAgent',
+      component: ViewAgentComponent
+    },    
+    {
+      path: 'viewScheme/:id',
+      component: ViewSchemeComponent,
+    },  
+    {
+      path:'addAgent',
+      component: AddAgentComponent
+    },
+    {
+      path:'customers',
+      component: ViewCustomersComponent
+    },
+    {
+      path: 'viewClaim',
+      component: ViewClaimComponent,
+    },
+    {
+      path: 'complaints', 
+      component: ViewComplaintsComponent
+    },
+    {
+      path:'commissions/withdraw',
+      component:CommissionWithdrawComponent
+    },
+    {
+      path:'payments',
+      component:ViewPaymentsComponent
+    },
   ],
   canActivate: [AuthGuard],
     data: {
@@ -145,8 +172,8 @@ const routes: Routes = [
       {
         path:'viewAgent',
         component: ViewAgentComponent
-      }
-
+      },
+      
     ],
     canActivate: [AuthGuard],
     data: {
@@ -241,27 +268,10 @@ const routes: Routes = [
 
 
 
-  ,{
-    path:'admin/customers',
-    component: ViewCustomersComponent
-  },
+  ,
  
-  {
-    path: 'admin/viewClaim',
-    component: ViewClaimComponent,
-  },
-  {
-    path:'admin/commissions/withdraw',
-    component:CommissionWithdrawComponent
-  },
-  {
-    path: 'admin/complaints', 
-    component: ViewComplaintsComponent
-  },
-  {
-    path: 'admin/viewAgent',
-    component: ViewAgentComponent
-  },
+  
+  
   {
     path: 'admin/profile',
     component: AdminProfileComponent
@@ -312,10 +322,7 @@ const routes: Routes = [
     path: 'employee/customer/policies/:id',    
     component: ViewPoliciesComponent,
   },
-  {
-    path:'admin/payments',
-    component:ViewPaymentsComponent
-  },
+  
   {
     path: 'customer/profile',
     component: CustomerProfileComponent

@@ -19,6 +19,7 @@ export class ViewComplaintsComponent implements OnInit {
   currentPage = 1;
   totalComplaintCount = 0;
   queries: any[] = [];
+  totalPages:any=0;
   filteredCommissions: any[] = [];
   pageSizes: number[] = [5, 10, 15, 20, 25];
   pageSize = this.pageSizes[0];
@@ -30,6 +31,7 @@ export class ViewComplaintsComponent implements OnInit {
   responseText: string = ''; // Store the response text
   employeeId:any='';
   role:any='';
+  maxVisiblePages: number = 3; // Maximum number of pages to display
   private jwtHelper = new JwtHelperService();
 
   constructor(
@@ -60,6 +62,31 @@ export class ViewComplaintsComponent implements OnInit {
         this.isEmployee = true;
       }
     }
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.getAllQueries();
+    }
+  }
+
+  getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
+  
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+  onPageSizeChange(event: Event): void {
+    this.pageSize = +(event.target as HTMLSelectElement).value;
+    this.currentPage = 1;
+    this.getAllQueries();
   }
 
   // Initialize the complaint response form
@@ -114,18 +141,7 @@ resetSearch(): void {
 }
 
 
-  // Change the current page
-  changePage(page: number): void {
-    this.currentPage = page;
-    this.getAllQueries();
-  }
-
-  // Handle page size change
-  onPageSizeChange(event: Event): void {
-    this.pageSize = +(event.target as HTMLSelectElement).value;
-    this.getAllQueries();
-  }
-
+ 
   // Calculate serial number
   calculateSRNumber(index: number): number {
     return (this.currentPage - 1) * this.pageSize + index + 1;

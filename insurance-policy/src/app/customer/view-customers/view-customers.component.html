@@ -63,8 +63,12 @@
           <td>{{ customer.phone }}</td>
           <td>{{ customer.email }}</td>
           <td>
-            <button class="btn btn-info btn-sm me-1" (click)="viewDocument(customer)">Documents</button>
-            <button class="btn btn-success btn-sm" (click)="viewPolicies(customer)">Policies</button>
+            <button class="btn btn-info btn-sm me-1" 
+            [disabled]="customer.totalPolicies.length==0"
+            (click)="viewDocument(customer)">Documents</button>
+            <button class="btn btn-success btn-sm" 
+            [disabled]="customer.totalPolicies.length==0"
+            (click)="viewPolicies(customer)">Policies</button>
           </td>
         </tr>
         <tr *ngIf="filteredCustomerData.length === 0">
@@ -97,4 +101,3 @@
     
   </div>
 </div>
-<app-footer-end></app-footer-end>

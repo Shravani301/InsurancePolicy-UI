@@ -43,6 +43,7 @@
         <thead class="table-dark">
           <tr>
             <th>Sr.</th>
+            <th>Customer Name</th>
             <th>Title</th>
             <th>Message</th>
             <th>Response</th>
@@ -54,6 +55,7 @@
         <tbody>
           <tr *ngFor="let complaint of filteredComplaints; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
+            <td>{{ complaint.customerName }}</td>
             <td>{{ truncateText(complaint.title, 50) }}</td>
             <td>{{ truncateText(complaint.message, 30) }}</td>
             <td>{{ truncateText(complaint.response || 'No Response', 50) }}</td>
@@ -87,5 +89,4 @@
       </nav>
     </div>
   </div>
-  <app-footer-end></app-footer-end>
   

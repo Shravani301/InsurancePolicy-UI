@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
 
@@ -21,6 +21,37 @@ export class CustomerService {
     const url = `https://localhost:7052/api/Policy/customer/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
+  getPoliciesPendingAll(pageNumber: number, pageSize: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+  
+    const url = `https://localhost:7052/api/Policy/customer?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    return this.http.get<any>(url, { headers, observe: 'response' });
+  }
+  getPoliciesActive(userId: string, pageNumber: number, pageSize: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+  
+    const url = `https://localhost:7052/api/Policy/customer/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    return this.http.get<any>(url, { headers, observe: 'response' });
+  }
+  getPoliciesPending(userId: string, pageNumber: number, pageSize: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+  
+    const url = `https://localhost:7052/api/Policy/customer/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    return this.http.get<any>(url, { headers, observe: 'response' });
+  }
+
+
+
+
   
   isCustomerAssociatedWithScheme(schemeId: number, customerId: any): Observable<any> {
     const headers = new HttpHeaders({
@@ -63,6 +94,14 @@ export class CustomerService {
   
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
+  
+  
+  getComplaintsByCustomerId(userId: string, pageNumber: number, pageSize: number): Observable<any> {
+    const url = `https://localhost:7052/api/CustomerQuery/customer/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    return this.http.get<any>(url);
+  }
+  
+  
   addComplaint(complaint: { title: string; message: string; customerId: string }): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -149,6 +188,12 @@ export class CustomerService {
     return this.http.get(searchUrl, { observe: 'response' });
   }
   
+
+  getAgentById(agentId:any): Observable<any> {
+    const searchUrl = `${this.apiUrl}/Agent/${agentId}`;
+    return this.http.get(searchUrl, { observe: 'response' });
+  }
+
   getClaimsByCustomerId(customerId: string, pageNumber: number, pageSize: number): Observable<any> {
     const url = `${this.apiUrl}/Claim/customer/${customerId}/?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     return this.http.get(url, {

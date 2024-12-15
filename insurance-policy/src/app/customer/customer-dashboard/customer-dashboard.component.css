@@ -3,7 +3,7 @@ body {
     background-color: white; /* Global background color */
   }
   
-  .admin-dashboard {
+  .customer-dashboard {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Full height of the viewport */
@@ -12,6 +12,5 @@ body {
   
   .dashboard-content {
     flex: 1; /* Push the footer to the bottom */
-    padding: 20px; /* Optional padding for the content */
   }
  

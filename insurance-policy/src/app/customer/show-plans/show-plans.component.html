@@ -32,7 +32,7 @@
           <tr>
             <th>Sr.</th>
            <th>Plan Name</th>
-            <th>Status</th>
+           <th>Total Schemes</th>
             <th>More</th>
           </tr>
         </thead>
@@ -40,22 +40,18 @@
           <tr *ngFor="let plan of filteredPlans; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
             <td>{{ plan.planName }}</td>
+            <td>{{ plan.totalSchemes }}</td>
             <td>
-              <span [ngClass]="{'text-success': plan.status, 'text-danger': !plan.status}">
-                {{ plan.status ? 'Active' : 'Inactive' }}
-              </span>
+              <button 
+                class="btn-info" 
+                (click)="viewScheme(plan)" 
+                [disabled]="!plan.status || plan.totalSchemes == 0" 
+                [style.opacity]="!plan.status || plan.totalSchemes == 0 ? 0.5 : 1"
+              >
+                View Schemes
+              </button>
             </td>
-           
-            <td>
-                <button 
-                  class="btn-info" 
-                  (click)="viewScheme(plan)" 
-                  [disabled]="!plan.status" 
-                  [ngClass]="{'disabled-btn': !plan.status}"
-                >
-                  View Schemes
-                </button>
-              </td>
+            
           </tr>
           <tr *ngIf="filteredPlans.length === 0">
             <td colspan="6" class="text-center">No Plan Data Found</td>
@@ -85,5 +81,4 @@
       </div>
     </div>
   </div>
-  <app-footer-end></app-footer-end>
   

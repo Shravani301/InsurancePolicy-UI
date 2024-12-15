@@ -17,7 +17,9 @@ export class ShowAgentsComponent {
   pageSize = 5;
   pageSizes = [5, 10, 15, 20];
   searchQuery: string = '';
-  isSearch = false;
+  isSearch = false;  
+  maxVisiblePages: number = 3; // Maximum number of pages to display
+  totalPages: number = 0;
 
   showInactivateModal = false;
   selectedAgent: any = null;
@@ -47,11 +49,14 @@ export class ShowAgentsComponent {
   
     this.customer.getFilterAgentsByCustomer(this.currentPage, this.pageSize, customerId).subscribe({
       next: (response) => {
-        const paginationHeader = response.headers.get('X-Pagination');
-        if (paginationHeader) {
-          const paginationData = JSON.parse(paginationHeader);
-          this.totalAgentCount = paginationData.TotalCount;
-        }
+        const headers = {
+          currentPage: parseInt(response.headers.get('X-Current-Page') || '1', 10),
+          hasNext: response.headers.get('X-Has-Next') === 'true',
+          hasPrevious: response.headers.get('X-Has-Previous') === 'true',
+          totalPages: parseInt(response.headers.get('X-Total-Pages') || '0', 10),
+          totalCount: parseInt(response.headers.get('X-Total-Count') || '0', 10),
+        };
+        this.totalPages=parseInt(response.headers.get('X-Total-Pages') || '0', 10);
         this.agents = response.body || [];
         this.filteredAgents = [...this.agents]; // Initialize filteredAgents with all agents
       },
@@ -67,13 +72,8 @@ export class ShowAgentsComponent {
     return (this.currentPage - 1) * this.pageSize + index + 1;
   }
 
-  onPageSizeChange(event: Event): void {
-    this.pageSize = +(event.target as HTMLSelectElement).value;
-    this.getAgents();
-  }
-
   changePage(page: number): void {
-    if (page > 0 && page <= this.pageCount) {
+    if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.getAgents();
     }
@@ -82,7 +82,23 @@ export class ShowAgentsComponent {
   get pageCount(): number {
     return Math.ceil(this.totalAgentCount / this.pageSize);
   }
-
+  getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
+  
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+  onPageSizeChange(event: Event): void {
+    this.pageSize = +(event.target as HTMLSelectElement).value;
+    this.currentPage = 1;
+    this.getAgents();
+  }
   toggleAgentStatus(agent: any): void {
     if (agent.status) {
       this.selectedAgent = agent;
@@ -91,6 +107,7 @@ export class ShowAgentsComponent {
       
     }
   }
+
 
   onSearch(): void {
     if (this.searchQuery.trim()) {

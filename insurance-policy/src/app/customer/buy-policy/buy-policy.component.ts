@@ -20,7 +20,7 @@ export class BuyPolicyComponent implements OnInit {
   agentName: string = '';
   NomineeForm!: FormGroup;
   schemeData: any = { schemeName: '', minInvestmentTime: 0, maxInvestmentTime: 0, profitRatio: 10 };
-  premiumTypes: string[] = ['SINGLE', 'MONTHLY', 'QUARTERLY', 'SEMI_ANNUALLY', 'ANNUALLY'];
+  premiumTypes: string[] = ['SINGLE', 'MONTHLY', 'QUARTERLY', 'HALF_YEARLY', 'YEARLY'];
   policyTerms: number[] = [];
   premiumAmounts: number[] =[];
   selectedFile: File | null = null; // Add this property to store the selected file
@@ -53,8 +53,8 @@ export class BuyPolicyComponent implements OnInit {
     'OTHER',
   ];
   agents: any[] = [];
-  fixedInsuranceSettingId: string = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
-  fixedTaxId: string = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+  fixedInsuranceSettingId: string = '482220f7-25bb-ef11-ac96-a69f65265058';
+  fixedTaxId: string = 'd7c98fc8-30ba-ef11-ac93-97370648a29d';
   schemeId: string = '';
   existingDocuments: { [key: string]: { id: string; path: string } } = {};
 
@@ -242,8 +242,8 @@ export class BuyPolicyComponent implements OnInit {
       premiumType: this.policy.premiumType,
       policyTerm: this.policy.policyTerm,
       premiumAmount: this.policy.premiumAmount,
-      taxId: 'ba1830ae-4cb1-ef11-ac89-9d80da5fbf90', // Fixed taxId
-      insuranceSettingId: 'e416bd97-4cb1-ef11-ac89-9d80da5fbf90', // Fixed insuranceSettingId
+      taxId: 'd7c98fc8-30ba-ef11-ac93-97370648a29d', // Fixed taxId
+      insuranceSettingId: '482220f7-25bb-ef11-ac96-a69f65265058', // Fixed insuranceSettingId
       nominees: this.policy.nominees.map((nominee: any) => ({
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
@@ -302,7 +302,7 @@ export class BuyPolicyComponent implements OnInit {
         // Process documents to find existing matches
         this.documents.forEach((doc: any) => {
           const matchedIndex = this.mappedRequiredDocuments.indexOf(doc.documentName);
-          if (matchedIndex !== -1 && doc.status === 1) {
+          if ((matchedIndex !== -1 && doc.status === 1) ||(matchedIndex !== -1 && doc.status === 0)) {
             // Add to existingDocuments
             this.existingDocuments[doc.documentName] = { id: doc.documentId, path: doc.documentPath };
   

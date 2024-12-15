@@ -2,9 +2,13 @@
   <div class="top_link">
     <button (click)="goBack()" class="btn-back ms-3 mt-2">Back</button>
   </div>
+  
 
   <div class="container">
     <h2>Documents</h2>
+    <div *ngIf="isUploading" class="loader-overlay">
+      <div class="spinner"></div>
+    </div>
     <div class="row mb-3">
       <div class="row mb-3 align-items-center">
           <!-- Page Size and Filter -->
@@ -39,7 +43,7 @@
     </div>
     <!-- Add Document Button -->
     <button
-      class="btn btn-primary mb-3"
+      class="btn btn-info mb-3"
       (click)="showAddDocumentForm = !showAddDocumentForm"
     >
       {{ showAddDocumentForm ? 'Cancel' : 'Add Document' }}
@@ -47,6 +51,7 @@
 
     <!-- Add Document Form -->
     <div *ngIf="showAddDocumentForm" class="mb-4 p-3 border rounded bg-light">
+
       <form [formGroup]="DocTypeForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
           <label for="documentName" class="form-label">Document Name</label>
@@ -78,7 +83,7 @@
         <tr *ngFor="let doc of filteredDocuments; let i = index">
           <td>{{ calculateSRNumber(i) }}</td>
           <td>{{ doc.documentName }}</td>
-          <td>{{ doc.status ? 'Approved' : 'Pending' }}</td>
+          <td>{{ doc.status==0?'Pending':doc.status==1?'Approved':'Rejected'}}</td>
           <td>
             <button class="btn btn-info btn-sm me-2" (click)="viewDocument(doc)">View</button>
             <button 

@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { CustomerService } from 'src/app/services/customer.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-document',
@@ -20,7 +21,7 @@ export class DocumentComponent {
   currentPage: number = 1;
   totalPages: number = 0;
   totalAgentCount = 0;
-
+  isUploading: boolean = false;
   maxVisiblePages: number = 3; // Maximum number of pages to display
   
   sortColumn: string = 'customerFirstName';
@@ -35,7 +36,7 @@ export class DocumentComponent {
 
   DocTypeForm!: FormGroup;
 
-  constructor(private customer: CustomerService, private location: Location) {}
+  constructor(private customer: CustomerService, private location: Location,private toastService:ToastService) {}
 
   ngOnInit() {
     this.DocTypeForm = new FormGroup({
@@ -102,10 +103,25 @@ export class DocumentComponent {
   getDocuments() {
     const customerId = localStorage.getItem('id') || '';
     const role = localStorage.getItem('role') || 'Customer';
-
+  
     this.customer.getDocuments(customerId, role).subscribe(
       (documents) => {
         this.documents = documents;
+  
+        // Filter document types based on document statuses
+        this.documentTypes = this.documentTypes.filter((docType) => {
+          const matchingDocument = this.documents.find(
+            (doc) =>
+              doc.documentName === docType.name && (doc.status === 0 || doc.status === 1)
+          );
+  
+          // Keep the document type only if no matching document is pending or approved
+          return !matchingDocument;
+        });
+  
+        console.log('Updated Document Types:', this.documentTypes);
+        console.log('Documents:', this.documents);
+  
         this.updatePagination();
       },
       (error) => {
@@ -113,6 +129,7 @@ export class DocumentComponent {
       }
     );
   }
+  
 
   updatePagination() {
     this.totalPages = Math.ceil(this.documents.length / this.pageSize);
@@ -137,42 +154,43 @@ export class DocumentComponent {
 
   onSubmit() {
     const documentName = this.DocTypeForm.get('documentName')?.value;
-
+  
     if (this.selectedFile && this.DocTypeForm.valid) {
-      // If it's a reupload, call reuploadFile()
+      this.isUploading = true; // Start loader
       if (this.reuploadDocumentId) {
         this.reuploadFile();
       } else {
-        // Otherwise, upload a new document
         this.customer.uploadDocument(this.selectedFile).subscribe(
           (cloudinaryResponse: any) => {
             const metadata = {
               documentName: documentName,
               documentPath: cloudinaryResponse.url,
               customerId: localStorage.getItem('id') || '',
-              
             };
-           
-
+  
             this.customer.saveMetadataToBackend(metadata).subscribe(
               () => {
                 this.DocTypeForm.reset();
                 this.fileInput.nativeElement.value = '';
                 this.showAddDocumentForm = false;
-                this.getDocuments();
+                this.isUploading = false; // Stop loader
+                this.getDocuments(); // Reload documents
               },
               (error) => {
                 console.error('Error saving metadata to backend:', error);
+                this.isUploading = false; // Stop loader on error
               }
             );
           },
           (error) => {
             console.error('Error uploading to Cloudinary:', error);
+            this.isUploading = false; // Stop loader on error
           }
         );
       }
     }
   }
+  
 
   reuploadDocument(doc: any) {
     this.reuploadDocumentId = doc.id; // Store the document ID for reupload
@@ -183,32 +201,37 @@ export class DocumentComponent {
 
   reuploadFile() {
     if (this.selectedFile && this.reuploadDocumentId) {
+      this.isUploading = true; // Start loader
       this.customer.uploadToCloudinary(this.selectedFile).subscribe(
         (cloudinaryResponse: any) => {
           const updatedDocument = {
             documentName: this.reuploadDocumentName,
             documentPath: cloudinaryResponse.secure_url,
           };
-
+  
           this.customer.updateDocument(updatedDocument).subscribe(
             () => {
               this.selectedFile = null;
               this.reuploadDocumentId = null;
               this.reuploadDocumentName = null;
               this.showAddDocumentForm = false;
-              this.getDocuments(); // Refresh the document list
+              this.isUploading = false; // Stop loader
+              this.getDocuments(); // Reload documents
             },
             (error) => {
               console.error('Error updating document:', error);
+              this.isUploading = false; // Stop loader on error
             }
           );
         },
         (error) => {
           console.error('Error uploading to Cloudinary:', error);
+          this.isUploading = false; // Stop loader on error
         }
       );
     }
   }
+  
 
   viewDocument(doc: any) {
     this.modalImageURL = doc.documentPath; // Set the image URL

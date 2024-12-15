@@ -1,9 +1,9 @@
 
   /* Admin Dashboard styles */
-  .employee-dashboard {
+  .customer-dashboard {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full viewport height */
+    height: 99vh; /* Full viewport height */
     overflow: hidden; /* Prevent the body from scrolling */
     background-color: #f3faf4;
   }
@@ -22,7 +22,7 @@
   
   /* Content styles */
   .content {
-    margin-top: 5px; /* Same as the height of the header */
+    margin-top: 2px; /* Same as the height of the header */
     margin-bottom: 60px; /* Same as the height of the footer */
     flex: 1;
     overflow-y: auto; /* Enable vertical scrolling for content */

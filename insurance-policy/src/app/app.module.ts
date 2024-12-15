@@ -79,6 +79,9 @@ import { EmployeeLandingComponent } from './employee/employee-landing/employee-l
 import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
 import { AdminOperationsComponent } from './admin/admin-operations/admin-operations.component';
 import { EmployeeOperationsComponent } from './employee/employee-operations/employee-operations.component';
+import { ApplicationsComponent } from './employee/applications/applications.component';
+import { AgentOperationsComponent } from './agent/agent-operations/agent-operations.component';
+import { CustomerOperationsComponent } from './customer/customer-operations/customer-operations.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +150,9 @@ import { EmployeeOperationsComponent } from './employee/employee-operations/empl
     EmployeeProfileComponent,
     AdminOperationsComponent,
     EmployeeOperationsComponent,
+    ApplicationsComponent,
+    AgentOperationsComponent,
+    CustomerOperationsComponent,
 
     
   ],

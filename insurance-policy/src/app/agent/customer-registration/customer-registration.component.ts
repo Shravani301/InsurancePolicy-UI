@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { RegistrationService } from 'src/app/services/registration.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-customer-registration',
@@ -10,6 +12,37 @@ import { RegistrationService } from 'src/app/services/registration.service';
   styleUrls: ['./customer-registration.component.css']
 })
 export class CustomerRegistrationComponent {
+  states = [
+    { StateId: '1', StateName: 'Andhra Pradesh' },
+    { StateId: '2', StateName: 'Arunachal Pradesh' },
+    { StateId: '3', StateName: 'Assam' },
+    { StateId: '4', StateName: 'Bihar' },
+    { StateId: '5', StateName: 'Chhattisgarh' },
+    { StateId: '6', StateName: 'Goa' },
+    { StateId: '7', StateName: 'Gujarat' },
+    { StateId: '8', StateName: 'Haryana' },
+    { StateId: '9', StateName: 'Himachal Pradesh' },
+    { StateId: '10', StateName: 'Jharkhand' },
+    { StateId: '11', StateName: 'Karnataka' },
+    { StateId: '12', StateName: 'Kerala' },
+    { StateId: '13', StateName: 'Madhya Pradesh' },
+    { StateId: '14', StateName: 'Maharashtra' },
+    { StateId: '15', StateName: 'Manipur' },
+    { StateId: '16', StateName: 'Meghalaya' },
+    { StateId: '17', StateName: 'Mizoram' },
+    { StateId: '18', StateName: 'Nagaland' },
+    { StateId: '19', StateName: 'Odisha' },
+    { StateId: '20', StateName: 'Punjab' },
+    { StateId: '21', StateName: 'Rajasthan' },
+    { StateId: '22', StateName: 'Sikkim' },
+    { StateId: '23', StateName: 'Tamil Nadu' },
+    { StateId: '24', StateName: 'Telangana' },
+    { StateId: '25', StateName: 'Tripura' },
+    { StateId: '26', StateName: 'Uttar Pradesh' },
+    { StateId: '27', StateName: 'Uttarakhand' },
+    { StateId: '28', StateName: 'West Bengal' },
+  ];
+
   registrationForm = new FormGroup({
     customerFirstName: new FormControl('', Validators.required),
     customerLastName: new FormControl('', Validators.required),
@@ -25,7 +58,7 @@ export class CustomerRegistrationComponent {
       Validators.pattern('^[1-9][0-9]{5}$'),
     ]),
     city: new FormControl('', Validators.required),
-    state: new FormControl('', Validators.required),
+    state: new FormControl('', Validators.required), // Dropdown value bound here
     userName: new FormControl('', [
       Validators.required,
       Validators.minLength(5),
@@ -45,7 +78,9 @@ export class CustomerRegistrationComponent {
   constructor(
     private registrationService: RegistrationService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private toastService: ToastService, // Assuming ToastService is a custom service for displaying snackbar messages
+    private router: Router,
+    private location: Location
   ) {}
 
   togglePasswordVisibility(): void {
@@ -82,18 +117,12 @@ export class CustomerRegistrationComponent {
       this.registrationService.registerUser(finalData).subscribe(
         (response) => {
           console.log('API Response:', response); // Debug API response
-          this.snackBar.open('Registration successful!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar'],
-          });
+          this.toastService.showToast("success",'Registration successful!')
           this.router.navigate(['agent-dashboard']);
         },
         (error) => {
           console.error('API Error:', error); // Debug API error
-          this.snackBar.open('Registration failed. Please try again.', 'Close', {
-            duration: 3000,
-            panelClass: ['error-snackbar'],
-          });
+          this.toastService.showToast("error",'Registration failed. Please try again.');
         }
       );
     } else {
@@ -101,4 +130,8 @@ export class CustomerRegistrationComponent {
       console.warn('Form is invalid!'); // Debug invalid form
     }
   }
+  goBack(): void {
+    this.location.back();
+  }
+
 }

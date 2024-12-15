@@ -137,21 +137,28 @@
     </div>
   </div>
   <!-- Inline Reject Box -->
-  <div *ngIf="showRejectBox" class="reject-box mt-4 p-3 border rounded">
-    <h5>Reject Document</h5>
-    <div class="mb-3">
-      <label for="docId" class="form-label">Rejecte Document</label>
-      <input
-        type="text"
-        id="docId"
-        class="form-control readonly-field"
-        [value]="selecteddocId"
-        readonly
-      />
-    </div>
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-secondary me-2" (click)="toggleRejectBox()">Cancel</button>
-      <button class="btn btn-danger" (click)="rejectDocument()">Reject</button>
+  <div *ngIf="showRejectBox">
+    <!-- Backdrop -->
+    <div class="modal-overlay" (click)="toggleRejectBox()"></div>
+    
+    <!-- Reject Box Modal -->
+    <div class="reject-box">
+      <h5>Reject Document</h5>
+      <div class="mb-3">
+        <!-- <label for="docId" class="form-label">Reject Document</label>
+        <input
+          type="text"
+          id="docId"
+          class="form-control readonly-field"
+          [value]="selecteddocId"
+          readonly
+        /> -->
+        Do you want to reject this document?
+      </div>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-secondary me-2" (click)="toggleRejectBox()">Cancel</button>
+        <button class="btn btn-danger" (click)="rejectDocument()">Reject</button>
+      </div>
     </div>
   </div>
-  <app-footer-end></app-footer-end>
+  

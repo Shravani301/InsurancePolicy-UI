@@ -18,7 +18,9 @@ import { CustomerService } from 'src/app/services/customer.service';
     pageSizes = [5, 10, 15, 20];
     searchQuery: string = '';
     isSearch = false;
-  
+    totalPages: number = 0;      
+    maxVisiblePages: number = 3; // Maximum number of pages to display
+    customerId:any='';
     constructor(
       private customer:CustomerService,
       private location: Location,
@@ -27,6 +29,11 @@ import { CustomerService } from 'src/app/services/customer.service';
   
     ngOnInit(): void {
       this.getComplaints();
+      const storedId= localStorage.getItem('id');
+      if(!storedId)
+        return;
+      this.customerId=storedId;
+      console.log(this.customerId)
     }
   
     goBack(): void {
@@ -34,22 +41,30 @@ import { CustomerService } from 'src/app/services/customer.service';
     }
   
     getComplaints(): void {
-      this.customer.getComplaints(this.currentPage, this.pageSize).subscribe({
-        next: (response) => {
-          const paginationHeader = response.headers.get('X-Pagination');
-          if (paginationHeader) {
-            const paginationData = JSON.parse(paginationHeader);
-            this.totalComplaintCount = paginationData.TotalCount;
+      console.log('Customer ID:', this.customerId);
+      const userId = localStorage.getItem('id');
+      this.customerId = userId;
+    
+      this.customer.getComplaintsByCustomerId(this.customerId, this.currentPage, this.pageSize)
+        .subscribe({
+          next: (response) => {
+            console.log('API Response:', response); // Log full API response
+    
+            // Since response is an array, directly assign it to complaints
+            this.complaints = response || [];
+            this.filteredComplaints = [...this.complaints];
+            this.totalComplaintCount = this.complaints.length;
+            this.totalPages = Math.ceil(this.totalComplaintCount / this.pageSize);
+            console.log('FilteredComplaints:', this.filteredComplaints);
+          },
+          error: (err) => {
+            console.error('API Error:', err);
+            this.complaints = [];
+            this.filteredComplaints = [];
           }
-          this.complaints = response.body || [];
-          this.filteredComplaints = [...this.complaints];
-        },
-        error: () => {
-          this.complaints = [];
-          this.filteredComplaints = [];
-        },
-      });
+        });
     }
+    
     fileComplaint(): void {
       this.router.navigateByUrl('/customer/add-complaint'); // Adjust the route as needed
     }
@@ -62,18 +77,30 @@ import { CustomerService } from 'src/app/services/customer.service';
       return (this.currentPage - 1) * this.pageSize + index + 1;
     }
   
-    onPageSizeChange(event: Event): void {
-      this.pageSize = +(event.target as HTMLSelectElement).value;
+    changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
       this.getComplaints();
     }
+  }
+  getVisiblePages(): number[] {
+    const half = Math.floor(this.maxVisiblePages / 2);
+    let start = Math.max(this.currentPage - half, 1);
+    let end = start + this.maxVisiblePages - 1;
   
-    changePage(page: number): void {
-      if (page > 0 && page <= this.pageCount) {
-        this.currentPage = page;
-        this.getComplaints();
-      }
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(end - this.maxVisiblePages + 1, 1);
     }
   
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+  onPageSizeChange(event: Event): void {
+    this.pageSize = +(event.target as HTMLSelectElement).value;
+    this.currentPage = 1;
+    this.getComplaints();
+  }
+
     get pageCount(): number {
       return Math.ceil(this.totalComplaintCount / this.pageSize);
     }

@@ -60,7 +60,7 @@
             <td>{{ truncateText(complaint.message, 30) }}</td>
             <td>{{ truncateText(complaint.response || 'No Response', 50) }}</td>
             <td>{{ complaint.isResolved ? 'Resolved' : 'Pending' }}</td>
-            <td>{{ complaint.resolvedBy || 'N/A' }}</td>
+            <td>{{ complaint.resolvedBy || '-' }}</td>
             <td>{{ complaint.createdAt | date: 'dd-MM-yyyy' }}</td>
           </tr>
           <tr *ngIf="filteredComplaints.length === 0">
@@ -68,25 +68,26 @@
           </tr>
         </tbody>
       </table>
-      <nav *ngIf="pageCount > 1" class="pagination-container">
-        <ul class="pagination">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
-          </li>
-          <li *ngFor="let page of [].constructor(pageCount); let i = index" class="page-item">
-            <a
-              class="page-link"
-              [class.active]="currentPage === i + 1"
-              (click)="changePage(i + 1)"
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <span>Page <b>{{ currentPage }}</b> of <b>{{ totalPages }}</b></span>
+        <nav *ngIf="totalPages > 1" class="pagination-container">
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <button class="page-link" (click)="changePage(currentPage - 1)">Prev</button>
+            </li>
+            <li
+              class="page-item"
+              *ngFor="let page of getVisiblePages()"
+              [class.active]="page === currentPage"
             >
-              {{ i + 1 }}
-            </a>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === pageCount">
-            <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
-          </li>
-        </ul>
-      </nav>
+              <button class="page-link" (click)="changePage(page)">{{ page }}</button>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
   

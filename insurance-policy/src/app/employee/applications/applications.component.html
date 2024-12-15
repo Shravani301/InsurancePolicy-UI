@@ -4,27 +4,9 @@
         Back
       </button>
     </div>
-    <div class="btn-group mt-2" role="group" aria-label="Button switch">
-      <button
-        type="button"
-        class="btn "
-        [class.active-switch]="isSwitchOn"
-        (click)="toggleSwitch(true)"
-      >
-        Purchased
-      </button>
-      <button
-        type="button"
-        class="btn"
-        [class.active-switch]="!isSwitchOn"
-        (click)="toggleSwitch(false)"
-      >
-        Applied
-      </button>
-    </div>
     
     <div class="container">
-      <h2>Policies</h2>
+      <h2>Policy Applications</h2>
       <div class="row mb-3 align-items-center">
         <!-- Page Size and Filter -->
         <div class="col-md-6 d-flex">
@@ -77,11 +59,12 @@
         <thead class="table-dark">
           <tr>
             <th>Sr.</th>
+            <th>Policy Id</th>
             <th>Scheme</th>
             <th>Premium</th>
             <th>Mode</th>
             <th>Sum Assured</th>
-            <th>{{ isSwitchOn ? 'Approved Date' : 'Applied Date' }}</th>
+            <th>Applied Date</th>
             <th>Maturity Date</th>
             <th>Status</th>
             <th>Actions</th>
@@ -90,6 +73,7 @@
         <tbody>
           <tr *ngFor="let policy of filteredPolicies; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
+            <td>{{policy.policyId.split('-')[0]}}</td>
             <td>{{ policy.insuranceSchemeName }}</td>
             <td><span style="font-family: 'RupeeFont';">₹</span>{{ policy.premiumAmount }}</td>
             <td>
@@ -117,22 +101,7 @@
               class="btn btn-danger btn-sm"
               (click)="toggleRejectBox(policy.policyId)">
               Reject
-            </button>
-              <button 
-              *ngIf="isSwitchOn && role === 'Customer'" 
-              class="btn btn-warning me-2"
-              (click)="addClaim(policy)">
-                Claim Request
-                
-              </button>
-              <button 
-                *ngIf="isSwitchOn && role === 'Customer'" 
-                class="btn btn-danger" 
-                (click)="Payments(policy)">
-                Payments
-              </button>             
-              
-              <span *ngIf="!isSwitchOn">Under Verification</span>
+            </button>              
             </td>
             
           </tr>

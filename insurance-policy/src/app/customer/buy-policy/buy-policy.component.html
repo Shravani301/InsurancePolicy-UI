@@ -1,5 +1,4 @@
 <div class="wrapper">
-  <app-customer-header></app-customer-header>
   <div class="top_link">
     <button (click)="goBack()" class="btn-back ms-3 mt-2">
       Back
@@ -202,9 +201,10 @@
     <!-- Documents Section -->
     <div class="section">
       <h4 (click)="toggleSection('documents')">Documents</h4>
+      <h5 *ngIf="mappedRequiredDocuments.length==0">Documents already exists!</h5>
       <div *ngIf="openSections['documents']">
         <table class="table table-layout">
-          <tbody>
+          <tbody >
             <tr *ngFor="let doc of mappedRequiredDocuments; let i = index">
               <td>{{ doc }}</td>
               <td>
@@ -340,4 +340,3 @@
     <button class="btn btn-success mt-3" (click)="addPolicy()">Apply</button>
   </div>
 </div>
-<app-footer-end></app-footer-end>

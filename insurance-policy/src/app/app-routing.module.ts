@@ -58,6 +58,9 @@ import { EmployeeLandingComponent } from './employee/employee-landing/employee-l
 import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
 import { AdminOperationsComponent } from './admin/admin-operations/admin-operations.component';
 import { EmployeeOperationsComponent } from './employee/employee-operations/employee-operations.component';
+import { ApplicationsComponent } from './employee/applications/applications.component';
+import { AgentOperationsComponent } from './agent/agent-operations/agent-operations.component';
+import { CustomerOperationsComponent } from './customer/customer-operations/customer-operations.component';
 
 
 const routes: Routes = [
@@ -151,6 +154,31 @@ const routes: Routes = [
       path:'payments',
       component:ViewPaymentsComponent
     },
+    {
+      path: 'customer/documnets/:id',
+      component: CustomerDocumentsComponent
+    },
+    {
+      path: 'customer/policies/:id',
+      component: ViewPoliciesComponent,
+    },
+    {
+      path: 'customer/policies/:id',    
+      component: ViewPoliciesComponent,
+    },
+    {
+      path: 'customer/documnets/:id',
+      component: CustomerDocumentsComponent
+    },
+    {
+      path: 'customer/policies/:id',
+      component: ViewPoliciesComponent,
+    },
+    {
+      path: 'Policy/:id/:id1',
+      component: ViewPolicyComponent
+    },
+    
   ],
   canActivate: [AuthGuard],
     data: {
@@ -173,11 +201,181 @@ const routes: Routes = [
         path:'viewAgent',
         component: ViewAgentComponent
       },
+      {
+        path:'customers',
+        component: ViewCustomersComponent
+      },
+      {
+        path:'profile',
+        component: EmployeeProfileComponent
+      },
+      {
+        path: 'Policy/:id/:id1',
+        component: ViewPolicyComponent
+      },
+      {
+        path:'commissions/withdraw',
+        component:CommissionWithdrawComponent
+      },
+      {
+        path: 'complaints', 
+        component: ViewComplaintsComponent
+      },
+      {
+        path:'applications',
+        component:ApplicationsComponent
+      },
+      {
+        path: 'customer/documnets/:id',
+        component: CustomerDocumentsComponent
+      },
+      {
+        path:'customers',
+        component: ViewCustomersComponent
+      },
+    
+    {
+      path: 'customer/policies/:id',    
+      component: ViewPoliciesComponent,
+    },
+    
       
     ],
     canActivate: [AuthGuard],
     data: {
       role: ['Employee'] // Role as an array
+    },
+  },
+
+
+
+
+
+  {
+    path: 'agent',
+    component: AgentOperationsComponent,
+    children: [
+      {
+        path: 'viewPlan',
+        component: ShowPlansComponent
+      },
+      {
+        path: 'viewScheme/:id',
+        component: ShowSchemesComponent
+      },
+      {
+        path:'commissions/withdraw',
+        component:CommissionWithdrawComponent
+      },
+      {
+        path:'customerRegistration',
+        component:CustomerRegistrationComponent
+    
+      },
+      {
+        path:'commissions',
+        component:ViewCommissionsComponent
+    
+      },
+      {
+        path: 'registerPolicy/:id',
+        component: RegisterPolicyComponent
+      },
+      {
+        path: 'profile',
+        component: AgentProfileComponent
+      },
+      {
+        path: 'customers',
+        component:ShowCustomersComponent
+      },
+      
+  {
+    path: 'withdrawls',
+    component: WithdrawalsComponent
+  },
+  {
+    path: 'policies',
+    component:ShowPoliciesComponent
+  },
+    ],
+    canActivate: [AuthGuard],
+    data: {
+      role: ['Agent'] // Role as an array
+    },
+  },
+
+
+
+
+
+
+  {
+    path: 'customer',
+    component: CustomerOperationsComponent,
+    children: [
+      {
+        path: 'profile',
+        component: CustomerProfileComponent
+      },  
+      {
+        path: 'viewPlan',
+        component: ShowPlansComponent
+      },
+     
+      {
+        path: 'document',
+        component: DocumentComponent
+      },
+      {
+        path: 'policies',
+        component: ViewPoliciesComponent,
+      },
+      {
+        path: 'viewScheme/:id',
+        component: ShowSchemesComponent
+      },
+      {
+        path: 'buyPolicy/:id',
+        component: BuyPolicyComponent
+      },
+      {
+        path: 'document',
+        component: DocumentComponent
+      },
+      {
+        path: 'showAgents',
+        component: ShowAgentsComponent
+      },
+      {
+        path: 'claimRequest/:id',
+        component: ClaimRequestComponent,
+      },
+      {
+        path: 'add-complaint',
+        component: ComplaintComponent
+      },
+      {
+        path: 'showComplaints',
+        component: ShowComplaintsComponent
+      },
+      {
+        path:'show-claims',
+        component:ShowClaimsComponent
+      },
+      {
+        path: 'Policy/:id',
+        component: ViewPolicyComponent
+      },
+      {
+        path: 'Payments/:id',
+        component: PolicyPaymentsComponent
+      },
+      
+    ],
+    canActivate: [AuthGuard],
+    data: {
+      role: ['Customer'] // Role as an array
     },
   }
 
@@ -268,23 +466,9 @@ const routes: Routes = [
 
 
 
+
+
   ,
- 
-  
-  
-  {
-    path: 'admin/profile',
-    component: AdminProfileComponent
-  },
-  {
-    path: 'admin/agent',
-    component: AddAgentComponent
-  },
-  
-  {
-    path:'customer/show-claims',
-    component:ShowClaimsComponent
-  },
   {
     path: 'dashboard/changePassword',
     component: ChangePasswordComponent
@@ -310,75 +494,8 @@ const routes: Routes = [
     ]
   },
   
-  {
-    path: 'admin/customer/documnets/:id',
-    component: CustomerDocumentsComponent
-  },
-  {
-    path: 'admin/customer/policies/:id',
-    component: ViewPoliciesComponent,
-  },
-  {
-    path: 'employee/customer/policies/:id',    
-    component: ViewPoliciesComponent,
-  },
   
-  {
-    path: 'customer/profile',
-    component: CustomerProfileComponent
-  },  
-  {
-    path: 'customer/viewPlan',
-    component: ShowPlansComponent
-  },
-  {
-    path: 'agent/viewPlan',
-    component: ShowPlansComponent
-  },
-  {
-    path: 'customer/document',
-    component: DocumentComponent
-  },
-  {
-    path: 'customer/policies',
-    component: ViewPoliciesComponent,
-  },
-  {
-    path: 'customer/viewScheme/:id',
-    component: ShowSchemesComponent
-  },
-  {
-    path: 'customer/buyPolicy/:id',
-    component: BuyPolicyComponent
-  },
-  {
-    path: 'customer/document',
-    component: DocumentComponent
-  },
-  {
-    path: 'customer/showAgents',
-    component: ShowAgentsComponent
-  },
-  {
-    path: 'customer/claimRequest/:id',
-    component: ClaimRequestComponent,
-  },
-  {
-    path: 'customer/add-complaint',
-    component: ComplaintComponent
-  },
-  {
-    path: 'customer/showComplaints',
-    component: ShowComplaintsComponent
-  },
-  {
-    path: 'customer/Policy/:id',
-    component: ViewPolicyComponent
-  },
-  {
-    path: 'customer/Payments/:id',
-    component: PolicyPaymentsComponent
-  },
+  
   {
     path: 'agent-dashboard',
     component: AgentDashboardComponent,
@@ -397,44 +514,7 @@ const routes: Routes = [
       role: ['Agent'] // Role as an array
     },
   },
-  {
-    path: 'agent/viewScheme/:id',
-    component: ShowSchemesComponent
-  },
-  {
-    path:'agent/customerRegistration',
-    component:CustomerRegistrationComponent
-
-  },
-  {
-    path:'agent/commissions',
-    component:ViewCommissionsComponent
-
-  },
-  {
-    path: 'agent/registerPolicy/:id',
-    component: RegisterPolicyComponent
-  },
-  {
-    path: 'agent/profile',
-    component: AgentProfileComponent
-  },
-  {
-    path: 'agent/customers',
-    component:ShowCustomersComponent
-  },
-  {
-    path: 'employee/Policy/:id/:id1',
-    component: ViewPolicyComponent
-},
-{
-  path: 'admin/Policy/:id/:id1',
-  component: ViewPolicyComponent
-},
-  {
-    path: 'agent/policies',
-    component:ShowPoliciesComponent
-  },
+   
   {
     path: 'employee-dashboard',
     component: EmployeeDashboardComponent,
@@ -453,34 +533,14 @@ const routes: Routes = [
       role: ['Employee'] // Role as an array
     },
   },
-  {
-    path:'employee/customers',
-    component: ViewCustomersComponent
-  },
-  {
-    path:'employee/profile',
-    component: EmployeeProfileComponent
-  },
-  {
-    path: 'employee/customer/documnets/:id',
-    component: CustomerDocumentsComponent
-  },
-  {
-    path: 'agent/withdrawls',
-    component: WithdrawalsComponent
-  },
-  {
-    path: 'employee/agent',
-    component: AddAgentComponent
-  },
+ 
+ 
+  
   {
     path: 'view-plan',
     component: ViewPlanComponent,
   },
-  {
-    path: 'employee/viewAgent',
-    component: ViewAgentComponent
-  },
+  
   {
     path: 'payment',
     component: PaymentComponent

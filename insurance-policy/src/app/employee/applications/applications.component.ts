@@ -5,13 +5,12 @@ import { Location } from '@angular/common';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { EmployeeService } from 'src/app/services/employee.service';
-
 @Component({
-  selector: 'app-policies',
-  templateUrl: './view-policies.component.html',
-  styleUrls: ['./view-policies.component.css']
+  selector: 'app-applications',
+  templateUrl: './applications.component.html',
+  styleUrls: ['./applications.component.css']
 })
-export class ViewPoliciesComponent {
+export class ApplicationsComponent {
   customerData: any;
   filteredPolicies: any[]=[];
   searchQuery!: string; // Changed to string for scheme name search
@@ -70,57 +69,9 @@ export class ViewPoliciesComponent {
     }
     this.getPolicies();
   }
-
-  // getPolicies() {
-    
-  //   this.customer.getPolicies(this.userId, this.currentPage, this.pageSize).subscribe({
-  //     next: (response) => {
-  //       const paginationHeader = response.headers.get('X-Pagination');        
-  //       this.totalPages = parseInt(response.headers.get('X-Total-Pages') || '1', 10);
-  //       if (paginationHeader) {
-  //         const paginationData = JSON.parse(paginationHeader);
-  //         this.totalPolicyCount = paginationData.TotalCount;
-  //       }
-  
-  //       const allPolicies = response.body || [];
-  //       this.filteredPolicies=allPolicies;
-  //       // Filter policies based on the isSwitchOn state
-  //       if (this.isSwitchOn) {
-  //         // Show purchased policies (ACTIVE, CLAIMED, DROPPED, INACTIVE)
-  //         this.filteredPolicies = allPolicies.filter(
-  //           (policy:any) =>
-  //             policy.policyStatus === 'ACTIVE' ||
-  //             policy.policyStatus === 'CLAIMED' ||
-  //             policy.policyStatus === 'DROPPED' ||
-  //             policy.policyStatus === 'INACTIVE'
-  //         );
-  //       } else {
-  //         // Show applied policies (PENDING)
-  //         this.filteredPolicies = allPolicies.filter((policy:any) => policy.policyStatus === 'PENDING');
-  //       }
-  //     },
-  //     error: (err: HttpErrorResponse) => {
-  //       console.error(err);
-  //       this.policies = [];
-  //     },
-  //   });
-  // }
-
-  getPolicies() {
-    if (this.isSwitchOn) {
-      // Call getPoliciesActive for purchased policies
-      this.customer.getPoliciesActive(this.userId, this.currentPage, this.pageSize).subscribe({
-        next: (response) => {
-          this.handlePolicyResponse(response);
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error(err);
-          this.filteredPolicies = [];
-        },
-      });
-    } else {
+  getPolicies() {    
       // Call getPoliciesPending for applied policies
-      this.customer.getPoliciesPending(this.userId, this.currentPage, this.pageSize).subscribe({
+      this.customer.getPoliciesPendingAll(this.currentPage, this.pageSize).subscribe({
         next: (response) => {
           this.handlePolicyResponse(response);
         },
@@ -129,7 +80,7 @@ export class ViewPoliciesComponent {
           this.filteredPolicies = [];
         },
       });
-    }
+    
   }
   
   private handlePolicyResponse(response: any): void {
@@ -144,11 +95,7 @@ export class ViewPoliciesComponent {
     this.filteredPolicies = response.body || [];
   }
   
-  toggleSwitch(state: boolean) {
-    if (this.isSwitchOn === state) return; // Avoid redundant calls
-    this.isSwitchOn = state;
-    this.getPolicies(); // Refresh and filter policies based on the new state
-  }
+  
   sortPolicies(): void {
     this.filteredPolicies.sort((a, b) => {
       const valueA = a[this.sortColumn];

@@ -36,6 +36,7 @@
             <th>Last Name</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Total Policies</th>
             <th>Status</th>
             <!-- <th>View</th> -->
           </tr>
@@ -47,6 +48,7 @@
             <td>{{ customer.customerLastName }}</td>
             <td>{{ customer.phone }}</td>
             <td>{{ customer.email }}</td>
+            <td>{{customer.totalPolicies}}</td>
             <td>{{customer.status?'Active':'Inactive'}}</td>
             <!-- <td>
               <button class="btn btn-info btn-sm me-1" (click)="viewDocument(customer)">Documents</button>
@@ -82,5 +84,4 @@
       </div>
     </div>
   </div>
-  <app-footer-end></app-footer-end>
   

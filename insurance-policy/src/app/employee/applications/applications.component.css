@@ -1,0 +1,234 @@
+.wrapper {
+    background-color: #f3faf4;
+    padding: 20px;
+    min-height: 93vh;
+  }
+  
+  .container {
+    background-color: rgba(252, 252, 252, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  #pageSizeSelect {
+    border-color: #00d1b2;
+    border-width: 2px;
+    outline: none;
+  }
+  
+  #pageSizeSelect:focus {
+    outline: 2px solid #00d1b2; /* Highlight color for input focus */
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center; /* Center align Customers text */
+  }
+  
+  .top_link .back-button {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .btn-back
+  {
+    border-radius: 4px;
+    border-color: #00d1b2;
+  
+  }
+  .btn-back:hover
+  {
+    background-color: #00d1b2;
+  }
+  
+  
+  .btn-search {
+    border-radius: 6px; /* Rounded corners */
+    border: 2px solid azure; /* Specify the border with a solid line */
+    background-color: #00d1b2; /* Primary button color */
+    padding: 6px 18px; /* Padding inside the button */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .btn-search:hover {
+    background-color: #03d6b7; /* Lighter color on hover */
+    color: white; /* Ensure the text remains white */
+    border-color: #03d6b7; /* Change the border color to match the hover background */
+  }
+  
+  .btn-reset {
+    border-radius: 4px; /* Rounded corners */
+    border: 2px solid #ff6767; /* Specify the border with a solid line */
+    background-color: #ff6767; /* Primary button color */
+    padding: 4px 12px; /* Padding inside the button */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .btn-reset:hover {
+    background-color: #ff4c4c; /* Slightly darker color on hover */
+    color: white; /* Ensure the text remains white */
+    border-color: #ff4c4c; /* Match border color with hover background */
+  }
+  
+  .table {
+    margin-top: 20px;
+    border-radius: 10px; /* Added radius to table edges */
+    
+  }
+  
+  .table th,
+  .table td {
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #eaf7ff; /* Added hover effect for rows */
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-container input.form-control {
+    width: 200px; /* Decreased input width */
+    outline: none;
+    border-color: #00d1b2;
+    border-width: 2px; /* Added outline color */
+  }
+  
+  .search-container input.form-control:focus {
+    outline: 2px solid #00d1b2; /* Highlight color for input focus */
+  }
+  
+  .pagination-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .pagination {
+    margin: 0;
+  }
+  
+  .pagination .page-link {
+    color: #00d1b2;  
+    border-color: #00d1b2;
+    border-width: 2px;
+    padding: 10px 15px;
+    display: inline-block;
+    width: auto;
+    text-align: center;
+    border-radius: 0;
+    transition: box-shadow 0.2s ease-in-out; /* Added smooth transition for hover/focus */
+  }
+  
+  .pagination .page-link:hover,
+  .pagination .page-link:focus {
+    color: white;
+    background-color: #00d1b2;
+    box-shadow: 0px 0px 10px rgba(0, 209, 178, 0.6); /* Outline shade effect */
+    outline: none; /* Remove default focus outline */
+  }
+  
+  .pagination .active .page-link {
+    background-color: #00d1b2;
+    color: white;
+    border-color: #00d1b2;
+  }
+  
+  .pagination .page-item.disabled .page-link {
+    color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none; /* Disabled buttons won't have shadow */
+  }
+  
+  .pagination .page-item .page-link {
+    cursor: pointer;
+  }
+  
+  .btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+  }
+  
+  .btn-info:hover {
+    background-color: #138496;
+    border-color: #138496;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+    border-color: #218838;
+  }
+  .custom-badge {
+    padding: 5px 10px; /* Adjust values as needed */
+    font-weight: normal;
+    font-size: 14px; /* Optional: Adjust font size */
+    border-radius: 5px; /* Optional: Round the edges */
+  }
+  .modal-background {
+    background-color: rgba(0, 0, 0, 0.6); /* Black with opacity */
+    color: white;
+}
+
+.modal-content {
+    background-color: #f3faf4; /* Website's background color */
+    border-radius: 8px;
+}
+
+.readonly-field {
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker for readonly field */
+    color: #333;
+    opacity: 0.8; /* Ensure readonly field has transparency */
+    outline: 2px solid #00d1b2;
+}
+.form-control {
+    
+    outline: 2px solid #00d1b2;
+}
+.readonly-field:focus {
+    outline: 2px solid #00d1b2;
+}/* Default button styling */
+.btn-group .btn {
+  border-radius: 0;
+  transition: all 0.3s ease;
+  border: #218838;
+}
+
+/* Active button styling */
+.active-switch {
+  background-color: #00d1b2; /* Bootstrap primary color */
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid #4e334e;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for non-active buttons */
+.btn-group .btn:not(.active-switch):hover {
+  background-color: #4e334e;
+  color: whitesmoke;
+}

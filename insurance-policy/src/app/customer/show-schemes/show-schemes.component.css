@@ -1,6 +1,6 @@
 .wrapper {
     background-color: #f3faf4; /* Page background */
-    min-height: 93vh; /* Ensures the wrapper covers the full viewport height */
+    min-height: 83vh; /* Ensures the wrapper covers the full viewport height */
     display: flex;
     flex-direction: column;
   }
@@ -9,7 +9,7 @@
     background-color: rgba(252, 252, 252, 0.4);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     flex-grow: 1; /* Ensures the container grows to fill available space */
     margin-bottom: 20px; /* Adds space between the container and footer */
   }

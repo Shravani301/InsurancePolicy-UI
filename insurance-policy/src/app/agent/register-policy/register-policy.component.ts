@@ -38,8 +38,8 @@ export class RegisterPolicyComponent implements OnInit {
   modalImageURL: string = ''; // To store the URL for the modal
   showModal: boolean = false; // To control the modal visibility
   searchQuery: string = ''; // Search input query
-  agentId:any='';
-
+  agentId:any='';  
+  existingDocuments: { [key: string]: { id: string; path: string } } = {};
 
   relationships: string[] = [
     'SPOUSE',
@@ -181,6 +181,7 @@ export class RegisterPolicyComponent implements OnInit {
 // Select customer in the modal
 selectCustomer(customer: any) {
   this.selectedCustomer = customer;
+  this.getDocuments();
 }
 
 // Confirm customer selection and pass details
@@ -297,14 +298,28 @@ closeCustomerSelectionModal() {
     this.openSections[section] = !this.openSections[section];
   }  
   getDocuments() {
-    const customerId = localStorage.getItem('id') || '';
-    const role = localStorage.getItem('role') || 'Customer';
-
-    this.customer.getDocuments(customerId, role).subscribe(
-      (documents) => {
+    const customerId = this.selectedCustomer.customerId;
+    console.log(customerId);
+    this.customer.getDocuments(customerId, 'Customer').subscribe(
+      (documents: any[]) => {
         this.documents = documents;
+  
+        // Process documents to find existing matches
+        this.documents.forEach((doc: any) => {
+          const matchedIndex = this.mappedRequiredDocuments.indexOf(doc.documentName);
+          if ((matchedIndex !== -1 && doc.status === 1) ||(matchedIndex !== -1 && doc.status === 0)) {
+            // Add to existingDocuments
+            this.existingDocuments[doc.documentName] = { id: doc.documentId, path: doc.documentPath };
+  
+            // Remove from mappedRequiredDocuments
+            this.mappedRequiredDocuments.splice(matchedIndex, 1);
+          }
+        });
+  
+        console.log('Existing Documents:', this.existingDocuments);
+        console.log('Remaining Required Documents:', this.mappedRequiredDocuments);
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         console.error('Error fetching documents:', error);
       }
     );

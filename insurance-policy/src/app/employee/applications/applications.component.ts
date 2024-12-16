@@ -204,16 +204,23 @@ Payments(policy:any)
       next: () => {
         this.getPolicies();
         this.toggleRejectBox(); // Close the box after successful rejection
+        this.toastService.showToast('success',"Policy rejected successfully");
       },
-      error: () => console.error('Error rejecting document'),
+      error: () =>{ console.error('Error rejecting document'),
+      this.toastService.showToast('error',"Error rejecting Policy'");
+      }
     });
   }
   approvePolicy(policyId:any): void {
     this.employee.approvePolicy(policyId).subscribe({
       next: () => {
         this.getPolicies();
+        this.toastService.showToast('success',"Policy approved successfully");
       },
-      error: () => console.error('Error approve document'),
+      error: () => {
+        this.toastService.showToast('error',"error occured please try after sometime!");
+        console.error('Error approve document');
+      }
     });
   }
  // Reject Box State

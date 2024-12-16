@@ -346,7 +346,9 @@
               </tr>
             </tbody>
           </table>
-          <button class="btn btn-primary mt-2" (click)="addNominee()">
+          <button class="btn btn-primary mt-2" 
+          [disabled]="policy.nominees.length==5"
+          (click)="addNominee()">
             Add Nominee
           </button>
         </div>

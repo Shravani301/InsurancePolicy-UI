@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ValidateForm } from 'src/app/helper/validateForm';
 import { CustomerService } from 'src/app/services/customer.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'app-view-policy',
@@ -23,6 +24,11 @@ export class ViewPolicyComponent implements OnInit {
   ClaimForm!: FormGroup;
   installmentNo!: number;
   minDate: string;
+  role: string = ''; // To store user role
+empId: string = ''; // To store employee ID
+showModal: boolean = false; // For modal visibility
+modalImageURL: string | null = null; // For modal image URL
+
   isClaimFormVisible: boolean = false; // Toggle visibility for claim form
 
   constructor(
@@ -30,6 +36,7 @@ export class ViewPolicyComponent implements OnInit {
     private location: Location,
     private customer: CustomerService,
     private fb: FormBuilder,
+    private employee: EmployeeService,
     private router: Router
   ) {
     const today = new Date();
@@ -41,6 +48,10 @@ export class ViewPolicyComponent implements OnInit {
     this.policyId = this.activatedroute.snapshot.paramMap.get('id') || '';
     console.log('Extracted Policy ID:', this.policyId);
     this.customerId = this.activatedroute.snapshot.paramMap.get('id1') || '';
+    this.role = localStorage.getItem('role') || '';
+  if (this.role === 'Employee') {
+    this.empId = localStorage.getItem('id') || '';
+  }
     // Check customer ID in local storage
     if(!this.customerId)
       this.customerId = localStorage.getItem('id') || '';
@@ -76,6 +87,16 @@ export class ViewPolicyComponent implements OnInit {
     });
   }
 
+  viewDocument(doc: any): void {
+    this.modalImageURL = doc.documentPath; // Assuming documentPath is the URL
+    this.showModal = true;
+  }
+  
+  closeModal(): void {
+    this.showModal = false;
+    this.modalImageURL = null;
+  }
+  
   // Fetch policy data using policyId
   getPolicyData(): void {
     console.log('Fetching policy data for Policy ID:', this.policyId);
@@ -87,6 +108,34 @@ export class ViewPolicyComponent implements OnInit {
       error: (err: HttpErrorResponse) => console.error('Error fetching policy data:', err)
     });
   }
+  toggleRejectBox(docId: string = ''): void {
+    this.showRejectBox = !this.showRejectBox;
+    this.selecteddocId = docId;
+  }
+
+  rejectDocument(): void {
+    this.employee.rejectDocument(this.selecteddocId,this.empId).subscribe({
+      next: () => {
+        this.getPolicyData();
+        this.toggleRejectBox(); // Close the box after successful rejection
+      },
+      error: () => console.error('Error rejecting document'),
+    });
+  }
+  approveDocument(documentId:any): void {
+    this.employee.approveDocument(documentId,this.empId).subscribe({
+      next: () => {
+        this.getPolicyData();
+        console.log('approved document')
+      },
+      error: () => console.error('Error approve document'),
+    });
+  }
+ // Reject Box State
+ showRejectBox: boolean = false;
+ selecteddocId: string = '';
+
+
 
   // Fetch customer profile using customerId
   getCustomerDetail(): void {
@@ -201,6 +250,7 @@ export class ViewPolicyComponent implements OnInit {
       ValidateForm.validateAllFormFileds(this.ClaimForm);
     }
   }
+  
 
   goBack(): void {
     this.location.back();

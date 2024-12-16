@@ -122,22 +122,42 @@
         <!-- Document Details -->
         <h2>Documents</h2>
         <table class="table table-bordered">
-            <thead>
+            <thead class="table-dark">
                 <tr>
-                    <th>Sr. No</th>
-                    <th>Document Name</th>
-                    <th>Preview</th>
+                  <th>Sr.</th>
+                  <th>Document Name</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let document of policy.documents; let i = index">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ document.documentName }}</td>
-                    <td>
-                        <img [src]="document.documentPath" alt="Document Preview" width="80" height="80" />
-                    </td>
+              </thead>
+              <tbody>
+                <tr *ngFor="let doc of policy.documents; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ doc.documentName }}</td>
+                  <td>{{ doc.status==0 ? 'Pending' : doc.status==1 ? 'Approved':'Rejected' }}</td>
+                  <td>
+                    <button class="btn btn-info btn-sm me-2" (click)="viewDocument(doc)">View</button>
+                    <!-- <button 
+                    *ngIf="doc.status === 2 && role==='Customer'" 
+                    class="btn btn-warning btn-sm" 
+                    (click)="reuploadDocument(doc)">
+                    ReUpload
+                  </button> -->
+                  <button
+                  *ngIf="doc.status===0 && role === 'Employee'"
+                  class="btn btn-success btn-sm me-2"
+                  (click)="approveDocument(doc.documentId)">
+                  Approve
+                </button>
+                <button
+                  *ngIf="doc.status===0 && role === 'Employee'"
+                  class="btn btn-danger btn-sm"
+                  (click)="toggleRejectBox(doc.documentId)">
+                  Reject
+                </button>
+                  </td>
                 </tr>
-            </tbody>
+              </tbody>
         </table>
     
         <!-- Installments -->
@@ -160,7 +180,7 @@
                     <td>{{ installment.dueDate | date: 'dd-MM-yyyy' }}</td>
                     <td>{{ installment.paymentDate ? (installment.paymentDate | date: 'dd-MM-yyyy') : '-' }}</td>
                     <td>₹ {{ installment.amountDue }}</td>
-                    <td>{{ installment.amountPaid ? ('₹ ' + installment.amountPaid) : 'N/A' }}</td>
+                    <td>{{ installment.amountPaid ? ('₹ ' + installment.amountPaid) : '-' }}</td>
                     <td>
                         <span [ngClass]="{
                             'text-success': installment.status === 1,
@@ -176,4 +196,37 @@
     </div>
     
 </div>
+</div>
+ <!-- Modal -->
+ <div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-content">
+      <img [src]="modalImageURL" alt="Document Preview" class="img-fluid" />
+      <button class="btn btn-secondary mt-3" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+
+<!-- Inline Reject Box -->
+<div *ngIf="showRejectBox">
+  <!-- Backdrop -->
+  <div class="modal-overlay" (click)="toggleRejectBox()"></div>
+  
+  <!-- Reject Box Modal -->
+  <div class="reject-box">
+    <h5>Reject Document</h5>
+    <div class="mb-3">
+      <!-- <label for="docId" class="form-label">Reject Document</label>
+      <input
+        type="text"
+        id="docId"
+        class="form-control readonly-field"
+        [value]="selecteddocId"
+        readonly
+      /> -->
+      Do you want to reject this document?
+    </div>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-secondary me-2" (click)="toggleRejectBox()">Cancel</button>
+      <button class="btn btn-danger" (click)="rejectDocument()">Reject</button>
+    </div>
+  </div>
 </div>

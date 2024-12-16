@@ -107,7 +107,7 @@ export class DocumentComponent {
     this.customer.getDocuments(customerId, role).subscribe(
       (documents) => {
         // Filter and process the documents
-        this.documents = this.filterAndRemoveDuplicates(documents);
+        this.documents = documents;
         this.updatePagination();
       },
       (error) => {
@@ -116,25 +116,6 @@ export class DocumentComponent {
     );
   }
  
-  private filterAndRemoveDuplicates(documents: any[]): any[] {
-    // Create a Map to store documents by their name
-    const documentMap = new Map<string, any>();
- 
-    documents.forEach((doc) => {
-      // If the document is rejected, skip it
-      if (doc.status === 'REJECTED') return;
- 
-      // If the document with the same name already exists, skip it
-      if (!documentMap.has(doc.documentName)) {
-        documentMap.set(doc.documentName, doc);
-      }
-    });
- 
-    // Convert the Map back to an array
-    return Array.from(documentMap.values());
-  }
-  
-
   updatePagination() {
     this.totalPages = Math.ceil(this.documents.length / this.pageSize);
     this.filteredDocuments = this.documents.slice(
@@ -208,6 +189,7 @@ export class DocumentComponent {
       this.isUploading = true; // Start loader
       this.customer.uploadToCloudinary(this.selectedFile).subscribe(
         (cloudinaryResponse: any) => {
+          this.isUploading = false;
           const updatedDocument = {
             documentName: this.reuploadDocumentName,
             documentPath: cloudinaryResponse.secure_url,

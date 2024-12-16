@@ -126,13 +126,15 @@ export class CustomerRegistrationComponent {
     if (this.registrationForm.valid) {
       // const { confirmPassword, ...formData } = this.registrationForm.value; // Remove confirmPassword
       
-      const { dob, confirmPassword, ...formData } = this.registrationForm.value; 
+      const { confirmPassword, ...formData } = this.registrationForm.value; 
     
     // Fetch agentId from localStorage
     const agentId = localStorage.getItem('id');
     
     // Include agentId in the final data
-    const finalData = { ...formData, agentId, status: true }; // Add agentId and status
+    
+    const dateOfBirth=this.registrationForm.value['dob'];
+    const finalData = { ...formData, agentId, status: true,dateOfBirth }; // Add agentId and status
     
     console.log('Submitting data to API:', finalData); // Debug API payload
 
@@ -146,7 +148,7 @@ export class CustomerRegistrationComponent {
         },
         (error) => {
           console.error('API Error:', error); // Debug API error
-          this.toastService.showToast("error",'Registration failed. Please try again.');
+          this.toastService.showToast("error",error.error?.errorMessage||'Registration failed. Please try again.');
         }
       );
     } else {

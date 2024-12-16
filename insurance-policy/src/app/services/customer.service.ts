@@ -172,7 +172,7 @@ export class CustomerService {
     return this.http.post(this. backendUrl, metadata);
   }
   updateDocument(updatedDocument: any): Observable<any> {
-    return this.http.put(`${this.backendUrl}`,updatedDocument);
+    return this.http.post(this. backendUrl,updatedDocument);
   } 
   
   uploadDocument(file: File): Observable<any> {

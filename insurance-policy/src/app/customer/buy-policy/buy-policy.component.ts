@@ -300,36 +300,51 @@ export class BuyPolicyComponent implements OnInit {
   toggleSection(section: string) {
     this.openSections[section] = !this.openSections[section];
   }  
+
+  
+  getExistingDocumentKeys(): string[] {
+    return Object.keys(this.existingDocuments);
+  }
   getDocuments() {
     const customerId = localStorage.getItem('id') || '';
     const role = localStorage.getItem('role') || 'Customer';
   
-    this.customer.getDocuments(customerId, role).subscribe(
+    this.customer.getDocuments(customerId, 'Customer').subscribe(
       (documents: any[]) => {
-        this.documents = documents;
+        this.documents = documents; // Store fetched documents
   
-        // Process documents to find existing matches
+        // Reset selected document IDs and existing documents
+        this.selectedDocumentIds = [];
+        this.existingDocuments = {};
+  
         this.documents.forEach((doc: any) => {
           const matchedIndex = this.mappedRequiredDocuments.indexOf(doc.documentName);
-          if ((matchedIndex !== -1 && doc.status === 1) ||(matchedIndex !== -1 && doc.status === 0)) {
-            // Add to existingDocuments
-            this.existingDocuments[doc.documentName] = { id: doc.documentId, path: doc.documentPath };
   
-            // Remove from mappedRequiredDocuments
+          // Add to existing documents only if status is Pending (0) or Approved (1)
+          if (matchedIndex !== -1 && (doc.status === 1 || doc.status === 0)) {
+            this.existingDocuments[doc.documentName] = { 
+              id: doc.documentId, 
+              path: doc.documentPath 
+            };
+  
+            // Push the document ID to selectedDocumentIds
+            this.selectedDocumentIds.push(doc.documentId);
+            console.log(`Added existing document: ${doc.documentName} with ID: ${doc.documentId}`);
+            
+            // Remove the matched document from the required documents list
             this.mappedRequiredDocuments.splice(matchedIndex, 1);
           }
         });
   
         console.log('Existing Documents:', this.existingDocuments);
+        console.log('Selected Document IDs:', this.selectedDocumentIds);
         console.log('Remaining Required Documents:', this.mappedRequiredDocuments);
       },
       (error: HttpErrorResponse) => {
         console.error('Error fetching documents:', error);
+        this.toastService.showToast("error", 'Failed to fetch documents.');
       }
     );
-  }
-  getExistingDocumentKeys(): string[] {
-    return Object.keys(this.existingDocuments);
   }
   
   docTypes: string[] = [

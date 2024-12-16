@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators }
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { RegistrationService } from '../services/registration.service';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-registration',
@@ -10,6 +11,37 @@ import { RegistrationService } from '../services/registration.service';
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent {
+  states = [
+    { StateId: '1', StateName: 'Andhra Pradesh' },
+    { StateId: '2', StateName: 'Arunachal Pradesh' },
+    { StateId: '3', StateName: 'Assam' },
+    { StateId: '4', StateName: 'Bihar' },
+    { StateId: '5', StateName: 'Chhattisgarh' },
+    { StateId: '6', StateName: 'Goa' },
+    { StateId: '7', StateName: 'Gujarat' },
+    { StateId: '8', StateName: 'Haryana' },
+    { StateId: '9', StateName: 'Himachal Pradesh' },
+    { StateId: '10', StateName: 'Jharkhand' },
+    { StateId: '11', StateName: 'Karnataka' },
+    { StateId: '12', StateName: 'Kerala' },
+    { StateId: '13', StateName: 'Madhya Pradesh' },
+    { StateId: '14', StateName: 'Maharashtra' },
+    { StateId: '15', StateName: 'Manipur' },
+    { StateId: '16', StateName: 'Meghalaya' },
+    { StateId: '17', StateName: 'Mizoram' },
+    { StateId: '18', StateName: 'Nagaland' },
+    { StateId: '19', StateName: 'Odisha' },
+    { StateId: '20', StateName: 'Punjab' },
+    { StateId: '21', StateName: 'Rajasthan' },
+    { StateId: '22', StateName: 'Sikkim' },
+    { StateId: '23', StateName: 'Tamil Nadu' },
+    { StateId: '24', StateName: 'Telangana' },
+    { StateId: '25', StateName: 'Tripura' },
+    { StateId: '26', StateName: 'Uttar Pradesh' },
+    { StateId: '27', StateName: 'Uttarakhand' },
+    { StateId: '28', StateName: 'West Bengal' },
+  ];
+
   registrationForm = new FormGroup({
     customerFirstName: new FormControl('', Validators.required),
     customerLastName: new FormControl('', Validators.required),
@@ -45,6 +77,7 @@ export class RegistrationComponent {
 
   constructor(
     private registrationService: RegistrationService,
+    private toastService: ToastService,
     private snackBar: MatSnackBar,
     private router: Router
   ) {}
@@ -86,29 +119,25 @@ export class RegistrationComponent {
   onSubmitData(): void {
     if (this.registrationForm.valid) {
       // Exclude 'dob' field from the form data
-      const { dob, confirmPassword, ...formData } = this.registrationForm.value; 
-      const finalData = { ...formData, status: true }; // Add status field
+      const dateOfBirth=this.registrationForm.value['dob'];
+      const { confirmPassword, ...formData } = this.registrationForm.value; 
+      const finalData = { ...formData, status: true,dateOfBirth }; // Add status field
       
       console.log('Submitting data to API:', finalData); // Debug API payload
 
       this.registrationService.registerUser(finalData).subscribe(
         (response) => {
           console.log('API Response:', response);
-          this.snackBar.open('Registration successful!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar'],
-          });
-          this.router.navigate(['']);
+          this.toastService.showToast('success', 'Registration Success');
+          this.router.navigate(['/login']);
         },
         (error) => {
           console.error('API Error:', error);
-          this.snackBar.open('Registration failed. Please try again.', 'Close', {
-            duration: 3000,
-            panelClass: ['error-snackbar'],
-          });
+          this.toastService.showToast('error',error.error?.errorMessage);
         }
       );
     } else {
+      this.toastService.showToast('error','please fill all required fields.');
       this.registrationForm.markAllAsTouched();
       console.warn('Form is invalid!');
     }

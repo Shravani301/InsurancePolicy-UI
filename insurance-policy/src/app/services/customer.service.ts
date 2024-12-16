@@ -27,7 +27,7 @@ export class CustomerService {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     });
   
-    const url = `https://localhost:7052/api/Policy/customer?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    const url = `https://localhost:7052/api/Policy/pending?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
   getPoliciesActive(userId: string, pageNumber: number, pageSize: number): Observable<any> {
@@ -36,7 +36,7 @@ export class CustomerService {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     });
   
-    const url = `https://localhost:7052/api/Policy/customer/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    const url = `https://localhost:7052/api/Policy/customer/active/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
   getPoliciesPending(userId: string, pageNumber: number, pageSize: number): Observable<any> {
@@ -45,7 +45,7 @@ export class CustomerService {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     });
   
-    const url = `https://localhost:7052/api/Policy/customer/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+    const url = `https://localhost:7052/api/Policy/customer/pending/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
 
@@ -101,6 +101,9 @@ export class CustomerService {
     return this.http.get<any>(url);
   }
   
+  reuploadDocument(documentId: string, newUrl: string) {
+    return this.http.put(`${this.apiUrl}/Document/reupload?id=${documentId}&url=${newUrl}`, {});
+  }
   
   addComplaint(complaint: { title: string; message: string; customerId: string }): Observable<any> {
     const headers = new HttpHeaders({

@@ -22,7 +22,7 @@ export class RegisterPolicyComponent implements OnInit {
   agentName: string = '';
   NomineeForm!: FormGroup;
   schemeData: any = { schemeName: '', minInvestmentTime: 0, maxInvestmentTime: 0, profitRatio: 10 };
-  premiumTypes: string[] = ['SINGLE', 'MONTHLY', 'QUARTERLY', 'SEMI_ANNUALLY', 'ANNUALLY'];
+  premiumTypes: string[] = ['SINGLE', 'MONTHLY', 'QUARTERLY', 'HALF_YEARLY', 'YEARLY'];
   policyTerms: number[] = [];
   premiumAmounts: number[] =[];
   selectedFile: File | null = null; // Add this property to store the selected file
@@ -56,9 +56,9 @@ export class RegisterPolicyComponent implements OnInit {
     'OTHER',
   ];
   agents: any[] = [];
-  fixedInsuranceSettingId: string = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
-  fixedTaxId: string = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
-  schemeId: string = '';
+  fixedInsuranceSettingId: string = '482220f7-25bb-ef11-ac96-a69f65265058';
+  fixedTaxId: string = 'd7c98fc8-30ba-ef11-ac93-97370648a29d';
+  schemeId: any = '';
   selectedCustomer: any = null; // To store the selected customer from the modal
   showCustomerSelectionModal: boolean = true; // Control modal visibility
   customers: any[] = []; // List of customers fetched from the API
@@ -181,8 +181,30 @@ export class RegisterPolicyComponent implements OnInit {
 // Select customer in the modal
 selectCustomer(customer: any) {
   this.selectedCustomer = customer;
-  this.getDocuments();
+  
+  // Check if the customer is already associated with the scheme
+  this.customer.isCustomerAssociatedWithScheme(this.schemeId, this.selectedCustomer.customerId)
+    .subscribe({
+      next: (response: any) => {
+        if (response.body?.isAssociated) {
+          // Customer is already associated, show toast and go back
+          this.toastService.showToast("error", 'You are already associated with this scheme and cannot re-purchase this policy.');
+          this.goBack(); // Redirect back
+        } else {
+          // If not associated, proceed to fetch documents and display customer info
+          this.getDocuments();
+          this.showCustomerSelectionModal = false;
+          this.customerDetail = this.selectedCustomer;
+          console.log('Selected customer details:', this.customerDetail);
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error checking customer association:', err);
+        this.toastService.showToast("error", 'Failed to validate customer association.');
+      }
+    });
 }
+
 
 // Confirm customer selection and pass details
 confirmCustomerSelection() {
@@ -218,12 +240,14 @@ closeCustomerSelectionModal() {
     this.onPremiumTypeChange(); // Recalculate based on new value
   }
   onPremiumTypeChange() {
-    const baseAmount = Number(this.policy.premiumAmount) || 0;
-    const tax = baseAmount * 0.18; // Assuming 18% tax
-    const profitRatio = this.schemeData.profitRatio || 10;
+    const baseAmount = Number(this.policy.premiumAmount) || 0; // Premium amount entered
+    const tax = baseAmount * 0.05; // Assuming 18% tax
+    const profitRatio = this.schemeData.profitRatio || 10; // Default profit ratio as 10%
   
-    this.policy.sumAssured = this.schemeData.profitRatio;
-    this.policy.installmentAmount = baseAmount + tax;
+    this.policy.installmentAmount = baseAmount + tax; // Calculate installment amount
+  
+    // Calculate Sum Assured: Base Amount + (Base Amount * Profit Ratio / 100)
+    this.policy.sumAssured = baseAmount + (baseAmount * profitRatio / 100);
   
     // Calculate Maturity Date based on policy term in months
     const policyTermMonths = this.policy.policyTerm || 0; // Policy term in months
@@ -238,6 +262,7 @@ closeCustomerSelectionModal() {
   
     this.policy.maturityDate = maturityDate; // Update the maturity date in the policy
   }
+  
   policyTermFormControl = new FormControl('', [
     Validators.required,
     Validators.min(this.schemeData.minInvestTime),
@@ -252,8 +277,8 @@ closeCustomerSelectionModal() {
       policyTerm: this.policy.policyTerm,
       premiumAmount: this.policy.premiumAmount,
       agentId:localStorage.getItem('id'),
-      taxId: 'ba1830ae-4cb1-ef11-ac89-9d80da5fbf90', // Fixed taxId
-      insuranceSettingId: 'e416bd97-4cb1-ef11-ac89-9d80da5fbf90', // Fixed insuranceSettingId
+      taxId: 'd7c98fc8-30ba-ef11-ac93-97370648a29d', // Fixed taxId
+      insuranceSettingId: '482220f7-25bb-ef11-ac96-a69f65265058', // Fixed insuranceSettingId
       nominees: this.policy.nominees.map((nominee: any) => ({
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
@@ -298,32 +323,47 @@ closeCustomerSelectionModal() {
     this.openSections[section] = !this.openSections[section];
   }  
   getDocuments() {
-    const customerId = this.selectedCustomer.customerId;
-    console.log(customerId);
+    const customerId = this.selectedCustomer.customerId; // Get customer ID
+    console.log('Fetching documents for customerId:', customerId);
+  
     this.customer.getDocuments(customerId, 'Customer').subscribe(
       (documents: any[]) => {
-        this.documents = documents;
+        this.documents = documents; // Store fetched documents
   
-        // Process documents to find existing matches
+        // Reset selected document IDs and existing documents
+        this.selectedDocumentIds = [];
+        this.existingDocuments = {};
+  
         this.documents.forEach((doc: any) => {
           const matchedIndex = this.mappedRequiredDocuments.indexOf(doc.documentName);
-          if ((matchedIndex !== -1 && doc.status === 1) ||(matchedIndex !== -1 && doc.status === 0)) {
-            // Add to existingDocuments
-            this.existingDocuments[doc.documentName] = { id: doc.documentId, path: doc.documentPath };
   
-            // Remove from mappedRequiredDocuments
+          // Add to existing documents only if status is Pending (0) or Approved (1)
+          if (matchedIndex !== -1 && (doc.status === 1 || doc.status === 0)) {
+            this.existingDocuments[doc.documentName] = { 
+              id: doc.documentId, 
+              path: doc.documentPath 
+            };
+  
+            // Push the document ID to selectedDocumentIds
+            this.selectedDocumentIds.push(doc.documentId);
+            console.log(`Added existing document: ${doc.documentName} with ID: ${doc.documentId}`);
+            
+            // Remove the matched document from the required documents list
             this.mappedRequiredDocuments.splice(matchedIndex, 1);
           }
         });
   
         console.log('Existing Documents:', this.existingDocuments);
+        console.log('Selected Document IDs:', this.selectedDocumentIds);
         console.log('Remaining Required Documents:', this.mappedRequiredDocuments);
       },
       (error: HttpErrorResponse) => {
         console.error('Error fetching documents:', error);
+        this.toastService.showToast("error", 'Failed to fetch documents.');
       }
     );
   }
+  
   docTypes: string[] = [
     'AADHAAR_CARD',
     'PAN_CARD',

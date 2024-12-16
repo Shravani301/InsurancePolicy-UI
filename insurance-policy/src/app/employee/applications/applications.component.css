@@ -232,3 +232,37 @@
   background-color: #4e334e;
   color: whitesmoke;
 }
+/* Backdrop for the reject modal */
+.reject-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Black with 80% opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+  }
+  
+  /* Styling for the reject modal */
+  .reject-modal {
+    background-color: #fff;
+    padding: 20px;
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+  
+  .reject-modal h5 {
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .readonly-field {
+    background-color: #e9ecef;
+    color: #495057;
+  }
+  

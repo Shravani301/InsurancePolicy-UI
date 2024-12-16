@@ -103,31 +103,35 @@ export class DocumentComponent {
   getDocuments() {
     const customerId = localStorage.getItem('id') || '';
     const role = localStorage.getItem('role') || 'Customer';
-  
+ 
     this.customer.getDocuments(customerId, role).subscribe(
       (documents) => {
-        this.documents = documents;
-  
-        // Filter document types based on document statuses
-        this.documentTypes = this.documentTypes.filter((docType) => {
-          const matchingDocument = this.documents.find(
-            (doc) =>
-              doc.documentName === docType.name && (doc.status === 0 || doc.status === 1)
-          );
-  
-          // Keep the document type only if no matching document is pending or approved
-          return !matchingDocument;
-        });
-  
-        console.log('Updated Document Types:', this.documentTypes);
-        console.log('Documents:', this.documents);
-  
+        // Filter and process the documents
+        this.documents = this.filterAndRemoveDuplicates(documents);
         this.updatePagination();
       },
       (error) => {
         console.error('Error fetching documents:', error);
       }
     );
+  }
+ 
+  private filterAndRemoveDuplicates(documents: any[]): any[] {
+    // Create a Map to store documents by their name
+    const documentMap = new Map<string, any>();
+ 
+    documents.forEach((doc) => {
+      // If the document is rejected, skip it
+      if (doc.status === 'REJECTED') return;
+ 
+      // If the document with the same name already exists, skip it
+      if (!documentMap.has(doc.documentName)) {
+        documentMap.set(doc.documentName, doc);
+      }
+    });
+ 
+    // Convert the Map back to an array
+    return Array.from(documentMap.values());
   }
   
 

@@ -178,8 +178,8 @@
               </tr>
               <tr>
                 <td>Sum Assured</td>
-                <td><input type="text" class="form-control" [value]="policy.sumAssured + ' %'" readonly /></td>
-              </tr>
+                <td><input type="text" class="form-control" [value]="policy.sumAssured | number: '1.2-2'" readonly /></td>
+ </tr>
             </tbody>
           </table>
         </div>

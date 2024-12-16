@@ -2,7 +2,7 @@
   import { AdminService } from 'src/app/services/admin.service';
   import { Location } from '@angular/common';
   import { Router } from '@angular/router';
-import { CustomerService } from 'src/app/services/customer.service';
+  import { CustomerService } from 'src/app/services/customer.service';
   
   @Component({
     selector: 'app-show-complaints',

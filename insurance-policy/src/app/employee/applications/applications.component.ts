@@ -63,10 +63,6 @@ export class ApplicationsComponent {
       this.userId = this.activatedRoute.snapshot.paramMap.get('id');
     }
   
-    if (!this.userId) {
-      console.error("User ID is missing. Cannot fetch policies.");
-      return; // Exit early if no valid ID is found
-    }
     this.getPolicies();
   }
   getPolicies() {    

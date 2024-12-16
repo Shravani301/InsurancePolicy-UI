@@ -56,8 +56,8 @@ export class RegisterPolicyComponent implements OnInit {
     'OTHER',
   ];
   agents: any[] = [];
-  fixedInsuranceSettingId: string = '482220f7-25bb-ef11-ac96-a69f65265058';
-  fixedTaxId: string = 'd7c98fc8-30ba-ef11-ac93-97370648a29d';
+  fixedInsuranceSettingId: string = '64c58f03-83bb-ef11-ac99-f61aa5269f33';
+  fixedTaxId: string = '225f22e0-82bb-ef11-ac99-f61aa5269f33';
   schemeId: any = '';
   selectedCustomer: any = null; // To store the selected customer from the modal
   showCustomerSelectionModal: boolean = true; // Control modal visibility
@@ -240,14 +240,20 @@ closeCustomerSelectionModal() {
     this.onPremiumTypeChange(); // Recalculate based on new value
   }
   onPremiumTypeChange() {
-    const baseAmount = Number(this.policy.premiumAmount) || 0; // Premium amount entered
+    const baseAmount = Number(this.policy.premiumAmount) || 0; // Principal amount
     const tax = baseAmount * 0.05; // Assuming 18% tax
-    const profitRatio = this.schemeData.profitRatio || 10; // Default profit ratio as 10%
+    const profitRatio = this.schemeData.profitRatio || 10; // Profit ratio in percentage
+    const policyTermYears = (this.policy.policyTerm || 0) / 12; // Policy term in years
   
-    this.policy.installmentAmount = baseAmount + tax; // Calculate installment amount
+    this.policy.installmentAmount = baseAmount + tax; // Add tax to premium amount
   
-    // Calculate Sum Assured: Base Amount + (Base Amount * Profit Ratio / 100)
-    this.policy.sumAssured = baseAmount + (baseAmount * profitRatio / 100);
+    // Calculate Compound Interest: A = P(1 + R/100)^T
+    if (policyTermYears > 0) {
+        const compoundInterest = baseAmount * Math.pow((1 + profitRatio / 100), policyTermYears);
+        this.policy.sumAssured = parseFloat(compoundInterest.toFixed(2)); // Round to 2 decimals
+    } else {
+        this.policy.sumAssured = baseAmount; // No interest if term is 0 or less
+    }
   
     // Calculate Maturity Date based on policy term in months
     const policyTermMonths = this.policy.policyTerm || 0; // Policy term in months
@@ -261,7 +267,8 @@ closeCustomerSelectionModal() {
     maturityDate.setMonth(maturityDate.getMonth() + remainingMonths); // Add months
   
     this.policy.maturityDate = maturityDate; // Update the maturity date in the policy
-  }
+}
+
   
   policyTermFormControl = new FormControl('', [
     Validators.required,
@@ -277,8 +284,8 @@ closeCustomerSelectionModal() {
       policyTerm: this.policy.policyTerm,
       premiumAmount: this.policy.premiumAmount,
       agentId:localStorage.getItem('id'),
-      taxId: 'd7c98fc8-30ba-ef11-ac93-97370648a29d', // Fixed taxId
-      insuranceSettingId: '482220f7-25bb-ef11-ac96-a69f65265058', // Fixed insuranceSettingId
+      taxId: '225f22e0-82bb-ef11-ac99-f61aa5269f33', // Fixed taxId
+      insuranceSettingId: '64c58f03-83bb-ef11-ac99-f61aa5269f33', // Fixed insuranceSettingId
       nominees: this.policy.nominees.map((nominee: any) => ({
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
@@ -319,6 +326,9 @@ closeCustomerSelectionModal() {
     nominee: true,
   };
   
+  getExistingDocumentKeys(): string[] {
+    return Object.keys(this.existingDocuments);
+  }
   toggleSection(section: string) {
     this.openSections[section] = !this.openSections[section];
   }  

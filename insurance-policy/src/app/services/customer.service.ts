@@ -21,6 +21,15 @@ export class CustomerService {
     const url = `https://localhost:7052/api/Policy/customer/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
+  getPoliciesByCustomerId(userId: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+  
+    const url = `https://localhost:7052/api/Policy/customerId/${userId}`;
+    return this.http.get<any>(url, { headers, observe: 'response' });
+  }
   getPoliciesPendingAll(pageNumber: number, pageSize: number): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

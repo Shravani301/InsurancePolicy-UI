@@ -199,46 +199,61 @@
     </div>
     
       <!-- Documents Section -->
-      <div class="section">
-        <h4 (click)="toggleSection('documents')">Documents</h4>
-      <h5 *ngIf="mappedRequiredDocuments.length==0">Documents already exists!</h5>
-      <div *ngIf="openSections['documents']">
-      <table class="table table-layout">
-            <tbody>
-              <tr *ngFor="let doc of mappedRequiredDocuments; let i = index">
-                <td>{{ doc }}</td>
-                <td>
-                  <input
-                    type="file"
-                    class="form-control"
-                    (change)="handleFileSelection($event, i)"
-                    *ngIf="!uploadedDocuments[doc]"
-                  />
-                </td>
-                <td>
-                  <button
-                    class="btn btn-primary"
-                    (click)="uploadFile(i)"
-                    [disabled]="!selectedFiles[i]"
-                    *ngIf="!uploadedDocuments[doc]"
-                  >
-                    Upload
-                  </button>
-                  <a
-                    *ngIf="uploadedDocuments[doc]"
-                    href="javascript:void(0)"
-                    (click)="viewDocument(uploadedDocuments[doc])"
-                    class="btn btn-link"
-                  >
-                    View
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-  
+      <!-- Documents Section -->
+<div class="section">
+  <h4 (click)="toggleSection('documents')">Documents</h4>
+  <h5 *ngIf="mappedRequiredDocuments.length === 0">All required documents already exist!</h5>
+  <div *ngIf="openSections['documents']">
+    <table class="table table-layout">
+      <tbody>
+        <!-- Display Existing Documents -->
+        <tr *ngFor="let docName of getExistingDocumentKeys()">
+          <td>{{ docName }}</td>
+          <td>
+            <a
+              href="javascript:void(0)"
+              (click)="viewDocument(existingDocuments[docName].path)"
+              class="btn btn-link"
+            >
+              View
+            </a>
+          </td>
+        </tr>
+        <!-- Upload New Required Documents -->
+        <tr *ngFor="let doc of mappedRequiredDocuments; let i = index">
+          <td>{{ doc }}</td>
+          <td>
+            <input
+              type="file"
+              class="form-control"
+              (change)="handleFileSelection($event, i)"
+              *ngIf="!uploadedDocuments[doc]"
+            />
+          </td>
+          <td>
+            <button
+              class="btn btn-primary"
+              (click)="uploadFile(i)"
+              [disabled]="!selectedFiles[i]"
+              *ngIf="!uploadedDocuments[doc]"
+            >
+              Upload
+            </button>
+            <a
+              *ngIf="uploadedDocuments[doc]"
+              href="javascript:void(0)"
+              (click)="viewDocument(uploadedDocuments[doc])"
+              class="btn btn-link"
+            >
+              View
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
       <!-- View Modal -->
       <div
         class="modal-overlay"

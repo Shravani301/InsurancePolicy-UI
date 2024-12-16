@@ -61,7 +61,7 @@ export class ShowAgentsComponent {
         this.filteredAgents = [...this.agents]; // Initialize filteredAgents with all agents
       },
       error: () => {
-        this.toastService.showToast('error', 'Failed to load agents.');
+        this.toastService.showToast('error', 'Agents is not available');
         this.agents = [];
         this.filteredAgents = [];
       },

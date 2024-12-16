@@ -64,7 +64,7 @@ export class ShowCustomersComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching customers:', err);
-        this.toastService.showToast('error', 'Failed to fetch customers.');
+        this.toastService.showToast('error', 'Customer not available');
         this.customerData = [];
         this.filteredCustomerData = [];
         this.totalCustomerCount = 0;

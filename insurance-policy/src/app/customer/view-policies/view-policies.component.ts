@@ -30,11 +30,20 @@ export class ViewPoliciesComponent {
   selectedPolicyId:string='';
   maxVisiblePages: number = 3; // Maximum number of pages to display
 
+  currentDate: string;
+ 
   constructor(private customer: CustomerService, private router: Router, private location: Location,
     private toastService: ToastService,
     private activatedRoute: ActivatedRoute,
     private employee:EmployeeService
-  ) {}
+  ) {this.currentDate = this.formatDateToDDMMYYYY(new Date());}
+ 
+  private formatDateToDDMMYYYY(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
 
   ngOnInit(): void {
     

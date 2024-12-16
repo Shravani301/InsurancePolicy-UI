@@ -19,6 +19,10 @@
   #pageSizeSelect:focus {
     outline: 2px solid #00d1b2; /* Highlight color for input focus */
   }
+  button:disabled {
+    opacity: 0.4; /* Makes the button look semi-transparent */
+    cursor: not-allowed; /* Changes the cursor to indicate it's disabled */
+  }
   
   h2 {
     font-size: 24px;

@@ -156,10 +156,10 @@ export class WithdrawalsComponent implements OnInit {
       amount: this.withdrawAmount,
       requestDate: new Date().toISOString(),
       status: 0,
-      approvedAt: null,
+      rejectedReason: 'Under Verification',
       totalCommission: this.totalCommission
     };
-
+    
     this.agent.addWithdrawalRequest(withdrawalRequest).subscribe({
       next: () => {
         this.toastService.showToast("success", "Withdrawal request submitted successfully.");
@@ -173,7 +173,12 @@ export class WithdrawalsComponent implements OnInit {
       }
     });
   }
-
+  openWithdrawModalForNewRequest(): void {
+    this.selectedRequest = null; // Reset for a new request
+    this.withdrawAmount = 0;
+    this.showWithdrawModal = true;
+  }
+  
   onSearch(): void {
     const lowerQuery = this.searchQuery.toLowerCase();
     this.filteredCommissions = this.commissions.filter((commission) => {

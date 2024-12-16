@@ -45,8 +45,8 @@
             <th>Amount</th>
             <th>Status</th>
             <th>Applied Date</th>
-            <th>Customers Registered</th>
-            <th>Policies Registered</th>
+            <!-- <th>Customers Registered</th>
+            <th>Policies Registered</th> -->
             <th>Current Balance</th>
             <th *ngIf="role!=='Employee'">Actions</th>
           </tr>
@@ -74,8 +74,8 @@
               >
             </td>
             <td>{{ commission.requestDate | date: 'dd-MM-yyyy' }}</td>
-            <td>{{commission.totalCustomers}}</td>
-            <td>{{commission.totalPolicies}}</td>
+            <!-- <td>{{commission.totalCustomers}}</td>
+            <td>{{commission.totalPolicies}}</td> -->
             <td>
               <button
                 class="btn btn-info btn-sm"

@@ -122,6 +122,25 @@
             </div>
           </div>
         </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dob">Date of Birth <span class="required">*</span></label>
+            <input
+              type="date"
+              id="dob"
+              class="form-control glossy-input"
+              formControlName="dob"
+              placeholder="Enter Date of Birth"
+            />
+            <div *ngIf="isInvalid('dob')" class="error">
+              Date of Birth is required.
+            </div>
+            <div *ngIf="registrationForm.get('dob')?.errors?.['underAge']" class="error">
+              You must be at least 18 years old.
+            </div>            
+          </div>
+        </div>
+        
   
         <!-- Address -->
         <div class="form-row">

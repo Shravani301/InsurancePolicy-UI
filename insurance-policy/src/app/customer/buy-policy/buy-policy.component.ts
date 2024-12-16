@@ -53,8 +53,8 @@ export class BuyPolicyComponent implements OnInit {
     'OTHER',
   ];
   agents: any[] = [];
-  fixedInsuranceSettingId: string = '482220f7-25bb-ef11-ac96-a69f65265058';
-  fixedTaxId: string = 'd7c98fc8-30ba-ef11-ac93-97370648a29d';
+  fixedInsuranceSettingId: string = '64c58f03-83bb-ef11-ac99-f61aa5269f33';
+  fixedTaxId: string = '225f22e0-82bb-ef11-ac99-f61aa5269f33';
   schemeId: string = '';
   existingDocuments: { [key: string]: { id: string; path: string } } = {};
 
@@ -203,12 +203,20 @@ export class BuyPolicyComponent implements OnInit {
     this.onPremiumTypeChange(); // Recalculate based on new value
   }
   onPremiumTypeChange() {
-    const baseAmount = Number(this.policy.premiumAmount) || 0;
-    const tax = baseAmount * 0.18; // Assuming 18% tax
-    const profitRatio = this.schemeData.profitRatio || 10;
+    const baseAmount = Number(this.policy.premiumAmount) || 0; // Principal amount
+    const tax = baseAmount * 0.05; // Assuming 18% tax
+    const profitRatio = this.schemeData.profitRatio || 10; // Profit ratio in percentage
+    const policyTermYears = (this.policy.policyTerm || 0) / 12; // Policy term in years
   
-    this.policy.sumAssured = this.schemeData.profitRatio;
-    this.policy.installmentAmount = baseAmount + tax;
+    this.policy.installmentAmount = baseAmount + tax; // Add tax to premium amount
+  
+    // Calculate Compound Interest: A = P(1 + R/100)^T
+    if (policyTermYears > 0) {
+        const compoundInterest = baseAmount * Math.pow((1 + profitRatio / 100), policyTermYears);
+        this.policy.sumAssured = parseFloat(compoundInterest.toFixed(2)); // Round to 2 decimals
+    } else {
+        this.policy.sumAssured = baseAmount; // No interest if term is 0 or less
+    }
   
     // Calculate Maturity Date based on policy term in months
     const policyTermMonths = this.policy.policyTerm || 0; // Policy term in months
@@ -222,7 +230,8 @@ export class BuyPolicyComponent implements OnInit {
     maturityDate.setMonth(maturityDate.getMonth() + remainingMonths); // Add months
   
     this.policy.maturityDate = maturityDate; // Update the maturity date in the policy
-  }
+}
+
   policyTermFormControl = new FormControl('', [
     Validators.required,
     Validators.min(this.schemeData.minInvestTime),
@@ -242,8 +251,8 @@ export class BuyPolicyComponent implements OnInit {
       premiumType: this.policy.premiumType,
       policyTerm: this.policy.policyTerm,
       premiumAmount: this.policy.premiumAmount,
-      taxId: 'd7c98fc8-30ba-ef11-ac93-97370648a29d', // Fixed taxId
-      insuranceSettingId: '482220f7-25bb-ef11-ac96-a69f65265058', // Fixed insuranceSettingId
+      taxId: '225f22e0-82bb-ef11-ac99-f61aa5269f33', // Fixed taxId
+      insuranceSettingId: '64c58f03-83bb-ef11-ac99-f61aa5269f33', // Fixed insuranceSettingId
       nominees: this.policy.nominees.map((nominee: any) => ({
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
@@ -318,6 +327,9 @@ export class BuyPolicyComponent implements OnInit {
         console.error('Error fetching documents:', error);
       }
     );
+  }
+  getExistingDocumentKeys(): string[] {
+    return Object.keys(this.existingDocuments);
   }
   
   docTypes: string[] = [

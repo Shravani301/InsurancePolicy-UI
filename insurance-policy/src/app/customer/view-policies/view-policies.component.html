@@ -121,6 +121,7 @@
               <button 
               *ngIf="isSwitchOn && role === 'Customer'" 
               class="btn btn-warning me-2"
+              [disabled]="policy.maturityDate !== currentDate"
               (click)="addClaim(policy)">
                 Claim Request
                 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -51,6 +51,8 @@ export class CustomerRegistrationComponent {
       Validators.required,
       Validators.pattern('^[0-9]{10}$'),
     ]),
+    
+    dob: new FormControl('', [Validators.required, this.ageValidator]), // DOB with age validation
     houseNo: new FormControl('', Validators.required),
     apartment: new FormControl('', Validators.required),
     pincode: new FormControl('', [
@@ -95,6 +97,26 @@ export class CustomerRegistrationComponent {
     const control = this.registrationForm.get(controlName);
     return !!(control && control.invalid && control.touched);
   }
+  ageValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      // If no value is provided, do not return an error
+      return null;
+    }
+  
+    const dob = new Date(control.value);
+    const today = new Date();
+    const age = today.getFullYear() - dob.getFullYear();
+    const monthDifference = today.getMonth() - dob.getMonth();
+    const dayDifference = today.getDate() - dob.getDate();
+  
+    // Adjust age if the birthday hasn't been reached this year
+    const adjustedAge =
+      age - (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0) ? 1 : 0);
+  
+    return adjustedAge >= 18 ? null : { underAge: true };
+  }
+  
+  
 
   onSubmitData(): void {
     console.log('Form Submitted:', this.registrationForm.valid); // Debug form validity
@@ -102,7 +124,9 @@ export class CustomerRegistrationComponent {
     console.log('Form Data:', this.registrationForm.value); // Debug form data
 
     if (this.registrationForm.valid) {
-      const { confirmPassword, ...formData } = this.registrationForm.value; // Remove confirmPassword
+      // const { confirmPassword, ...formData } = this.registrationForm.value; // Remove confirmPassword
+      
+      const { dob, confirmPassword, ...formData } = this.registrationForm.value; 
     
     // Fetch agentId from localStorage
     const agentId = localStorage.getItem('id');

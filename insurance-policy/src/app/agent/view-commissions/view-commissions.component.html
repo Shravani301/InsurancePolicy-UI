@@ -42,7 +42,6 @@
           <tr>
             <th>Sr.</th>
             <th>Policy Id</th>
-            <th>Policy Name</th>
             <th>Commission Type</th>
             <th>Received Date</th>
             <th>Amount</th>
@@ -53,7 +52,6 @@
           <tr *ngFor="let commission of filteredCommissions; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
             <td>{{ commission.policyNo.split('-')[0]}}</td>
-            <td>{{ commission.policyName }}</td>
             <td>{{ commission.commissionType }}</td>
             <td>{{ commission.issueDate | date: 'dd-MM-yyyy' }}</td>
             <td>{{ commission.amount }}</td>

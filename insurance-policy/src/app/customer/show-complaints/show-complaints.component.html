@@ -43,6 +43,8 @@
         <thead class="table-dark">
           <tr>
             <th>Sr.</th>
+            <th>QueryType/th>
+            <th>Policy Id</th>
             <th>Customer Name</th>
             <th>Title</th>
             <th>Message</th>
@@ -55,6 +57,8 @@
         <tbody>
           <tr *ngFor="let complaint of filteredComplaints; let i = index">
             <td>{{ calculateSRNumber(i) }}</td>
+            <td>{{complaint.queryType}}</td>
+            <td>{{ complaint.policyId ? complaint.policyId.split('-')[0] : '-' }}</td>
             <td>{{ complaint.customerName }}</td>
             <td>{{ truncateText(complaint.title, 50) }}</td>
             <td>{{ truncateText(complaint.message, 30) }}</td>

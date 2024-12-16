@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { RegistrationService } from '../services/registration.service';
@@ -18,6 +18,7 @@ export class RegistrationComponent {
       Validators.required,
       Validators.pattern('^[0-9]{10}$'),
     ]),
+    dob: new FormControl('', [Validators.required, this.ageValidator]), // DOB with age validation
     houseNo: new FormControl('', Validators.required),
     apartment: new FormControl('', Validators.required),
     pincode: new FormControl('', [
@@ -61,20 +62,38 @@ export class RegistrationComponent {
     return !!(control && control.invalid && control.touched);
   }
 
+  // Custom validator to check age >= 18
+  ageValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      // If no value is provided, do not return an error
+      return null;
+    }
+  
+    const dob = new Date(control.value);
+    const today = new Date();
+    const age = today.getFullYear() - dob.getFullYear();
+    const monthDifference = today.getMonth() - dob.getMonth();
+    const dayDifference = today.getDate() - dob.getDate();
+  
+    // Adjust age if the birthday hasn't been reached this year
+    const adjustedAge =
+      age - (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0) ? 1 : 0);
+  
+    return adjustedAge >= 18 ? null : { underAge: true };
+  }
+  
+
   onSubmitData(): void {
-    console.log('Form Submitted:', this.registrationForm.valid); // Debug form validity
-    console.log('Form Errors:', this.registrationForm.errors); // Debug form errors
-    console.log('Form Data:', this.registrationForm.value); // Debug form data
-
     if (this.registrationForm.valid) {
-      const { confirmPassword, ...formData } = this.registrationForm.value; // Remove confirmPassword
-      const finalData = { ...formData, status: true }; // Add status
-
+      // Exclude 'dob' field from the form data
+      const { dob, confirmPassword, ...formData } = this.registrationForm.value; 
+      const finalData = { ...formData, status: true }; // Add status field
+      
       console.log('Submitting data to API:', finalData); // Debug API payload
 
       this.registrationService.registerUser(finalData).subscribe(
         (response) => {
-          console.log('API Response:', response); // Debug API response
+          console.log('API Response:', response);
           this.snackBar.open('Registration successful!', 'Close', {
             duration: 3000,
             panelClass: ['success-snackbar'],
@@ -82,7 +101,7 @@ export class RegistrationComponent {
           this.router.navigate(['']);
         },
         (error) => {
-          console.error('API Error:', error); // Debug API error
+          console.error('API Error:', error);
           this.snackBar.open('Registration failed. Please try again.', 'Close', {
             duration: 3000,
             panelClass: ['error-snackbar'],
@@ -91,7 +110,7 @@ export class RegistrationComponent {
       );
     } else {
       this.registrationForm.markAllAsTouched();
-      console.warn('Form is invalid!'); // Debug invalid form
+      console.warn('Form is invalid!');
     }
   }
 }

@@ -1,0 +1,23 @@
+
+<app-header></app-header>
+<div class="wrapper">
+    <div class="privacy-wrapper">
+        <div class="container">
+            <!-- Main Card -->
+            <div class="card privacy-card shadow-lg">
+                <div class="card-body">
+                    <!-- Title -->
+                    <h2 class="section-title text-center mb-4">Privacy and Policy</h2>
+
+                    <!-- Content Sections -->
+                    <div *ngFor="let policy of policies" class="policy-section mb-4">
+                        <h5 class="section-subtitle">{{ policy.title }}</h5>
+                        <p class="section-text">{{ policy.description }}</p>
+                        <hr *ngIf="policy !== policies[policies.length - 1]" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer-end></app-footer-end>
+</div>

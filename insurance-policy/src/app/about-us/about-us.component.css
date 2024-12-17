@@ -1,0 +1,73 @@
+/* Main container styling */
+.wrapper{
+    flex-direction: column;
+    width: 100%;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+    
+}
+.about-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 10px;
+    background-color: #f8f9fa; /* Light gray background */
+  }
+  
+  /* Card styling with shadow */
+  .about-card {
+    max-width: 1100px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .about-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+  }
+  
+  /* Image styling */
+  .img-fluid {
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Content section */
+  .card-body {
+    padding: 30px;
+  }
+  
+  .card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40; /* Dark gray */
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+    color: #495057; /* Medium gray */
+    margin-top: 20px;
+  }
+  
+  /* List styling */
+  .list-group-item {
+    background-color: transparent;
+    font-size: 1rem;
+    color: #212529; /* Dark text */
+  }
+  
+  .bi-check-circle-fill {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    color: #28a745; /* Success green */
+  }
+  
+  .shadow {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+  }
+  

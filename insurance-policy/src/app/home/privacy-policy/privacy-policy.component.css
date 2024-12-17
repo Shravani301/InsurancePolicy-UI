@@ -1,0 +1,74 @@
+/* Wrapper Styles */
+.wrapper{
+    flex-direction: column;
+    width: 100%;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+    
+}
+.privacy-wrapper {
+  padding: 34px 0;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+/* Main Card */
+.privacy-card {
+  border: none;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 1000px;
+  align-items: center;
+}
+
+.privacy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Section Title */
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #03a9f4;
+  text-shadow: 1px 1px 3px #ddd;
+}
+
+/* Section Subtitle */
+.section-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+/* Section Text */
+.section-text {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Divider */
+hr {
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  margin: 1rem 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .privacy-card {
+    padding: 1rem;
+  }
+  .section-title {
+    font-size: 1.8rem;
+  }
+  .section-subtitle {
+    font-size: 1.1rem;
+  }
+}

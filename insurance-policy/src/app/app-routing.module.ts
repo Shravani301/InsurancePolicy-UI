@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
@@ -61,6 +61,9 @@ import { EmployeeOperationsComponent } from './employee/employee-operations/empl
 import { ApplicationsComponent } from './employee/applications/applications.component';
 import { AgentOperationsComponent } from './agent/agent-operations/agent-operations.component';
 import { CustomerOperationsComponent } from './customer/customer-operations/customer-operations.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ServicesComponent } from './home/services/services.component';
+import { PrivacyPolicyComponent } from './home/privacy-policy/privacy-policy.component';
 
 
 const routes: Routes = [
@@ -237,8 +240,7 @@ const routes: Routes = [
     {
       path: 'customer/policies/:id',    
       component: ViewPoliciesComponent,
-    },
-    
+    },   
       
     ],
     canActivate: [AuthGuard],
@@ -304,10 +306,6 @@ const routes: Routes = [
       role: ['Agent'] // Role as an array
     },
   },
-
-
-
-
 
 
   {
@@ -379,95 +377,6 @@ const routes: Routes = [
     },
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   ,
   {
     path: 'dashboard/changePassword',
@@ -533,9 +442,6 @@ const routes: Routes = [
       role: ['Employee'] // Role as an array
     },
   },
- 
- 
-  
   {
     path: 'view-plan',
     component: ViewPlanComponent,
@@ -545,13 +451,30 @@ const routes: Routes = [
     path: 'payment',
     component: PaymentComponent
   },
-  
+  {
+    path:'aboutUs',
+    component: AboutUsComponent
+  },
+  {
+    path:'services',
+    component: ServicesComponent
+  }, 
+  {
+    path:'privacyPolicy',
+    component: PrivacyPolicyComponent
+  },
   
   {
     path: '**',
     redirectTo: '',
   },
 ];
+
+const routerOptions: ExtraOptions = {
+  scrollPositionRestoration: 'enabled',
+  anchorScrolling: 'enabled', // Enables fragment scrolling
+  onSameUrlNavigation: 'reload',
+};
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

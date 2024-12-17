@@ -1,0 +1,29 @@
+<div class="services-wrapper">
+    <div class="services-section container">
+      <h2 class="text-center mb-4">Our Services</h2>
+      <div class="row justify-content-center">
+        <!-- Loop through services -->
+        <div
+          class="col-md-4 col-sm-6 mb-4"
+          *ngFor="let service of services; let i = index"
+        >
+          <div class="card service-card h-100 shadow-lg">
+            <!-- Image/Icon -->
+            <div class="image-container">
+              <img
+                [src]="service.icon"
+                alt="{{ service.title }}"
+                class="service-icon img-fluid"
+              />
+            </div>
+            <!-- Content -->
+            <div class="card-body text-center">
+              <h4 class="card-title">{{ service.title }}</h4>
+              <p class="card-text">{{ service.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

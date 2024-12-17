@@ -82,6 +82,9 @@ import { EmployeeOperationsComponent } from './employee/employee-operations/empl
 import { ApplicationsComponent } from './employee/applications/applications.component';
 import { AgentOperationsComponent } from './agent/agent-operations/agent-operations.component';
 import { CustomerOperationsComponent } from './customer/customer-operations/customer-operations.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ServicesComponent } from './home/services/services.component';
+import { PrivacyPolicyComponent } from './home/privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -153,6 +156,9 @@ import { CustomerOperationsComponent } from './customer/customer-operations/cust
     ApplicationsComponent,
     AgentOperationsComponent,
     CustomerOperationsComponent,
+    AboutUsComponent,
+    ServicesComponent,
+    PrivacyPolicyComponent,
 
     
   ],

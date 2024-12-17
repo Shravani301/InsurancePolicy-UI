@@ -1,6 +1,11 @@
+<app-header></app-header>
 <div class="registration-form-container">
     <h2>Registration Form</h2>
-    <a routerLink="">backtohome</a>
+    <div class="text-end mt-0">
+    <p class="me">
+      Already have an account? <a routerLink="/login">Login</a>
+    </p>
+  </div>
     <form [formGroup]="registrationForm" (ngSubmit)="onSubmitData()">
       <div class="form-card scrollable-form">
         <!-- First Name and Last Name -->
@@ -210,7 +215,8 @@
         <!-- Submit -->
         <button type="submit" class="btn-register" [disabled]="registrationForm.invalid">Register</button>
       </div>
-    </form>
+     </form>
     <p-toast></p-toast>
   </div>
+  <app-footer-end></app-footer-end>
   

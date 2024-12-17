@@ -1,18 +1,13 @@
-/* Main container styling */
-.wrapper{
-    flex-direction: column;
-    width: 100%;
-  display: flex;
-  justify-items: center;
-  align-items: center;
-    
+.wrapper-1
+{
+  
 }
 .about-container {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px 10px;
-    background-color: #f8f9fa; /* Light gray background */
+    background-color: #edf6fc;
   }
   
   /* Card styling with shadow */

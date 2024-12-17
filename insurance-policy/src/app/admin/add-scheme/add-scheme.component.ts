@@ -52,13 +52,13 @@ export class AddSchemeComponent implements OnInit {
       maxAmount: new FormControl('', [Validators.required, Validators.min(1000)]),
       minInvestTime: new FormControl('', [Validators.required, Validators.min(1)]),
       maxInvestTime: new FormControl('', [Validators.required]),
-      minAge: new FormControl('', [Validators.required, Validators.min(0)]),
-      maxAge: new FormControl('', [Validators.required]),
+      minAge: new FormControl('', [Validators.required, Validators.min(18)]),
+      maxAge: new FormControl('', [Validators.required,Validators.max(70)]),
       profitRatio: new FormControl('', [Validators.required, Validators.min(0), Validators.max(25)]),
-      registrationCommRatio: new FormControl('', [Validators.required, Validators.min(0), Validators.max(40)]),
+      registrationCommRatio: new FormControl('', [Validators.required, Validators.min(0), Validators.max(20)]),
       installmentCommRatio: new FormControl('', [Validators.required, Validators.min(0), Validators.max(7.5)]),
-      claimDeductionPercentage: new FormControl('', [Validators.required, Validators.min(0), Validators.max(30)]),
-      penaltyDeductionPercentage: new FormControl('', [Validators.required, Validators.min(0), Validators.max(50)]),
+      claimDeductionPercentage: new FormControl('', [Validators.required, Validators.min(0), Validators.max(15)]),
+      penaltyDeductionPercentage: new FormControl('', [Validators.required, Validators.min(0), Validators.max(20)]),
     });
     // Fetch the document types
     this.getDocumentTypes();

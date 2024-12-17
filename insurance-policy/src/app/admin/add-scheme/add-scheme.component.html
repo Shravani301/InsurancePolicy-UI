@@ -144,7 +144,7 @@
                             placeholder="Enter Minimum Age" />
                         <small *ngIf="addSchemeForm.get('minAge')?.touched && addSchemeForm.get('minAge')?.invalid"
                             class="error-text">
-                            Minimum age must be greater than 0.
+                            Minimum age must be greater than 18.
                         </small>
                     </td>
                 </tr>
@@ -157,7 +157,7 @@
                             placeholder="Enter Maximum Age" />
                         <small *ngIf="addSchemeForm.get('maxAge')?.touched && addSchemeForm.get('maxAge')?.invalid"
                             class="error-text">
-                            Maximum age must be greater than the minimum age.
+                            Maximum age must be greater than the minimum age and less than 70.
                         </small>
                     </td>
                 </tr>
@@ -172,7 +172,7 @@
                         <small
                             *ngIf="addSchemeForm.get('registrationCommRatio')?.touched && addSchemeForm.get('registrationCommRatio')?.invalid"
                             class="error-text">
-                            Registration commission ratio must be between 0% and 40%.
+                            Registration commission ratio must be between 0% and 20%.
                         </small>
                     </td>
                 </tr>
@@ -200,7 +200,7 @@
                             class="form-control" placeholder="Enter Claim Deduction Percentage" />
                         <small
                             *ngIf="addSchemeForm.get('claimDeductionPercentage')?.touched && addSchemeForm.get('claimDeductionPercentage')?.invalid"
-                            class="error-text">Claim deduction percentage must be between 0% and 30%.</small>
+                            class="error-text">Claim deduction percentage must be between 0% and 15%.</small>
                     </td>
                 </tr>
                 <tr>
@@ -213,7 +213,7 @@
                             placeholder="Enter Penalty Deduction Percentage" />
                         <small
                             *ngIf="addSchemeForm.get('penaltyDeductionPercentage')?.touched && addSchemeForm.get('penaltyDeductionPercentage')?.invalid"
-                            class="error-text">Penalty deduction percentage must be between 0% and 50%.</small>
+                            class="error-text">Penalty deduction percentage must be between 0% and 20%.</small>
                     </td>
                 </tr>                
                 <tr>

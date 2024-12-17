@@ -34,12 +34,12 @@ export class ViewClaimComponent implements OnInit {
 
   constructor(private adminService: AdminService, private location: Location,
     private router: Router,
-  ) {}
+  ) {
+    this.role=localStorage.getItem('role');
+    console.log(this.role);
+  }
 
-  ngOnInit(): void {
-    const storedRole=localStorage.getItem('role');
-    if(!storedRole)
-      this.role=storedRole;
+  ngOnInit(): void {    
     this.getClaims();
   }
 
@@ -92,18 +92,20 @@ export class ViewClaimComponent implements OnInit {
   }
 
   showPolicy(policyId: any, customerId: any): void {
+    console.log(this.role);
     if(this.role==='Employee')
       this.router.navigateByUrl(`employee/Policy/${policyId}/${customerId}`);
     else if(this.role==='Admin')
       this.router.navigateByUrl(`admin/Policy/${policyId}/${customerId}`);
     else
+      
     console.log('Role is not matched');
   }
   
 
   approveClaim(claimId: string): void {
     this.adminService.approveClaim(claimId).subscribe({
-      next: () => this.getClaims(),
+      next: () => {this.getClaims()},
       error: () => console.error('Error approving claim'),
     });
   }

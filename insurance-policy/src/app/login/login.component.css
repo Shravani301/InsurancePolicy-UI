@@ -25,6 +25,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   }
   
 
@@ -136,7 +137,8 @@ body {
   }
   
   .btn-login:disabled {
-    background-color: #a6c9f3;
+    /* background-color: #a6c9f3; */
+    opacity: 90%;
     cursor: not-allowed;
   }
   

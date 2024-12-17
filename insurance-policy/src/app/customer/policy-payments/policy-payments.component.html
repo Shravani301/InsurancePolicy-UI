@@ -32,9 +32,9 @@
         <tr *ngFor="let installment of installments; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ installment.dueDate | date: 'dd-MM-yyyy' }}</td>
-            <td>{{ installment.paymentDate ? (installment.paymentDate | date: 'dd-MM-yyyy') : '000000' }}</td>
+            <td>{{ installment.paymentDate ? (installment.paymentDate | date: 'dd-MM-yyyy') : '-' }}</td>
             <td>₹ {{ installment.amountDue }}</td>
-            <td>{{ installment.amountPaid ? ('₹ ' + installment.amountPaid) : 'N/A' }}</td>
+            <td>{{ installment.amountPaid ? ('₹ ' + installment.amountPaid) : '-' }}</td>
             <td>
                 <span [ngClass]="{
                     'text-success': installment.status === 1,

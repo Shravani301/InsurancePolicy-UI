@@ -1,0 +1,75 @@
+<app-header></app-header>
+<div class="wrapper">
+<div class="contact-wrapper">
+    <div class="container py-5">
+      <h2 class="text-center mb-4">Contact Us</h2>
+  
+      <!-- Contact Information -->
+      <div class="row mb-5">
+        <div class="col-md-6 contact-info">
+          <h4>Get in Touch</h4>
+          <p><i class="fas fa-map-marker-alt me-2"></i> {{ contactInfo.address }}</p>
+          <p><i class="fas fa-envelope me-2"></i> {{ contactInfo.email }}</p>
+          <p><i class="fas fa-phone me-2"></i> {{ contactInfo.phone }}</p>
+          <!-- <p><i class="fas fa-clock me-2"></i> {{ contactInfo.hours }}</p> -->
+          
+          <!-- Social Media Links -->
+          <div class="social-links mt-4">
+            <a
+              *ngFor="let social of socialLinks"
+              [href]="social.link"
+              target="_blank"
+              class="social-icon me-3"
+            >
+              <i [class]="social.icon"></i>
+            </a>
+          </div>
+        </div>
+  
+        <!-- Contact Form -->
+        <div class="col-md-6">
+          <div class="card shadow-lg p-4 contact-form">
+            <form [formGroup]="ContactForm" (ngSubmit)="onSubmitData()">
+              
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name"
+                formControlName="name" />
+                <div *ngIf="isInvalid('name')" class="error">
+                  First Name is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Phone</label>
+                <input
+                  id="phone"
+                  class="form-control glossy-input"
+                  formControlName="phone"
+                  placeholder="Enter Phone Number"
+                /><div *ngIf="isInvalid('phone')" class="error">
+                  Valid 10-digit phone number is required.
+                </div>
+                </div>
+
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email"
+                formControlName="email" />
+                
+                <div *ngIf="isInvalid('email')" class="error">Valid email is required.</div>
+          
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" rows="4" 
+                formControlName="message"
+                placeholder="Write your message here..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div> 
+  <app-footer-end></app-footer-end></div>

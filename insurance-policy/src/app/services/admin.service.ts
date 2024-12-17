@@ -14,7 +14,9 @@ export class AdminService {
     let name=localStorage.getItem('userName');
     return this.http.get(this.baseUrl+"/Admin/ByName/"+name);
   }
+  contactUs(data:any){
   
+  return this.http.post(this.baseUrl+'/Agent/ContactUs',data,{ observe: 'response' });}
           
   /**
    * Fetch customers with pagination.
@@ -110,7 +112,11 @@ export class AdminService {
    * @returns Observable with the response
    */
   addPlan(planData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/InsurancePlan`, planData);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+    return this.http.post(`${this.baseUrl}/InsurancePlan`, planData,{headers});
   }
 
   /**

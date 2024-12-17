@@ -48,7 +48,6 @@
           <tr>
             <th>Sr.</th>
             <th>PolicyId</th>
-            <th>policy Name</th>
             <th>Payment Type</th>
             <th>Tax</th>
             <th>Total Amount</th>
@@ -59,7 +58,6 @@
             <tr *ngFor="let payment of filteredPaymentsData; let i = index">
               <td>{{ calculateSRNumber(i) }}</td>
               <td>{{payment.policyId.split('-')[0] }}</td>
-              <td>{{ payment.policyName }}</td>
               <td>{{ payment.paymentType === 0 ? 'Credit_Card' : 'Debit_Card' }}</td>
               <td>{{ payment.tax }}</td>
               <td>{{ payment.totalPayment }}</td>

@@ -17,7 +17,12 @@
 .btn-back:hover {
     background-color: #00d1b2;
 }
-  
+     
+.btn-register:disabled {
+  opacity: 70%;
+  cursor: not-allowed;
+}
+
   .form-card {
     background: #ffffff;
     border-radius: 10px;

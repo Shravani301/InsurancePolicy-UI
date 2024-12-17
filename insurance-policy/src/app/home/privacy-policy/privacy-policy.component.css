@@ -4,6 +4,8 @@
     width: 100%;
   display: flex;
   justify-items: center;
+  
+  background-color: #edf6fc;
   align-items: center;
     
 }

@@ -211,4 +211,50 @@
 }
 .readonly-field:focus {
     outline: 2px solid #00d1b2;
+}/* Backdrop Overlay */
+.modal-overlay {
+  position: fixed; /* Full screen overlay */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background-color: rgba(0, 0, 0, 0.4); /* 40% black opacity */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1040; /* Behind the modal box */
+}
+
+/* Rejection Box Modal */
+.reject-box {
+  background-color: #fff; /* White background */
+  padding: 25px; /* Add padding */
+  border-radius: 10px; /* Smooth rounded corners */
+  width: 450px; /* Fixed width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  z-index: 1050; /* Above the overlay */
+  animation: fadeIn 0.3s ease; /* Smooth fade-in animation */
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Readonly Field */
+.readonly-field {
+  background-color: #e9ecef; /* Light gray for readonly input */
+  cursor: not-allowed;
+}
+
+/* Action Buttons */
+.reject-box .btn {
+  min-width: 100px;
 }

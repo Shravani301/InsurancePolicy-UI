@@ -64,6 +64,7 @@ import { CustomerOperationsComponent } from './customer/customer-operations/cust
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ServicesComponent } from './home/services/services.component';
 import { PrivacyPolicyComponent } from './home/privacy-policy/privacy-policy.component';
+import { ContactUsComponent } from './home/contact-us/contact-us.component';
 
 
 const routes: Routes = [
@@ -462,6 +463,10 @@ const routes: Routes = [
   {
     path:'privacyPolicy',
     component: PrivacyPolicyComponent
+  },
+  {
+    path:'contactUs',
+    component: ContactUsComponent	
   },
   
   {

@@ -116,7 +116,32 @@
         this.resetSearch();
       }
     }
-  
+    selectedComplaint: any = null; // Store the complaint to display in the modal
+
+    // Open the modal and store the selected complaint
+    openResponseModal(complaint: any): void {
+      this.selectedComplaint = complaint;
+    
+      const modalElement = document.getElementById('responseModal');
+      if (modalElement) {
+        modalElement.classList.add('show');
+        modalElement.style.display = 'block';
+        modalElement.style.zIndex = '1050';
+        document.body.classList.add('modal-open'); // Prevent background scroll
+      }
+    }
+    
+    // Close the modal and clear the selected complaint
+    closeResponseModal(): void {
+      const modalElement = document.getElementById('responseModal');
+      if (modalElement) {
+        modalElement.classList.remove('show');
+        modalElement.style.display = 'none';
+        document.body.classList.remove('modal-open');
+      }
+      this.selectedComplaint = null;
+    }
+    
     resetSearch(): void {
       this.searchQuery = '';
       this.filteredComplaints = [...this.complaints];

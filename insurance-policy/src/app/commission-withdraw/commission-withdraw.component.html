@@ -48,6 +48,8 @@
             <!-- <th>Customers Registered</th>
             <th>Policies Registered</th> -->
             <th>Current Balance</th>
+            <th>Total Customers</th>
+            <th>Total Policies</th>
             <th *ngIf="role!=='Employee'">Actions</th>
           </tr>
         </thead>
@@ -87,7 +89,9 @@
                     : 'Show' 
                 }}
               </button>
-            </td>           
+            </td>      
+            <td>{{commission.totalCustomers}}</td>
+            <td>{{commission.totalPolicies}}</td>     
 
             <td *ngIf="role!=='Employee'">
               <button

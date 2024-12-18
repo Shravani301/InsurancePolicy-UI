@@ -16,6 +16,7 @@ export class CommissionWithdrawComponent implements OnInit {
   totalCommissionCount = 0;
   commissions: any[] = [];
   filteredCommissions: any[] = [];
+  totalPages:any='';
   searchQuery: string = '';
   filterBy: string = 'agentName'; // Default filter by Agent Name
   showTotalCommissions: { [key: string]: boolean } = {};
@@ -41,6 +42,8 @@ export class CommissionWithdrawComponent implements OnInit {
     this.adminService.getWithdrawalRequests(this.currentPage, this.pageSize).subscribe({
       next: (response) => {
         const paginationHeader = response.headers.get('X-Pagination');
+        this.totalPages = parseInt(response.headers.get('x-total-pages') || '1', 10);
+                
         if (paginationHeader) {
           const paginationData = JSON.parse(paginationHeader);
           this.totalCommissionCount = paginationData.TotalCount;
@@ -159,9 +162,9 @@ export class CommissionWithdrawComponent implements OnInit {
     return (this.currentPage - 1) * this.pageSize + index + 1;
   }
 
-  get totalPages(): number {
-    return Math.ceil(this.totalCommissionCount / this.pageSize);
-  }
+  // get totalPages(): number {
+  //   return Math.ceil(this.totalCommissionCount / this.pageSize);
+  // }
 
   get pageNumbers(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);

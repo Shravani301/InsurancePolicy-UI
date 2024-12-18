@@ -40,6 +40,9 @@ export class AgentService {
   return this.http.get<any>(`${this.baseUrl}/agent/${id}`, { observe: 'response' });
 }  
 
+updateAgentProfile(data:any): Observable<any> {
+  return this.http.put(`${this.baseUrl}/Agent/Profile`,data, { observe: 'response' });
+}
 getCustomersByAgentId(id: string,pageNumber:number,pageSize:number): Observable<any> {
   const headers = new HttpHeaders({
     'Content-Type': 'application/json',

@@ -96,8 +96,9 @@
 
           <td>
             <button
-              *ngIf="!emp.isEdit"
+              *ngIf="!emp.isEdit "
               class="btn btn-info btn-sm me-1"
+              [disabled]="emp.status==0"
               (click)="onEdit(emp)"
             >
               Edit

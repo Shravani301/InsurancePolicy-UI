@@ -37,6 +37,8 @@
       <thead class="table-dark">
         <tr>
           <th scope="col">Sr.</th>
+          <th scope="col">QueryType</th>
+            <th scope="col">Policy Id</th>
           <th scope="col">Customer Name</th>
           <th scope="col">Title</th>
           <th scope="col">Message</th>
@@ -48,13 +50,17 @@
       <tbody *ngIf="queries != null">
         <tr *ngFor="let query of queries; let i = index">
           <td>{{ calculateSRNumber(i) }}</td>
+          <td>{{query.queryType}}</td>
+            <td>{{ query.policyId ? query.policyId.split('-')[0] : '-' }}</td>
           <td>{{query.customerName}}</td>
           <td>{{ query.title }}</td>
           <td>{{ query.message }}</td>
           <td>{{ query.createdAt | date: 'dd-MM-yyyy' }}</td>
-          <td>
-            <div *ngIf="!query.response">Pending</div>
-            <div *ngIf="query.response">{{ query.response }}</div>
+          <td (click)="openResponseModal(query)" style="cursor: pointer;">
+            <span *ngIf="!query.response" class="text-muted">Pending</span>
+            <span *ngIf="query.response" class="text-info">
+              {{ truncateText(query.response, 35) }}
+            </span>
           </td>
           <td *ngIf="role === 'Employee'" >
             <button
@@ -142,3 +148,30 @@
     </div>
   </div>
 </div>
+
+  <!-- Response Modal -->
+  <div
+  id="responseModal"
+  class="modal fade"
+  tabindex="-1"
+  aria-hidden="true"
+  >
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Complaint Response</h3>
+        <button type="button" class="btn-close" (click)="closeResponseModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Title:</strong> {{ selectedComplaint?.title }}</p>
+        <p><strong>Message:</strong> {{ selectedComplaint?.message }}</p>
+        <p><strong>Response:</strong></p>
+        <div class="border p-2 bg-light">{{ selectedComplaint?.response || 'Pending' }}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeResponseModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  

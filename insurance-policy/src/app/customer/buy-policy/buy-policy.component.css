@@ -214,3 +214,32 @@ table td textarea[readonly] {
   .btn-link:hover {
     text-decoration: underline;
   }
+ /* Container Title */
+.container-title {
+  text-align: center; /* Center the title text */
+  position: relative; /* For positioning the image absolutely */
+  margin-bottom: 20px; /* Add space below the title section */
+}
+
+/* Title Text Styling */
+.title-text {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Scheme Image Styling */
+.schemeImage {
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  position: absolute; /* Position image absolutely */
+  top: 50%; /* Align vertically center */
+  right: 10px; /* Align to the right end */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+  object-fit: contain;
+}

@@ -43,7 +43,7 @@
         <thead class="table-dark">
           <tr>
             <th>Sr.</th>
-            <th>QueryType/th>
+            <th>QueryType</th>
             <th>Policy Id</th>
             <th>Customer Name</th>
             <th>Title</th>
@@ -62,13 +62,19 @@
             <td>{{ complaint.customerName }}</td>
             <td>{{ truncateText(complaint.title, 50) }}</td>
             <td>{{ truncateText(complaint.message, 30) }}</td>
-            <td>{{ truncateText(complaint.response || 'No Response', 50) }}</td>
+            <td (click)="openResponseModal(complaint)" style="cursor: pointer;">
+              <span *ngIf="!complaint.response" class="text-muted">-</span>
+              <span *ngIf="complaint.response" class="text-info">
+                {{ truncateText(complaint.response, 35) }}
+              </span>
+            </td>
+            
             <td>{{ complaint.isResolved ? 'Resolved' : 'Pending' }}</td>
             <td>{{ complaint.resolvedBy || '-' }}</td>
             <td>{{ complaint.createdAt | date: 'dd-MM-yyyy' }}</td>
           </tr>
           <tr *ngIf="filteredComplaints.length === 0">
-            <td colspan="7" class="text-center">No Complaints Found</td>
+            <td colspan="10" class="text-center">No Complaints Found</td>
           </tr>
         </tbody>
       </table>
@@ -94,4 +100,28 @@
       </div>
     </div>
   </div>
-  
+  <!-- Response Modal -->
+<div
+id="responseModal"
+class="modal fade"
+tabindex="-1"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">Complaint Response</h3>
+      <button type="button" class="btn-close" (click)="closeResponseModal()"></button>
+    </div>
+    <div class="modal-body">
+      <p><strong>Title:</strong> {{ selectedComplaint?.title }}</p>
+      <p><strong>Message:</strong> {{ selectedComplaint?.message }}</p>
+      <p><strong>Response:</strong></p>
+      <div class="border p-2 bg-light">{{ selectedComplaint?.response || 'Pending' }}</div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeResponseModal()">Close</button>
+    </div>
+  </div>
+</div>
+</div>

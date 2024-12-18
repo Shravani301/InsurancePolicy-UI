@@ -166,9 +166,11 @@ export class ViewSchemeComponent implements OnInit {
   updateSchemeData(scheme: any): void {
     // Create a shallow copy of the scheme object
     const schemeToUpdate = { ...scheme };
-  
+    //const { planName, ...finalData } = schemeToUpdate
+      
     // Remove the isEditing property
     delete schemeToUpdate.isEditing;
+    delete schemeToUpdate.planName;
   
     // Add the planId to the object
     schemeToUpdate.planId = this.planId;
@@ -176,10 +178,11 @@ export class ViewSchemeComponent implements OnInit {
     // API call to update the scheme
     this.admin.updateScheme(schemeToUpdate).subscribe({
       next: () => {
-        alert('Scheme updated successfully');
+        this.toastService.showToast("success",'Scheme updated successfully');
         this.getSchemes(); // Refresh the schemes list if necessary
       },
       error: (err) => {
+        this.toastService.showToast('error',err.error?.errorMessage||'Failed to update scheme.');
         console.error('Error updating scheme:', err);
       },
     });
@@ -211,7 +214,8 @@ confirmDeactivation(): void {
       },
       error: (err: HttpErrorResponse) => {
         console.error('Failed to deactivate scheme:', err);
-        alert('Failed to deactivate scheme.');
+        this.toastService.showToast('error',err.error?.errorMessage||'Failed to deactivate scheme.');
+        
       },
     });
 }

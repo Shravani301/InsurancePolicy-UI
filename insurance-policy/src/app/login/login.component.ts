@@ -142,7 +142,7 @@ onSubmitData(): void {
       },
       (error) => {
         console.error('Login error:', error);
-        this.toastService.showToast('error', 'Invalid username or password.');
+        this.toastService.showToast('error', 'Invalid username or password or user is inactive.');
       }
     );
   } else {

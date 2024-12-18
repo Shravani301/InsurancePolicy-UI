@@ -48,7 +48,7 @@ export class CustomerService {
     const url = `https://localhost:7052/api/Policy/customer/active/${userId}?PageNumber=${pageNumber}&PageSize=${pageSize}`;
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
-  getPoliciesPending(userId: string, pageNumber: number, pageSize: number): Observable<any> {
+  getPoliciesPendingByCustomer(userId: string, pageNumber: number, pageSize: number): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -58,8 +58,9 @@ export class CustomerService {
     return this.http.get<any>(url, { headers, observe: 'response' });
   }
 
-
-
+  updateCustomerProfile(data:any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/Customer/Profile`,data, { observe: 'response' });
+  }
 
   
   isCustomerAssociatedWithScheme(schemeId: number, customerId: any): Observable<any> {

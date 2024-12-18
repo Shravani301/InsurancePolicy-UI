@@ -182,6 +182,10 @@ const routes: Routes = [
       path: 'Policy/:id/:id1',
       component: ViewPolicyComponent
     },
+    {
+      path: 'profile',
+      component: AdminProfileComponent
+    },
     
   ],
   canActivate: [AuthGuard],

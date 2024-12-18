@@ -118,6 +118,9 @@
               (click)="toggleRejectBox(policy.policyId)">
               Reject
             </button>
+            <p *ngIf="!isSwitchOn && role==='Customer' && policy.policyStatus==='REJECTED'">
+              {{policy.rejectedReason}}
+            </p>
               <button 
               *ngIf="isSwitchOn && role === 'Customer'" 
               class="btn btn-warning me-2"
@@ -133,7 +136,8 @@
                 Payments
               </button>             
               
-              <span *ngIf="!isSwitchOn">Under Verification</span>
+              <span *ngIf="!isSwitchOn && policy.status==='Pending'" >Under Verification</span>
+              <!-- <span *ngIf="isSwitchOn && policy.status==='Rejected'" >{{policy.RejectedReason}}</span> -->
             </td>
             
           </tr>

@@ -178,3 +178,14 @@
     font-size: 14px; /* Optional: Adjust font size */
     border-radius: 5px; /* Optional: Round the edges */
   }
+  
+.btn-info {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #138496;
+  border-color: #138496;
+}

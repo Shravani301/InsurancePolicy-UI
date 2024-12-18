@@ -6,7 +6,11 @@
     </div>
     <div class="container">
       <!-- Customer Details Section -->
-      <div class="container-title">Insurance Policy</div>
+      <div class="container-title d-flex justify-content-center position-relative">
+        <h2 class="title-text">{{schemeData.schemeName}}</h2>
+        <img class="schemeImage position-absolute" src="{{ schemeData.schemeImage }}" alt="Scheme Image" />
+      </div>
+      
   
       <div class="section">
         <h4 (click)="toggleSection('customerDetails')">Customer Details</h4>

@@ -35,7 +35,7 @@ export class BuyPolicyComponent implements OnInit {
   selectedDocumentUrl: string = ''; // URL of the document to display in the modal
   modalImageURL: string = ''; // To store the URL for the modal
   showModal: boolean = false; // To control the modal visibility
-  
+  taxPercentage:any='';
 
 
   relationships: string[] = [
@@ -53,8 +53,9 @@ export class BuyPolicyComponent implements OnInit {
     'OTHER',
   ];
   agents: any[] = [];
-  fixedInsuranceSettingId: string = '64c58f03-83bb-ef11-ac99-f61aa5269f33';
-  fixedTaxId: string = '225f22e0-82bb-ef11-ac99-f61aa5269f33';
+  //fixedInsuranceSettingId: string = '64c58f03-83bb-ef11-ac99-f61aa5269f33';
+  // fixedTaxId: string = '225f22e0-82bb-ef11-ac99-f61aa5269f33';
+  fixedTaxId: string = '';
   schemeId: string = '';
   existingDocuments: { [key: string]: { id: string; path: string } } = {};
 
@@ -75,7 +76,7 @@ export class BuyPolicyComponent implements OnInit {
     this.policy = {
       customerId: localStorage.getItem('id'),
       insuranceSchemeId: this.schemeId,
-      insuranceSettingId: this.fixedInsuranceSettingId,
+      //insuranceSettingId: this.fixedInsuranceSettingId,
       taxId: this.fixedTaxId,
       premiumType: '',
       premiumAmount: null,
@@ -86,9 +87,11 @@ export class BuyPolicyComponent implements OnInit {
       agentId: null,
     };
 
+    
     this.getSchemeDetail();
     this.getCustomerProfile();
     this.getDocuments();
+    this.getTaxPercentage();
     this.initializeNomineeForm();
 
   }
@@ -204,7 +207,7 @@ export class BuyPolicyComponent implements OnInit {
   }
   onPremiumTypeChange() {
     const baseAmount = Number(this.policy.premiumAmount) || 0; // Principal amount
-    const tax = baseAmount * 0.05; // Assuming 18% tax
+    const tax = baseAmount * (this.taxPercentage/100); // Assuming 18% tax
     const profitRatio = this.schemeData.profitRatio || 10; // Profit ratio in percentage
     const policyTermYears = (this.policy.policyTerm || 0) / 12; // Policy term in years
   
@@ -251,8 +254,8 @@ export class BuyPolicyComponent implements OnInit {
       premiumType: this.policy.premiumType,
       policyTerm: this.policy.policyTerm,
       premiumAmount: this.policy.premiumAmount,
-      taxId: '225f22e0-82bb-ef11-ac99-f61aa5269f33', // Fixed taxId
-      insuranceSettingId: '64c58f03-83bb-ef11-ac99-f61aa5269f33', // Fixed insuranceSettingId
+      taxId: this.fixedTaxId, // Fixed taxId
+     // insuranceSettingId: '64c58f03-83bb-ef11-ac99-f61aa5269f33', // Fixed insuranceSettingId
       nominees: this.policy.nominees.map((nominee: any) => ({
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
@@ -345,6 +348,33 @@ export class BuyPolicyComponent implements OnInit {
         this.toastService.showToast("error", 'Failed to fetch documents.');
       }
     );
+  }
+  getTaxPercentage(): void {
+    this.customer.getTaxPercent().subscribe({
+      next: (res) => {
+        try {
+          // Ensure response is an array and has the expected structure
+          if (res && Array.isArray(res) && res.length > 0) {
+            const taxObject = res[0]; // Access the first object in the array
+            if (taxObject && 'taxPercentage' in taxObject) {
+              this.fixedTaxId = taxObject.taxId;
+              this.taxPercentage = taxObject.taxPercentage; // Store the fetched tax percentage
+              console.log('Tax percentage fetched successfully:', this.fixedTaxId);
+            } else {
+              console.error('Missing "taxPercentage" in the response object:', taxObject);
+              this.toastService.showToast('error', 'Tax percentage not found in response.');
+            }
+          } 
+        } catch (err) {
+          console.error('Error processing tax percentage response:', err);
+          this.toastService.showToast('error', 'An error occurred while processing the tax percentage.');
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error fetching tax percentage:', err);
+        this.toastService.showToast('error', 'Failed to fetch tax percentage. Please check your connection.');
+      }
+    });
   }
   
   docTypes: string[] = [

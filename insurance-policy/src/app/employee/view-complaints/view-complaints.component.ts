@@ -48,6 +48,12 @@ export class ViewComplaintsComponent implements OnInit {
     this.role=localStorage.getItem('role');
   }
 
+  
+  truncateText(text: string, maxLength: number): string {
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  }
+
+
   // Check user role from JWT
   checkUserRole(): void {
     const token = localStorage.getItem('token');
@@ -103,9 +109,12 @@ export class ViewComplaintsComponent implements OnInit {
         .subscribe({
             next: (response: any) => {
                 const paginationHeader = response.headers.get('X-Pagination');
+                this.totalPages = parseInt(response.headers.get('x-total-pages') || '1', 10);
+                    
                 if (paginationHeader) {
                     const paginationData = JSON.parse(paginationHeader);
-                    this.totalComplaintCount = paginationData.TotalCount;
+                    this.totalComplaintCount = paginationData.TotalCount;                    
+                    console.log(paginationData);
                 }
                 this.queries = response.body;
                 this.filteredCommissions = [...this.queries]; // Copy queries to filteredCommissions
@@ -146,7 +155,32 @@ resetSearch(): void {
   calculateSRNumber(index: number): number {
     return (this.currentPage - 1) * this.pageSize + index + 1;
   }
+  selectedComplaint: any = null; // Store the complaint to display in the modal
 
+  // Open the modal and store the selected complaint
+  openResponseModal(complaint: any): void {
+    this.selectedComplaint = complaint;
+  
+    const modalElement = document.getElementById('responseModal');
+    if (modalElement) {
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+      modalElement.style.zIndex = '1050';
+      document.body.classList.add('modal-open'); // Prevent background scroll
+    }
+  }
+  
+  // Close the modal and clear the selected complaint
+  closeResponseModal(): void {
+    const modalElement = document.getElementById('responseModal');
+    if (modalElement) {
+      modalElement.classList.remove('show');
+      modalElement.style.display = 'none';
+      document.body.classList.remove('modal-open');
+    }
+    this.selectedComplaint = null;
+  }
+  
 
   // Open reply modal with selected query
   onReply(query: any): void {

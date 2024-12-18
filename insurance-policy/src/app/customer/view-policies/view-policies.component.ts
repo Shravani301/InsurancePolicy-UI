@@ -129,7 +129,7 @@ export class ViewPoliciesComponent {
       });
     } else {
       // Call getPoliciesPending for applied policies
-      this.customer.getPoliciesPending(this.userId, this.currentPage, this.pageSize).subscribe({
+      this.customer.getPoliciesPendingByCustomer(this.userId, this.currentPage, this.pageSize).subscribe({
         next: (response) => {
           this.handlePolicyResponse(response);
         },

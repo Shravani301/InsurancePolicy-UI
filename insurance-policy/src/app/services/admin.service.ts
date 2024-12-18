@@ -116,7 +116,7 @@ export class AdminService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`
     });
-    return this.http.post(`${this.baseUrl}/InsurancePlan`, planData,{headers});
+    return this.http.post(`${this.baseUrl}/InsurancePlan`, planData,{headers,observe: 'response'});
   }
 
   /**
@@ -130,7 +130,9 @@ export class AdminService {
   activatePlan(planId: string): Observable<any> {
     return this.http.put(`${this.baseUrl}/InsurancePlan/activate?id=${planId}`, { observe: 'response' });
   }
-
+updateProfile(data:any): Observable<any> {
+  return this.http.put(`${this.baseUrl}/Admin/Profile`,data, { observe: 'response' });
+}
   /**
    * Fetch schemes by plan ID with pagination.
    * @param planId The plan ID

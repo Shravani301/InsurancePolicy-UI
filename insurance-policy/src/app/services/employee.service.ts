@@ -64,7 +64,9 @@ getCustomerQueries(pageNumber: number, pageSize: number, searchQuery?: string): 
     return this.http.put<any>(`${this.baseUrl}/CustomerQuery/${queryId}/resolve`, null, { params });
   }
   
-
+  updateProfile(data:any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/Employee/Profile`,data, { observe: 'response' });
+  }
   /**
    * Fetch all complaints for a specific customer by their ID.
    * @param customerId The ID of the customer

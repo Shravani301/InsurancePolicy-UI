@@ -24,6 +24,7 @@ export class EmployeeLandingComponent {
       this.getTotalPlanCount();
       this.getTotalAgentCount();
       this.getTotalWithdrawl();
+      this.getTotalComplaintCount();
     }
   
     getTotalCustomerCount() {

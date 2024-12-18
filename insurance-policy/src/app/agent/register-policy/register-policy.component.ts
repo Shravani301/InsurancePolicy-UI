@@ -40,6 +40,7 @@ export class RegisterPolicyComponent implements OnInit {
   searchQuery: string = ''; // Search input query
   agentId:any='';  
   existingDocuments: { [key: string]: { id: string; path: string } } = {};
+  taxPercentage:any='';
 
   relationships: string[] = [
     'SPOUSE',
@@ -56,8 +57,8 @@ export class RegisterPolicyComponent implements OnInit {
     'OTHER',
   ];
   agents: any[] = [];
-  fixedInsuranceSettingId: string = '64c58f03-83bb-ef11-ac99-f61aa5269f33';
-  fixedTaxId: string = '225f22e0-82bb-ef11-ac99-f61aa5269f33';
+  //fixedInsuranceSettingId: string = '64c58f03-83bb-ef11-ac99-f61aa5269f33';
+  fixedTaxId: string = '';
   schemeId: any = '';
   selectedCustomer: any = null; // To store the selected customer from the modal
   showCustomerSelectionModal: boolean = true; // Control modal visibility
@@ -81,8 +82,9 @@ export class RegisterPolicyComponent implements OnInit {
     this.policy = {
       customerId: localStorage.getItem('id'),
       insuranceSchemeId: this.schemeId,
-      insuranceSettingId: this.fixedInsuranceSettingId,
+      //insuranceSettingId: this.fixedInsuranceSettingId,
       taxId: this.fixedTaxId,
+      
       premiumType: '',
       premiumAmount: null,
       policyTerm: null,
@@ -92,6 +94,7 @@ export class RegisterPolicyComponent implements OnInit {
       agentId: null,
     };
 
+    this.getTaxPercentage();
     this.getSchemeDetail();
     this.getCustomerProfile();
     this.getDocuments();
@@ -105,7 +108,34 @@ export class RegisterPolicyComponent implements OnInit {
       relation: new FormControl('', [Validators.required]),
     });
   }
-
+  getTaxPercentage(): void {
+    this.customer.getTaxPercent().subscribe({
+      next: (res) => {
+        try {
+          // Ensure response is an array and has the expected structure
+          if (res && Array.isArray(res) && res.length > 0) {
+            const taxObject = res[0]; // Access the first object in the array
+            if (taxObject && 'taxPercentage' in taxObject) {
+              this.fixedTaxId = taxObject.taxId;
+              console.log('Tax percentage fetched successfully:', this.fixedTaxId);
+              this.taxPercentage = taxObject.taxPercentage; // Store the fetched tax percentage
+              console.log('Tax percentage fetched successfully:', this.fixedTaxId);
+            } else {
+              console.error('Missing "taxPercentage" in the response object:', taxObject);
+              this.toastService.showToast('error', 'Tax percentage not found in response.');
+            }
+          } 
+        } catch (err) {
+          console.error('Error processing tax percentage response:', err);
+          this.toastService.showToast('error', 'An error occurred while processing the tax percentage.');
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error fetching tax percentage:', err);
+        this.toastService.showToast('error', 'Failed to fetch tax percentage. Please check your connection.');
+      }
+    });
+  }
   getSchemeDetail() {
     this.customer.getSchemeById(this.policy.insuranceSchemeId).subscribe({
       next: (res: any) => {
@@ -284,8 +314,8 @@ closeCustomerSelectionModal() {
       policyTerm: this.policy.policyTerm,
       premiumAmount: this.policy.premiumAmount,
       agentId:localStorage.getItem('id'),
-      taxId: '225f22e0-82bb-ef11-ac99-f61aa5269f33', // Fixed taxId
-      insuranceSettingId: '64c58f03-83bb-ef11-ac99-f61aa5269f33', // Fixed insuranceSettingId
+      taxId: this.fixedTaxId, // Fixed taxId
+      //insuranceSettingId: '64c58f03-83bb-ef11-ac99-f61aa5269f33', // Fixed insuranceSettingId
       nominees: this.policy.nominees.map((nominee: any) => ({
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
@@ -381,12 +411,12 @@ closeCustomerSelectionModal() {
     'DRIVING_LICENSE',
     'VOTER_ID',
     'BANK_STATEMENT',
-    'IdentityProof',
-    'AddressProof',
     'IncomeProof',
-    'AgeProof',
     'VEHICLE_REGISTRATION_LICENSE',
-    'POLLUTION_UNDER_CONTROL_CERTIFICATE',
+    'HEALTH_CERTIFICATE',
+    'LAND_REGISTRATION_CERTIFICATE',    
+    
+    'POLUTION_UNDER_CONTROL_CERTIFICATE',
     'Other'
   ];
   mapRequiredDocuments() {

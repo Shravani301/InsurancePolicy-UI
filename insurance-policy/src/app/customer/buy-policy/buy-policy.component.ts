@@ -247,6 +247,10 @@ export class BuyPolicyComponent implements OnInit {
       ...this.selectedDocumentIds, // Newly uploaded documents
       ...Object.values(this.existingDocuments).map((doc) => doc.id), // Existing documents
     ];
+    
+    // Remove duplicates by filtering unique IDs
+    const uniqueDocumentIds = allDocumentIds.filter((id, index, self) => self.indexOf(id) === index);
+    
     const policyPayload = {
       insuranceSchemeId: this.policy.insuranceSchemeId,
       customerId: this.policy.customerId,
@@ -255,14 +259,15 @@ export class BuyPolicyComponent implements OnInit {
       policyTerm: this.policy.policyTerm,
       premiumAmount: this.policy.premiumAmount,
       taxId: this.fixedTaxId, // Fixed taxId
-     // insuranceSettingId: '64c58f03-83bb-ef11-ac99-f61aa5269f33', // Fixed insuranceSettingId
+      // insuranceSettingId: '64c58f03-83bb-ef11-ac99-f61aa5269f33', // Fixed insuranceSettingId
       nominees: this.policy.nominees.map((nominee: any) => ({
         nomineeName: nominee.name,
         relationship: this.relationships.indexOf(nominee.relation), // Get index of relationship
       })),
-      selectedDocumentIds: allDocumentIds,// Directly use the populated array
+      selectedDocumentIds: uniqueDocumentIds, // Use de-duplicated array
       ...(this.policy.agentId ? { agentId: this.policy.agentId } : {}), // Include agentId if available
     };
+    
   
     console.log('Policy payload before submission:', policyPayload); // Debug the payload
   
@@ -384,12 +389,12 @@ export class BuyPolicyComponent implements OnInit {
     'DRIVING_LICENSE',
     'VOTER_ID',
     'BANK_STATEMENT',
-    'IdentityProof',
-    'AddressProof',
     'IncomeProof',
-    'AgeProof',
     'VEHICLE_REGISTRATION_LICENSE',
-    'POLLUTION_UNDER_CONTROL_CERTIFICATE',
+    'HEALTH_CERTIFICATE',
+    'LAND_REGISTRATION_CERTIFICATE',    
+    
+    'POLUTION_UNDER_CONTROL_CERTIFICATE',
     'Other'
   ];
   mapRequiredDocuments() {
